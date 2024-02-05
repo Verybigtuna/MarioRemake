@@ -73,7 +73,7 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        print("collision enter")
+        print("collision enter!")
 
     def on_collision_exit(self, other):
         print("collision exit")
