@@ -22,17 +22,18 @@ class Player(Component):
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
     def start(self):
-        gravity()
+        pass
 
     def update(self, delta_time):
         keys = pygame.key.get_pressed()
         speed = 500
         movement = pygame.math.Vector2(0,0)
         self._time_since_last_shot += delta_time
-        gravity = True
+        
         
 
-        
+        if self._is_falling is True:
+            movement.y += speed
 
         if keys[pygame.K_w]:
             movement.y -= speed
@@ -47,7 +48,7 @@ class Player(Component):
             movement.x += speed
 
         if keys[pygame.K_SPACE] :
-            gravity()
+            pass
             
         #self._gameObject.transform.translate(jump*delta_time)
         self._gameObject.transform.translate(movement*delta_time)
@@ -60,21 +61,22 @@ class Player(Component):
         bottom_limit = self._screen_size.y -self._sprite_size.y
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.transform.position.y = bottom_limit
+            #self._is_jumping = False
         elif self._gameObject.transform.position.y < 0:
             self._gameObject.transform.position.y = 0
 
 
-    def gravity(self, delta_time):
+    def gravity(self):
         speed = 100
         falling = pygame.math.Vector2(0,0)
         if self._is_jumping:
             falling.y += speed
-            self._gameObject.transform.translate(speed*delta_time)
+            
 
     def jump(self):
-        if self._jump == False:
-            pass
-        pass
+        if self._is_jumping is False:
+            self._is_falling = False
+            self._is_jumping = True
 
     
         
