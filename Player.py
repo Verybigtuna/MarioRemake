@@ -9,6 +9,8 @@ class Player(Component):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
         self._game_world = game_world
+        self._is_jumping = True
+        self._is_falling = True
         sr = self._gameObject.get_component("SpriteRenderer")
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
@@ -20,13 +22,17 @@ class Player(Component):
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
     def start(self):
-        pass
+        gravity()
 
     def update(self, delta_time):
         keys = pygame.key.get_pressed()
         speed = 500
         movement = pygame.math.Vector2(0,0)
         self._time_since_last_shot += delta_time
+        gravity = True
+        
+
+        
 
         if keys[pygame.K_w]:
             movement.y -= speed
@@ -40,9 +46,10 @@ class Player(Component):
         if keys[pygame.K_d]:
             movement.x += speed
 
-        if keys[pygame.K_SPACE]:
-            self.shoot()
-        
+        if keys[pygame.K_SPACE] :
+            gravity()
+            
+        #self._gameObject.transform.translate(jump*delta_time)
         self._gameObject.transform.translate(movement*delta_time)
 
         if self._gameObject.transform.position.x < -self._sprite_size.x:
@@ -56,6 +63,21 @@ class Player(Component):
         elif self._gameObject.transform.position.y < 0:
             self._gameObject.transform.position.y = 0
 
+
+    def gravity(self, delta_time):
+        speed = 100
+        falling = pygame.math.Vector2(0,0)
+        if self._is_jumping:
+            falling.y += speed
+            self._gameObject.transform.translate(speed*delta_time)
+
+    def jump(self):
+        if self._jump == False:
+            pass
+        pass
+
+    
+        
 
     def shoot(self):
         if self._time_since_last_shot >= self._shoot_delay:

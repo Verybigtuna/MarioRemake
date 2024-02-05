@@ -79,6 +79,8 @@ class GameWorld:
 
 
 gw = GameWorld()
+#p = Player()
 gw.awake()
 gw.start()
 gw.update()
+#p.gravity()
