@@ -4,6 +4,7 @@ from Components import Animator
 from Components import SpriteRenderer
 from Player import Player
 from Enemy import Enemy
+from Goomba_Enemy import Goomba_Enemy
 import pygame
 import random
 from Components import Collider
@@ -50,6 +51,18 @@ class EnemyBuilder(Builder):
 
     def build(self):
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
+        
+        self._gameObject.add_component(SpriteRenderer("enemy_01.png"))
+        self._gameObject.add_component(Goomba_Enemy())
+        self._gameObject.add_component(Collider())
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+class Goomba_EnemyBuilder(Builder):
+
+    def build(self):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0))
         sprites = ["enemy_01.png", "enemy_02.png", "enemy_03.png"]
         selected_sprite = random.choice(sprites)
         self._gameObject.add_component(SpriteRenderer(selected_sprite))
@@ -58,3 +71,4 @@ class EnemyBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+    
