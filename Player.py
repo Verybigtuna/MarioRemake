@@ -9,13 +9,17 @@ class Player(Component):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
         self._game_world = game_world
-        self._is_jumping = True
-        self._is_falling = True
+        #self._is_jumping = True
+        #self._is_falling = True
+        #self._gravity = 100
+        #self.jump_height = 800
+        #self.y_velocity = self.jump_height
+        
         sr = self._gameObject.get_component("SpriteRenderer")
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
         self._gameObject.transform.position.x = (self._screen_size.x/2) - (self._sprite_size.x/2)
-        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)
+        self._gameObject.transform.position.y = (self._screen_size.y) - (500)
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
@@ -29,11 +33,14 @@ class Player(Component):
         speed = 500
         movement = pygame.math.Vector2(0,0)
         self._time_since_last_shot += delta_time
-        
-        
+        _gravity = 1
+        jump_height = 80
+        y_velocity = jump_height
+        _is_jumping = False
+        _is_falling = False
 
-        if self._is_falling is True:
-            movement.y += speed
+        if _is_falling:
+            movement.y += 100
 
         if keys[pygame.K_w]:
             movement.y -= speed
@@ -47,10 +54,19 @@ class Player(Component):
         if keys[pygame.K_d]:
             movement.x += speed
 
-        if keys[pygame.K_SPACE] :
-            pass
-            
-        #self._gameObject.transform.translate(jump*delta_time)
+        if keys[pygame.K_SPACE] and self._time_since_last_shot >= self._shoot_delay:
+            _is_falling = False
+            _is_jumping = True
+            self._time_since_last_shot = 0
+
+        while _is_jumping is True:
+        #if _is_jumping:
+            self._gameObject.transform.position.y -= y_velocity
+            y_velocity -= _gravity
+            if y_velocity < -jump_height:
+                _is_jumping = False
+                y_velocity = jump_height
+        
         self._gameObject.transform.translate(movement*delta_time)
 
         if self._gameObject.transform.position.x < -self._sprite_size.x:
@@ -61,7 +77,7 @@ class Player(Component):
         bottom_limit = self._screen_size.y -self._sprite_size.y
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.transform.position.y = bottom_limit
-            #self._is_jumping = False
+            self._is_jumping = False
         elif self._gameObject.transform.position.y < 0:
             self._gameObject.transform.position.y = 0
 
@@ -73,10 +89,10 @@ class Player(Component):
             falling.y += speed
             
 
-    def jump(self):
-        if self._is_jumping is False:
-            self._is_falling = False
-            self._is_jumping = True
+    #def jump(self):
+        #if self._is_jumping is False:
+            #self._is_falling = False
+            #self._is_jumping = True
 
     
         
