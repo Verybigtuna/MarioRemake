@@ -7,6 +7,7 @@ from Enemy import Enemy
 import pygame
 import random
 from Components import Collider
+from Map import Map
 class Builder(ABC):
 
     @abstractclassmethod
@@ -54,6 +55,20 @@ class EnemyBuilder(Builder):
         selected_sprite = random.choice(sprites)
         self._gameObject.add_component(SpriteRenderer(selected_sprite))
         self._gameObject.add_component(Enemy())
+        self._gameObject.add_component(Collider())
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+
+class MapBuilder(Builder):
+
+    def build(self):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0))
+        sprites = ["enemy_01.png", "enemy_02.png", "enemy_03.png"]
+        selected_sprite = random.choice(sprites)
+        self._gameObject.add_component(SpriteRenderer(selected_sprite))
+        self._gameObject.add_component(Map())
         self._gameObject.add_component(Collider())
 
     def get_gameObject(self) -> GameObject:

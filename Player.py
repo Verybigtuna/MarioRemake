@@ -3,6 +3,7 @@ import pygame
 from GameObject import GameObject
 from Components import Laser
 from Components import SpriteRenderer
+from Map import Map
 class Player(Component):
 
     #def __init__(self) -> None:
@@ -28,6 +29,7 @@ class Player(Component):
         collider.subscribe("collision_exit",self.on_collision_exit)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
+        collider.subscribe("collider_ground",self.on_ground_collision)
 
     @property
     def can_jump(self):
@@ -137,3 +139,8 @@ class Player(Component):
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")
+
+    def on_ground_collision(self, other):
+        
+        pass
+        

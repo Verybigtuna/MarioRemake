@@ -245,3 +245,8 @@ class Collider(Component):
         self._other_masks.remove(other)
         if "pixel_collision_exit" in self._listeners:
             self._listeners["pixel_collision_exit"](other)
+
+    def collision_ground(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter" in self._listeners:
+            self._listeners["collision_ground"](other)
