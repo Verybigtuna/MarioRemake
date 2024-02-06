@@ -14,11 +14,9 @@ class Player(Component):
         self._game_world = game_world
         self._is_jumping = False
         self._is_falling = True
-        self._start_jump_position = 0
         self._can_jump = False
-        #self._gravity = 100
-        #self.jump_height = 800
-        #self.y_velocity = self.jump_height
+        self._start_jump_position = 0
+        
         
         sr = self._gameObject.get_component("SpriteRenderer")
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
@@ -60,11 +58,9 @@ class Player(Component):
         self._time_since_last_shot += delta_time
         gravity = 700
         jump_height = 300
-        vel_y = 700
         
         player_position_y = self._gameObject.transform.position.y
 
-        
 
         if keys[pygame.K_w]:
             movement.y -= speed
@@ -83,20 +79,18 @@ class Player(Component):
             self.can_jump = False
             self.is_jumping = True
             self._start_jump_position = player_position_y
-            self._time_since_last_shot = 0
+            
 
+        #Gravity
         if self.is_falling:
             movement.y += gravity
-            
+
+        #Jumping
         if self.is_jumping:
-            movement.y -= vel_y
+            movement.y -= gravity
             if player_position_y < (self._start_jump_position - jump_height):
                 self.is_jumping = False
                 self.is_falling = True
-
-                
-        
-
 
         self._gameObject.transform.translate(movement*delta_time)
 
@@ -115,19 +109,6 @@ class Player(Component):
         if self._gameObject.transform.position.y == bottom_limit:
             self.can_jump = True
             self.is_falling = False
-    def gravity(self):
-        speed = 100
-        falling = pygame.math.Vector2(0,0)
-        if self._is_jumping:
-            falling.y += speed
-            
-
-    #def jump(self):
-        #if self._is_jumping is False:
-            #self._is_falling = False
-            #self._is_jumping = True
-
-    
         
 
     def shoot(self):
