@@ -5,12 +5,17 @@ from Components import Laser
 from Components import SpriteRenderer
 class Player(Component):
 
+    #def __init__(self) -> None:
+        
+    
     def awake(self, game_world):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
         self._game_world = game_world
-        #self._is_jumping = True
-        #self._is_falling = True
+        self._is_jumping = False
+        self._is_falling = True
+        self._start_jump_position = 0
+        self._can_jump = False
         #self._gravity = 100
         #self.jump_height = 800
         #self.y_velocity = self.jump_height
@@ -25,6 +30,26 @@ class Player(Component):
         collider.subscribe("collision_exit",self.on_collision_exit)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
+
+    @property
+    def can_jump(self):
+        return self._can_jump
+    @can_jump.setter
+    def can_jump(self, value):
+        self._can_jump = value
+    @property
+    def is_jumping(self):
+        return self._is_jumping
+    @is_jumping.setter
+    def is_jumping(self, value):
+        self._is_jumping = value
+    @property
+    def is_falling(self):
+        return self._is_falling
+    @is_falling.setter
+    def is_falling(self, value):
+        self._is_falling = value
+
     def start(self):
         pass
 
@@ -33,14 +58,13 @@ class Player(Component):
         speed = 500
         movement = pygame.math.Vector2(0,0)
         self._time_since_last_shot += delta_time
-        _gravity = 1
-        jump_height = 80
-        y_velocity = jump_height
-        _is_jumping = False
-        _is_falling = False
+        gravity = 700
+        jump_height = 300
+        vel_y = 700
+        
+        player_position_y = self._gameObject.transform.position.y
 
-        if _is_falling:
-            movement.y += 100
+        
 
         if keys[pygame.K_w]:
             movement.y -= speed
@@ -54,19 +78,26 @@ class Player(Component):
         if keys[pygame.K_d]:
             movement.x += speed
 
-        if keys[pygame.K_SPACE] and self._time_since_last_shot >= self._shoot_delay:
-            _is_falling = False
-            _is_jumping = True
+        if keys[pygame.K_SPACE] and self.can_jump is True:
+            self.is_falling = False
+            self.can_jump = False
+            self.is_jumping = True
+            self._start_jump_position = player_position_y
             self._time_since_last_shot = 0
 
-        while _is_jumping is True:
-        #if _is_jumping:
-            self._gameObject.transform.position.y -= y_velocity
-            y_velocity -= _gravity
-            if y_velocity < -jump_height:
-                _is_jumping = False
-                y_velocity = jump_height
+        if self.is_falling:
+            movement.y += gravity
+            
+        if self.is_jumping:
+            movement.y -= vel_y
+            if player_position_y < (self._start_jump_position - jump_height):
+                self.is_jumping = False
+                self.is_falling = True
+
+                
         
+
+
         self._gameObject.transform.translate(movement*delta_time)
 
         if self._gameObject.transform.position.x < -self._sprite_size.x:
@@ -77,11 +108,13 @@ class Player(Component):
         bottom_limit = self._screen_size.y -self._sprite_size.y
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.transform.position.y = bottom_limit
-            self._is_jumping = False
+            
         elif self._gameObject.transform.position.y < 0:
             self._gameObject.transform.position.y = 0
-
-
+        
+        if self._gameObject.transform.position.y == bottom_limit:
+            self.can_jump = True
+            self.is_falling = False
     def gravity(self):
         speed = 100
         falling = pygame.math.Vector2(0,0)
