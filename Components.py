@@ -206,11 +206,21 @@ class Collider(Component):
                 if other not in self._other_masks:
                     self.pixel_collision_enter(other)
                     other.pixel_collision_enter(self)
-                
             else:
                 if other in self._other_masks:
                     self.pixel_collision_exit(other)
                     other.pixel_collision_exit(self)
+
+
+            #if self.check_pixel_collision(self._collision_box, other.collision_box, self._sprite_mask, other.sprite_mask):
+                #if other not in self._other_masks:
+                    #self.collision_ground_enter(other)
+                    #ther.collision_ground_enter(self)
+            #else:
+                #if other in self._other_masks:
+                    #self.collision_ground_exit(other)
+                    #other.collision_ground_exit(self)
+            
                     
         else:
             if is_already_colliding:
@@ -246,7 +256,12 @@ class Collider(Component):
         if "pixel_collision_exit" in self._listeners:
             self._listeners["pixel_collision_exit"](other)
 
-    def collision_ground(self, other):
-        self._other_colliders.append(other)
-        if "collision_enter" in self._listeners:
-            self._listeners["collision_ground"](other)
+    def collision_ground_enter(self, other):
+        self._other_masks.append(other)
+        if "collision_ground_enter" in self._listeners:
+            self._listeners["collision_ground_enter"](other)
+
+    #def collision_ground_exit(self, other):
+        #self._other_masks.remove(other)
+        #if "collision_gorund_exit" in self._listeners:
+            #self._listeners["collision_ground_exit"](other)

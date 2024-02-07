@@ -65,9 +65,10 @@ class MapBuilder(Builder):
 
     def build(self):
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
-        sprites = ["enemy_01.png", "enemy_02.png", "enemy_03.png"]
-        selected_sprite = random.choice(sprites)
-        self._gameObject.add_component(SpriteRenderer(selected_sprite))
+        sprite = pygame.image.load("map1.png")
+        scale = (100, 100)
+        sprite = pygame.transform.scale(sprite, scale)
+        self._gameObject.add_component(SpriteRenderer(sprite))
         self._gameObject.add_component(Map())
         self._gameObject.add_component(Collider())
 

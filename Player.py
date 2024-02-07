@@ -29,7 +29,8 @@ class Player(Component):
         collider.subscribe("collision_exit",self.on_collision_exit)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
-        collider.subscribe("collider_ground",self.on_ground_collision)
+        #collider.subscribe("collision_gorund_enter",self.on_ground_collision_enter)
+        #collider.subscribe("collision_gorund_exit",self.on_ground_collision_exit)
 
     @property
     def can_jump(self):
@@ -136,11 +137,21 @@ class Player(Component):
 
     def on_pixel_collision_enter(self, other):
         print("pixel collision enter")
+        self.is_falling = False
+        self.can_jump = True
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")
+        #self.is_falling = True
 
-    def on_ground_collision(self, other):
+
+
+    def on_ground_collision_enter(self, other):
+        print("Ground collider enter")
+        self.is_falling = False
         
-        pass
+
+    def on_ground_collision_exit(self, other):
+        print("Ground collider exit")
+        #self.is_falling = True
         
