@@ -5,6 +5,7 @@ from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
 from Builder import EnemyBuilder
+from Builder import PowerUpBuilder
 class GameWorld:
 
     def __init__(self) -> None:
@@ -20,7 +21,9 @@ class GameWorld:
         builder.build()
         self._gameObjects.append(builder.get_gameObject())
 
-        
+        image = PowerUpBuilder()
+        image.build()
+        self._gameObjects.append(image.get_gameObject())
 
 
         self._screen = pygame.display.set_mode((1280,720))

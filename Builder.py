@@ -3,8 +3,9 @@ from GameObject import GameObject
 from Components import Animator
 from Components import SpriteRenderer
 from Player import Player
-from Enemy import Enemy
-import pygame
+from Enemy import Enemy 
+from Mushroompowerup import Mushroompowerup
+import pygame 
 import random
 from Components import Collider
 class Builder(ABC):
@@ -54,6 +55,18 @@ class EnemyBuilder(Builder):
         selected_sprite = random.choice(sprites)
         self._gameObject.add_component(SpriteRenderer(selected_sprite))
         self._gameObject.add_component(Enemy())
+        self._gameObject.add_component(Collider())
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+class PowerUpBuilder(Builder):
+    def build(self):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0))
+        sprite = "shield.png"
+        
+        self._gameObject.add_component(SpriteRenderer(sprite))
+        self._gameObject.add_component(Mushroompowerup())
         self._gameObject.add_component(Collider())
 
     def get_gameObject(self) -> GameObject:
