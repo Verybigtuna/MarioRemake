@@ -245,3 +245,9 @@ class Collider(Component):
         self._other_masks.remove(other)
         if "pixel_collision_exit" in self._listeners:
             self._listeners["pixel_collision_exit"](other)
+
+class Camera(Component):
+    cameraposition = pygame.math.Vector2
+
+    
+    pass
