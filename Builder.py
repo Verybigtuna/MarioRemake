@@ -8,6 +8,8 @@ import pygame
 import random
 from Components import Collider
 from Map import Map
+from pathlib import Path
+import os
 class Builder(ABC):
 
     @abstractclassmethod
@@ -64,8 +66,11 @@ class EnemyBuilder(Builder):
 class MapBuilder(Builder):
 
     def build(self):
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
         sprite = pygame.image.load("map1.png")
+        #HERE = Path(__file__).parent
+        #sprite = pygame.image.load(HERE / "assets/map1.png")
         scale = (100, 100)
         sprite = pygame.transform.scale(sprite, scale)
         self._gameObject.add_component(SpriteRenderer(sprite))
