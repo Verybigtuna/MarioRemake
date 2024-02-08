@@ -13,6 +13,8 @@ class GameWorld:
         self._gameObjects = []
         self._colliders = []
 
+        self._screen = pygame.display.set_mode((1280,720))
+
         builder = PlayerBuilder()
         builder.build()
         self._gameObjects.append(builder.get_gameObject())
@@ -26,7 +28,6 @@ class GameWorld:
         self._gameObjects.append(builder.get_gameObject())
 
 
-        self._screen = pygame.display.set_mode((1280,720))
         self._running = True
         self._clock = pygame.time.Clock()
 
@@ -76,7 +77,7 @@ class GameWorld:
             self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
 
             pygame.display.flip()
-            self._clock.tick(60)
+            print(self._clock.get_fps())
 
         pygame.quit()
 

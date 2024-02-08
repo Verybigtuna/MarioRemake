@@ -59,7 +59,7 @@ class Player(Component):
         speed = 500
         movement = pygame.math.Vector2(0,0)
         self._time_since_last_shot += delta_time
-        gravity = 700
+        gravity = 100
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
@@ -78,7 +78,9 @@ class Player(Component):
             movement.x += speed
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
-            self.is_falling = False
+            movement.y -= 4000
+            self.is_falling = True
+            #self.is_falling = False
             self.can_jump = False
             self.is_jumping = True
             self._start_jump_position = player_position_y
@@ -89,11 +91,11 @@ class Player(Component):
             movement.y += gravity
 
         #Jumping
-        if self.is_jumping:
-            movement.y -= gravity
-            if player_position_y < (self._start_jump_position - jump_height):
-                self.is_jumping = False
-                self.is_falling = True
+        #if self.is_jumping:
+            #movement.y -= gravity
+            #if player_position_y < (self._start_jump_position - jump_height):
+                #self.is_jumping = False
+                #self.is_falling = True
 
         self._gameObject.transform.translate(movement*delta_time)
 
@@ -142,7 +144,7 @@ class Player(Component):
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")
-        #self.is_falling = True
+        self.is_falling = True
 
 
 

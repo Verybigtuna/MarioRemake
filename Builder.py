@@ -24,7 +24,7 @@ class PlayerBuilder(Builder):
 
     def build(self):
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
-        self._gameObject.add_component(SpriteRenderer("player.png"))
+        self._gameObject.add_component(SpriteRenderer("player.png",1))
         self._gameObject.add_component(Player())
         self._gameObject.add_component(Collider())
 
@@ -55,7 +55,7 @@ class EnemyBuilder(Builder):
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
         sprites = ["enemy_01.png", "enemy_02.png", "enemy_03.png"]
         selected_sprite = random.choice(sprites)
-        self._gameObject.add_component(SpriteRenderer(selected_sprite))
+        self._gameObject.add_component(SpriteRenderer(selected_sprite,1))
         self._gameObject.add_component(Enemy())
         self._gameObject.add_component(Collider())
 
@@ -68,12 +68,9 @@ class MapBuilder(Builder):
     def build(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
-        sprite = pygame.image.load("map1.png")
         #HERE = Path(__file__).parent
         #sprite = pygame.image.load(HERE / "assets/map1.png")
-        scale = (100, 100)
-        sprite = pygame.transform.scale(sprite, scale)
-        self._gameObject.add_component(SpriteRenderer(sprite))
+        self._gameObject.add_component(SpriteRenderer("map1.png",2))
         self._gameObject.add_component(Map())
         self._gameObject.add_component(Collider())
 

@@ -64,13 +64,15 @@ class Transform(Component):
 
 class SpriteRenderer(Component):
 
-    def __init__(self, sprite_name) -> None:
+    def __init__(self, sprite_name, sprite_scale) -> None:
         super().__init__()
-
-        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}")
+        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}").convert_alpha()
+        self._sprite_image = pygame.transform.scale(self._sprite_image, (self._sprite_image.get_size()[0] * sprite_scale, self._sprite_image.get_size()[1] * sprite_scale))
         self._sprite = pygame.sprite.Sprite()
         self._sprite.rect = self._sprite_image.get_rect()
         self._sprite_mask = pygame.mask.from_surface(self.sprite_image)
+
+    
     
     @property
     def sprite_image(self):
@@ -98,6 +100,8 @@ class SpriteRenderer(Component):
 
     
     def update(self, delta_time):
+
+        
         self._sprite.rect.topleft = self.gameObject.transform.position
         self._game_world.screen.blit(self._sprite_image, self._sprite.rect)
 
