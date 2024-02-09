@@ -8,6 +8,7 @@ class Player(Component):
     def awake(self, game_world):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
+        
         self._game_world = game_world
         sr = self._gameObject.get_component("SpriteRenderer")
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
@@ -73,7 +74,12 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        print("collision enter")
+        
+        sr = self._gameObject.get_component("SpriteRenderer")
+        
+        self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())*2
+
+        print("collision enter my spirituel healing")
 
     def on_collision_exit(self, other):
         print("collision exit")

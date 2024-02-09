@@ -7,7 +7,7 @@ from Builder import PlayerBuilder
 from Builder import EnemyBuilder
 from Builder import PowerUpBuilder
 class GameWorld:
-
+    
     def __init__(self) -> None:
         pygame.init()
         self._gameObjects = []
@@ -25,6 +25,12 @@ class GameWorld:
         image.build()
         self._gameObjects.append(image.get_gameObject())
 
+        collider = self._gameObjects.get_component("Collider")
+        collider.subscribe("collision_enter")
+        collider.subscribe("collision_exit")
+        
+
+        
 
         self._screen = pygame.display.set_mode((1280,720))
         self._running = True

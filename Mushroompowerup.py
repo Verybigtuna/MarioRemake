@@ -12,6 +12,7 @@ class Mushroompowerup(Component):
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        
     
     def start(self):
         return super().start()
@@ -21,10 +22,11 @@ class Mushroompowerup(Component):
     
 
     def on_collision_enter(self, other):
-        print("collision enter")
+        print("collision enter my penis")
 
-    def on_collision_exit(self,
-         other):
+    def on_collision_exit(self,other):
         print("collision exit")
+
+        #del Mushroompowerup
 
 

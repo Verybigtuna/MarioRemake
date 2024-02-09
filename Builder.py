@@ -18,6 +18,7 @@ class Builder(ABC):
         pass
 
 
+
 class PlayerBuilder(Builder):
 
     def build(self):
@@ -41,9 +42,13 @@ class PlayerBuilder(Builder):
                                "player03.png")
         
         animator.play_animation("Idle")
+       
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+    
+    
+    
     
 
 
@@ -56,6 +61,8 @@ class EnemyBuilder(Builder):
         self._gameObject.add_component(SpriteRenderer(selected_sprite))
         self._gameObject.add_component(Enemy())
         self._gameObject.add_component(Collider())
+        
+        
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
@@ -69,5 +76,9 @@ class PowerUpBuilder(Builder):
         self._gameObject.add_component(Mushroompowerup())
         self._gameObject.add_component(Collider())
 
+        
+
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+    
+
