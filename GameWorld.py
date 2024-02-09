@@ -25,9 +25,7 @@ class GameWorld:
         image.build()
         self._gameObjects.append(image.get_gameObject())
 
-        collider = self._gameObjects.get_component("Collider")
-        collider.subscribe("collision_enter")
-        collider.subscribe("collision_exit")
+
         
 
         
