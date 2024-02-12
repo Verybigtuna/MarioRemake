@@ -4,7 +4,7 @@ from Components import SpriteRenderer
 from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
-from Builder import EnemyBuilder
+from Builder import Goomba_EnemyBuilder
 from Components import Camera
 
 class GameWorld:
@@ -14,12 +14,15 @@ class GameWorld:
         self._gameObjects = []
         self._colliders = []
 
-        builder = PlayerBuilder()
+        builder = PlayerBuilder(self)
         builder.build()
         self._gameObjects.append(builder.get_gameObject())
         
-        builder = EnemyBuilder()
-        builder.build()
+        builder = Goomba_EnemyBuilder(self)
+        builder.build(200, 400)
+        self._gameObjects.append(builder.get_gameObject())
+
+        builder.build(500, 600)
         self._gameObjects.append(builder.get_gameObject())
 
         
