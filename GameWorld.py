@@ -25,7 +25,7 @@ class GameWorld:
         image.build()
         self._gameObjects.append(image.get_gameObject())
 
-        self._gameObjects.remove(builder)
+        #self._gameObjects.remove(builder)
 
         
 
@@ -85,9 +85,9 @@ class GameWorld:
 
         pygame.quit()
 
-    def removeObjects(self):
-        self.gameObjecsToRemove=[]
-        for self.gameObject in self._gameObjects:
+    #def removeObjects(self):
+        #self.gameObjecsToRemove=[]
+        #for self.gameObject in self._gameObjects:
             
 
 

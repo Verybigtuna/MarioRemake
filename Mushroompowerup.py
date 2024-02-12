@@ -1,4 +1,5 @@
 from Components import Component
+
 import pygame
 
 class Mushroompowerup(Component):
@@ -23,9 +24,11 @@ class Mushroompowerup(Component):
 
     def on_collision_enter(self, other):
         print("collision enter my penis")
+        self.gameObject.destroy()
 
     def on_collision_exit(self,other):
         print("collision exit")
+        
 
         #del Mushroompowerup
 
