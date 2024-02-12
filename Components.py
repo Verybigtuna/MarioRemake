@@ -284,7 +284,7 @@ class Collider(Component):
              
                 if  not is_already_colliding:
                  self.collision_enter(other)
-                 other.collision_enter(self)
+                 #other.collision_enter(self)
              #if self.check_pixel_collision(self._collision_box, other.collision_box, self._sprite_mask, other.sprite_mask):
               #  if other not in self._other_masks:
               #      self.pixel_collision_enter(other)

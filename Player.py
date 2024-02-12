@@ -35,6 +35,7 @@ class Player(Component):
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
 
@@ -149,5 +150,5 @@ class Player(Component):
         print("pixel collision exit")
     
     def on_collision_enter_top(self,other):
-        
+        self.gameObject.destroy()
         print("collision enter top")

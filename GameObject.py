@@ -20,8 +20,7 @@ class GameObject:
 
     def destroy(self):
         self._is_destroyed = True
-        collider = self.get_component("Collider")
-        self._game_world.colliders.remove(collider)
+      
         
 
 

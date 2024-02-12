@@ -77,6 +77,10 @@ class GameWorld:
                     collider1.collision_check(collider2)
 
             self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
+            
+            self._colliders=[obj for obj in self._colliders if not obj.gameObject.is_destroyed]
+           
+                 
           
 
             pygame.display.flip()
