@@ -23,6 +23,7 @@ class PlayerBuilder(Builder):
 
     def build(self):
         self._gameObject = GameObject(pygame.math.Vector2(0,0))
+        
         self._gameObject.add_component(SpriteRenderer("player.png"))
         self._gameObject.add_component(Player())
         self._gameObject.add_component(Collider())

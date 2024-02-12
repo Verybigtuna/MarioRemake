@@ -7,6 +7,7 @@ class GameObject:
     def __init__(self, position) -> None:
         self._components = {}
         self._transform = self.add_component(Transform(position))
+        #self.scale = self.add_component(pygame.math.Vector2(scale))
         self._is_destroyed = False
 
     @property
