@@ -5,6 +5,7 @@ from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
+from Builder import Mushroom_PowerUpBuilder
 class GameWorld:
 
     def __init__(self) -> None:
@@ -23,7 +24,9 @@ class GameWorld:
         builder.build(500,600)
         self._gameObjects.append(builder.get_gameObject())
 
-
+        builder = Mushroom_PowerUpBuilder(self)
+        builder.build()
+        self._gameObjects.append(builder.get_gameObject)
 
 
         

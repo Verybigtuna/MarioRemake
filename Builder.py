@@ -84,7 +84,7 @@ class EnemyBuilder(Builder):
         return self._gameObject
     
 
-class PowerUpBuilder(Builder):
+class Mushroom_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
 
         super().__init__()
