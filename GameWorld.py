@@ -5,6 +5,8 @@ from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
 from Builder import EnemyBuilder
+from Components import Camera
+
 class GameWorld:
 
     def __init__(self) -> None:

@@ -247,7 +247,37 @@ class Collider(Component):
             self._listeners["pixel_collision_exit"](other)
 
 class Camera(Component):
-    cameraposition = pygame.math.Vector2
 
-    
-    pass
+    _camera_position = pygame.math.Vector2(0, 0)
+    _speed = 25
+
+    def __init__(self):
+        self._camera_position = pygame.math.Vector2(0, 0)
+        self._speed = 25
+
+    @staticmethod
+    def get_speed():
+        return Camera._speed
+
+    @staticmethod
+    def set_speed(value):
+        Camera._speed = value
+
+    @staticmethod
+    def get_camera_position():
+        return Camera._camera_position
+
+    @staticmethod
+    def set_camera_position(value):
+        Camera._camera_position = value
+
+    def move_camera(self, game_time):
+        key_state = pygame.key.get_pressed()
+        #her burde man definere hvis man er i Playing gamestate.
+        self._camera_position.y = 0
+        if self._camera_position.x < 0:
+                self._camera_position.x = 0
+        if key_state[pygame.K_a] and self._camera_position.x > 0:
+            self._camera_position += pygame.math.Vector2(-1, 0) * self._speed
+        if key_state[pygame.K_d] and self._camera_position.x < 1220:
+            self._camera_position += pygame.math.Vector2(1, 0) * self._speed
