@@ -4,6 +4,7 @@ from Components import SpriteRenderer
 from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
+from Builder import Goomba_EnemyBuilder
 from Builder import EnemyBuilder
 from Builder import PowerUpBuilder
 class GameWorld:
@@ -13,12 +14,15 @@ class GameWorld:
         self._gameObjects = []
         self._colliders = []
 
-        builder = PlayerBuilder()
+        builder = PlayerBuilder(self)
         builder.build()
         self._gameObjects.append(builder.get_gameObject())
         
-        builder = EnemyBuilder()
-        builder.build()
+        builder = Goomba_EnemyBuilder(self)
+        builder.build(200,400)
+        self._gameObjects.append(builder.get_gameObject())
+
+        builder.build(500,600)
         self._gameObjects.append(builder.get_gameObject())
 
         image = PowerUpBuilder()
@@ -79,6 +83,7 @@ class GameWorld:
                     collider1.collision_check(collider2)
 
             self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
+          
 
             pygame.display.flip()
             self._clock.tick(60)

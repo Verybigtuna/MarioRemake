@@ -20,10 +20,19 @@ class Player(Component):
         
         
         sr = self._gameObject.get_component("SpriteRenderer")
+        
+        anim=self._gameObject.get_component("Animator")
+     
+
+      
+
+
+
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
-        self._gameObject.transform.position.x = (self._screen_size.x/2) - (self._sprite_size.x/2)
+        self._gameObject.transform.position.x = 50
         self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)
+        
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
@@ -128,7 +137,8 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        print("collision enter!")
+        self.gameObject.destroy()
+        print("collision enter")
 
     def on_collision_exit(self, other):
         print("collision exit")
@@ -138,3 +148,7 @@ class Player(Component):
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")
+    
+    def on_collision_enter_top(self,other):
+        
+        print("collision enter top")
