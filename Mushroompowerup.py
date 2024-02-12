@@ -4,7 +4,7 @@ import pygame
 
 class Mushroompowerup(Component):
 
-    def awake(self,game_world):
+    def awake(self):
 
         sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")

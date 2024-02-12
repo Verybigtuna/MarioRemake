@@ -90,11 +90,21 @@ class EnemyBuilder(Builder):
         return self._gameObject
     
 class PowerUpBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+     
     def build(self):
-        self._gameObject = GameObject(pygame.math.Vector2(0,0))
+
+        sprite_height=100
+        sprite_width=100
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
         sprite = "shield.png"
         
-        self._gameObject.add_component(SpriteRenderer(sprite))
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
         self._gameObject.add_component(Mushroompowerup())
         self._gameObject.add_component(Collider())
 

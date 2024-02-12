@@ -25,9 +25,9 @@ class GameWorld:
         builder.build(500,600)
         self._gameObjects.append(builder.get_gameObject())
 
-        image = PowerUpBuilder()
-        image.build()
-        self._gameObjects.append(image.get_gameObject())
+        builder = PowerUpBuilder(self)
+        builder.build()
+        self._gameObjects.append(builder.get_gameObject())
 
         #self._gameObjects.remove(builder)
 
