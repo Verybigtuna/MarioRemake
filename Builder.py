@@ -8,6 +8,8 @@ from Goomba_Enemy import Goomba_Enemy
 import pygame
 import random
 from Components import Collider
+from Mushroom_PowerUp import Mushroom_PowerUp
+
 class Builder(ABC):
 
     @abstractclassmethod
@@ -77,6 +79,31 @@ class EnemyBuilder(Builder):
         self._gameObject.add_component(SpriteRenderer(selected_sprite))
         self._gameObject.add_component(Enemy())
         self._gameObject.add_component(Collider())
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+
+class PowerUpBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+     
+    def build(self):
+
+        sprite_height=100
+        sprite_width=100
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
+        sprite = "shield.png"
+        
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Mushroom_PowerUp())
+        self._gameObject.add_component(Collider())
+
+        
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
