@@ -4,10 +4,11 @@ from Components import Transform
 
 class GameObject:
 
-    def __init__(self, position) -> None:
+    def __init__(self, position,game_world) -> None:
         self._components = {}
         self._transform = self.add_component(Transform(position))
         self._is_destroyed = False
+        self._game_world=game_world
 
     @property
     def transform(self):
@@ -19,6 +20,9 @@ class GameObject:
 
     def destroy(self):
         self._is_destroyed = True
+        collider = self.get_component("Collider")
+        self._game_world.colliders.remove(collider)
+        
 
 
     def add_component(self, component):
