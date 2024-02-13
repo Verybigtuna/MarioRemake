@@ -17,10 +17,11 @@ class Player(Component):
         self._can_jump = False
         self._start_jump_position = 0
         
+        self.gameObject.Tag = "Player"
         
         sr = self._gameObject.get_component("SpriteRenderer")
         
-        anim=self._gameObject.get_component("Animator")
+        self.anim =self._gameObject.get_component("Animator")
      
 
       
@@ -37,6 +38,7 @@ class Player(Component):
         collider.subscribe("collision_exit",self.on_collision_exit)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
+        collider.subscribe("collision_enter_powerUp",self.on_collision_enter_powerUp)
 
     @property
     def can_jump(self):
@@ -56,7 +58,7 @@ class Player(Component):
     @is_falling.setter
     def is_falling(self, value):
         self._is_falling = value
-
+    
     def start(self):
         pass
 
@@ -151,3 +153,7 @@ class Player(Component):
     def on_collision_enter_top(self,other):
         
         print("collision enter top")
+
+    def on_collision_enter_powerUp(self,other):
+        self._gameObject.get_component("Animator")
+        print("collision enter powered up")

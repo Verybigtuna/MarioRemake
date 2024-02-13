@@ -7,6 +7,7 @@ class Goomba_Enemy(Component):
     def __init__(self,pos_x,pos_y) -> None:
         self._pos_x=pos_x
         self._pos_y=pos_y
+        self.gameObject.Tag = "Enemy"
     
 
     def awake(self, game_world):

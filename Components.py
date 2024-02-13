@@ -1,6 +1,9 @@
 import pygame
 from abc import ABC, abstractmethod
 
+
+
+
 class Component(ABC):
 
     def __init__(self) -> None:
@@ -246,7 +249,7 @@ class Collider(Component):
     def update(self, delta_time):
         pass
 
-    def collision_check(self, other):
+    def collision_check(self, other,tag):
         
         self._sr = self.gameObject.get_component("SpriteRenderer")
 
@@ -268,23 +271,23 @@ class Collider(Component):
 
 
 
+
         if is_rect_colliding:
 
-            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding):
+            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and other.gameObject.Tag =="Enemy"):
                 other.collision_enter_top(self)
                 
             
                 #self._top_collision==True
-            else:
-            
-
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy":
+                self.collision_enter_powerUp(other)
 
             
              
              
                 if  not is_already_colliding:
-                 self.collision_enter(other)
-                 other.collision_enter(self)
+                    self.collision_enter(other)
+                    other.collision_enter(self)
              #if self.check_pixel_collision(self._collision_box, other.collision_box, self._sprite_mask, other.sprite_mask):
               #  if other not in self._other_masks:
               #      self.pixel_collision_enter(other)
@@ -294,7 +297,9 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
-                    
+            if(other.gameObject.Tag == "PowerUp"):
+                pass
+
         else:
             if is_already_colliding:
                 self.collision_exit(other)
@@ -349,6 +354,18 @@ class Collider(Component):
 
         if "collition_exit_top" in self._listeners:
           self._listeners["collision_exit_top"](other)
+
+
+    def collision_enter_powerUp(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_powerUp" in self._listeners:
+            self._listeners["collision_enter_powerUp"](other)
+    
+    def collision_exit_powerUp(self,other):
+        self._other_colliders.remove(other)
+
+        if "collition_exit_powerUp" in self._listeners:
+          self._listeners["collision_exit_powerUp"](other)
 
     
 

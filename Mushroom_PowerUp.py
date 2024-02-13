@@ -13,6 +13,8 @@ class Mushroom_PowerUp(Component):
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        collider.subscribe("collision_enter_powerUp",self.on_collision_enter)
+        collider.subscribe("collision_exit_powerUp",self.on_collision_exit)
         
     
     def start(self):
@@ -28,4 +30,11 @@ class Mushroom_PowerUp(Component):
 
     def on_collision_exit(self,other):
         print("collision exit")
+
+    def on_collision_enter_powerUp(self,other):
+        
+        print("collision enter powered up")
+
+    def on_collision_exter_powerUp(self,other):
+        pass
         
