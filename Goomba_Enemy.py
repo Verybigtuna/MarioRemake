@@ -58,7 +58,7 @@ class Goomba_Enemy(Component):
 
 
 
-        self._gameObject.transform.translate(movement*delta_time)
+        self.gameObject.transform.translate(movement*delta_time)
 
     def on_collision_enter(self,other):
       pass

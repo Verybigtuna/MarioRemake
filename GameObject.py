@@ -8,6 +8,7 @@ class GameObject:
         self._components = {}
         self._transform = self.add_component(Transform(position))
         self._is_destroyed = False
+        self._follows_camera=False
         self._game_world=game_world
 
     @property
@@ -20,9 +21,15 @@ class GameObject:
 
     def destroy(self):
         self._is_destroyed = True
-        collider = self.get_component("Collider")
-        self._game_world.colliders.remove(collider)
+      
         
+    @property
+    def follows_camera(self):
+        return self._follows_camera
+    
+    @follows_camera.setter
+    def follows_camera(self,value):
+        self._follows_camera=value
 
 
     def add_component(self, component):
