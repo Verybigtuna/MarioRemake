@@ -35,6 +35,7 @@ class Transform(Component):
         super().__init__()
 
         self._position = position
+        self._offset=pygame.math.Vector2(0,0)
 
 
     @property
@@ -45,6 +46,17 @@ class Transform(Component):
     @position.setter
     def position(self, value):
         self._position = value
+    
+    @property
+    def offset(self):
+        return self._offset
+    
+    
+    @offset.setter
+    def offset(self, value):
+        self._offset = value
+
+    
 
     def translate(self, direction):
         self._position += direction
@@ -60,6 +72,11 @@ class Transform(Component):
     
     def update(self, delta_time):
         pass
+
+
+    
+ 
+
 
 
 class SpriteRenderer(Component):
@@ -123,7 +140,10 @@ class SpriteRenderer(Component):
 
     
     def update(self, delta_time):
-        self._sprite.rect.topleft = self.gameObject.transform.position
+
+
+       
+        self._sprite.rect.topleft = self.gameObject.transform.position-self.gameObject.transform.offset
         self._game_world.screen.blit(self._sprite_image, self._sprite.rect)
 
     
