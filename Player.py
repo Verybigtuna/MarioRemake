@@ -3,9 +3,12 @@ import pygame
 from GameObject import GameObject
 from Components import Laser
 from Components import SpriteRenderer
+from Camera import Camera
 class Player(Component):
 
     #def __init__(self) -> None:
+
+    
         
     
     def awake(self, game_world):
@@ -17,15 +20,27 @@ class Player(Component):
         self._can_jump = False
         self._start_jump_position = 0
         
+        self.gameObject.follows_camera=True
+        
         
         sr = self._gameObject.get_component("SpriteRenderer")
+        
+        anim=self._gameObject.get_component("Animator")
+     
+
+      
+
+
+
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
-        self._gameObject.transform.position.x = (self._screen_size.x/2) - (self._sprite_size.x/2)
+        self._gameObject.transform.position.x = 50
         self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)
+        
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
 
@@ -53,26 +68,31 @@ class Player(Component):
 
     def update(self, delta_time):
         keys = pygame.key.get_pressed()
-        speed = 500
+        speed = 1000
         movement = pygame.math.Vector2(0,0)
+        Camera.camera_offset=pygame.math.Vector2(0,0)
+
         self._time_since_last_shot += delta_time
         gravity = 700
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
 
-
+        bottom_limit = self._screen_size.y -self._sprite_size.y
         if keys[pygame.K_w]:
             movement.y -= speed
+            
 
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] and self.gameObject.transform.position.y<bottom_limit:
             movement.y += speed
 
         if keys[pygame.K_a]:
             movement.x -= speed
+           
 
         if keys[pygame.K_d]:
             movement.x += speed
+           
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
             self.is_falling = False
@@ -93,22 +113,33 @@ class Player(Component):
                 self.is_falling = True
 
         self._gameObject.transform.translate(movement*delta_time)
+        self.gameObject.transform.offset+=movement*delta_time
 
-        if self._gameObject.transform.position.x < -self._sprite_size.x:
-            self._gameObject.transform.position.x = self._screen_size.x
-        elif self._gameObject.transform.position.x > self._screen_size.x:
-            self._gameObject.transform.position.x = -self._sprite_size.x
 
-        bottom_limit = self._screen_size.y -self._sprite_size.y
+        
+
+
+
+        Camera.camera_offset+=movement*delta_time
+
+       # if self._gameObject.transform.position.x < -self._sprite_size.x:
+        #    self._gameObject.transform.position.x = self._screen_size.x
+        #elif self._gameObject.transform.position.x > self._screen_size.x:
+        #    self._gameObject.transform.position.x = -self._sprite_size.x
+
+        
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.transform.position.y = bottom_limit
             
-        elif self._gameObject.transform.position.y < 0:
-            self._gameObject.transform.position.y = 0
+        # elif self._gameObject.transform.position.y < 0:
+        #    self._gameObject.transform.position.y = 0
         
         if self._gameObject.transform.position.y == bottom_limit:
             self.can_jump = True
             self.is_falling = False
+
+
+     
         
 
     def shoot(self):
@@ -127,7 +158,8 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        print("collision enter!")
+        self.gameObject.destroy()
+        print("collision enter")
 
     def on_collision_exit(self, other):
         print("collision exit")
@@ -137,3 +169,7 @@ class Player(Component):
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")
+    
+    def on_collision_enter_top(self,other):
+        self.gameObject.destroy()
+        print("collision enter top")
