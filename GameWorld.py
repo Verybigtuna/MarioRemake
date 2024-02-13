@@ -5,8 +5,7 @@ from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
-from Components import Camera
-
+from Camera import Camera
 class GameWorld:
 
     
@@ -75,24 +74,22 @@ class GameWorld:
 
 
             for gameObject in self._gameObjects[:]:
-                if gameObject.follow_camera == False:
 
-                    
-                    if (key_state[pygame.K_a] or key_state[pygame.K_d]):
-                        self._key_is_pressed = True
-                        if self._key_is_pressed == True:
+                if(gameObject.follows_camera==False):
+                 
+                 gameObject.transform.offset+=Camera.camera_offset
 
-                            gameObject.transform.position.x -= Camera.camera_Position_x
-                            
-                    else:
-                        self._key_is_pressed = False
+                 
 
-
-
-                    gameObject.update(delta_time)
+                 gameObject.update(delta_time)
                 else:
-                    gameObject.update(delta_time)
-                
+                  
+
+                  
+                  gameObject.update(delta_time)
+                  
+                  
+         
 
             for i, collider1 in enumerate(self._colliders):
                 for j in range(i+1, len(self._colliders)):
@@ -100,8 +97,11 @@ class GameWorld:
                     collider1.collision_check(collider2)
 
             self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
-
-            self._colliders = [obj for obj in self._colliders if not obj.gameObject.is_destroyed]
+            
+            self._colliders=[obj for obj in self._colliders if not obj.gameObject.is_destroyed]
+           
+                 
+          
 
             pygame.display.flip()
             self._clock.tick(60)
