@@ -26,7 +26,7 @@ class GameWorld:
 
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()
-        self._gameObjects.append(builder.get_gameObject)
+        self._gameObjects.append(builder.get_gameObject())
 
 
         
