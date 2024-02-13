@@ -9,10 +9,13 @@ from Components import Camera
 
 class GameWorld:
 
+    
+
     def __init__(self) -> None:
         pygame.init()
         self._gameObjects = []
         self._colliders = []
+        self._key_is_pressed = False
 
         builder = PlayerBuilder(self)
         builder.build()
@@ -56,7 +59,7 @@ class GameWorld:
 
     def update(self):
 
-
+    
         while self._running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -67,8 +70,29 @@ class GameWorld:
             delta_time = self._clock.tick(60) / 1000.0
 
             #Draw game here
+            key_state = pygame.key.get_pressed()
+            
+
+
             for gameObject in self._gameObjects[:]:
-                gameObject.update(delta_time)
+                if gameObject.follow_camera == False:
+
+                    
+                    if (key_state[pygame.K_a] or key_state[pygame.K_d]):
+                        self._key_is_pressed = True
+                        if self._key_is_pressed == True:
+
+                            gameObject.transform.position.x -= Camera.camera_Position_x
+                            
+                    else:
+                        self._key_is_pressed = False
+
+
+
+                    gameObject.update(delta_time)
+                else:
+                    gameObject.update(delta_time)
+                
 
             for i, collider1 in enumerate(self._colliders):
                 for j in range(i+1, len(self._colliders)):
@@ -76,6 +100,8 @@ class GameWorld:
                     collider1.collision_check(collider2)
 
             self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
+
+            self._colliders = [obj for obj in self._colliders if not obj.gameObject.is_destroyed]
 
             pygame.display.flip()
             self._clock.tick(60)

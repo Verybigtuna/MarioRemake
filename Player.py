@@ -3,6 +3,8 @@ import pygame
 from GameObject import GameObject
 from Components import Laser
 from Components import SpriteRenderer
+from Components import Camera
+
 class Player(Component):
 
     #def __init__(self) -> None:
@@ -22,7 +24,7 @@ class Player(Component):
         
         anim=self._gameObject.get_component("Animator")
      
-
+        self._gameObject.set_follow_camera(True)
       
 
 
@@ -35,6 +37,7 @@ class Player(Component):
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        collider.subscribe("collision_enter_top", self.on_collision_enter_top)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
 
@@ -79,9 +82,12 @@ class Player(Component):
 
         if keys[pygame.K_a]:
             movement.x -= speed
+            Camera.camera_Position_x += movement.x
+            
 
         if keys[pygame.K_d]:
             movement.x += speed
+            Camera.camera_Position_x += movement.x
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
             self.is_falling = False
@@ -149,5 +155,5 @@ class Player(Component):
         print("pixel collision exit")
     
     def on_collision_enter_top(self,other):
-        
+        self.gameObject.destroy()
         print("collision enter top")

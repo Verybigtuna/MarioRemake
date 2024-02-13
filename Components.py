@@ -358,20 +358,21 @@ class Collider(Component):
 
 class Camera(Component):
 
-    _camera_position = pygame.math.Vector2(0, 0)
-    _speed = 25
+    camera_Position_x = 0
+    movement = 0
 
     def __init__(self):
-        self._camera_position = pygame.math.Vector2(0, 0)
-        self._speed = 25
+       
+        type(self).camera_Position_x = 0
+        Camera._movement = 0
 
     @staticmethod
-    def get_speed():
-        return Camera._speed
+    def get_movement():
+        return Camera._movement
 
     @staticmethod
-    def set_speed(value):
-        Camera._speed = value
+    def set_movement(value):
+        Camera._movement = value
 
     @staticmethod
     def get_camera_position():
@@ -381,13 +382,21 @@ class Camera(Component):
     def set_camera_position(value):
         Camera._camera_position = value
 
-    def move_camera(self, game_time):
-        key_state = pygame.key.get_pressed()
-        #her burde man definere hvis man er i Playing gamestate.
-        self._camera_position.y = 0
-        if self._camera_position.x < 0:
-                self._camera_position.x = 0
-        if key_state[pygame.K_a] and self._camera_position.x > 0:
-            self._camera_position += pygame.math.Vector2(-1, 0) * self._speed
-        if key_state[pygame.K_d] and self._camera_position.x < 1220:
-            self._camera_position += pygame.math.Vector2(1, 0) * self._speed
+    def update(self, delta_time):
+        self.move_camera(self.get_movement())
+
+    def move_camera(self, movement):
+        
+        #type(self).camera_Position.x += movement
+        pass
+        
+        # key_state = pygame.key.get_pressed()
+        # #her burde man definere hvis man er i Playing gamestate.
+        # self._camera_position.y = 0
+        # if self._camera_position.x < 0:
+        #         self._camera_position.x = 0
+
+        # if key_state[pygame.K_a] and self._camera_position.x > 0:
+        #     self._camera_position += pygame.math.Vector2(-1, 0) * self._movement
+        # if key_state[pygame.K_d] and self._camera_position.x < 1220:
+        #     self._camera_position += pygame.math.Vector2(1, 0) * self._movement
