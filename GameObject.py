@@ -24,8 +24,8 @@ class GameObject:
         self._is_destroyed = True
     
     @property
-    def Tag(self, value):
-        self._tag = value
+    def Tag(self):
+        return self._tag
     
     @Tag.setter
     def Tag(self,value):
