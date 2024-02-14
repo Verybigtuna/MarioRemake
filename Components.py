@@ -75,7 +75,95 @@ class Transform(Component):
 
 
     
- 
+class MapRenderer(Component):
+    def __init__(self,sprite_name,width, height)-> None:
+        super().__init__()
+
+        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}")
+        self._sprite = pygame.sprite.Sprite()
+        self._sprite_image=pygame.transform.scale(self._sprite_image,(width,height))
+        self._sprite.rect = self._sprite_image.get_rect()
+        self._sprite_mask = pygame.mask.from_surface(self.sprite_image)
+
+      
+        self._maps = {}
+        self._current_map = None
+
+    def add_map(self,name,width,height,sprite_Name):
+      
+        sprite_image = pygame.image.load(f"Assets\\{sprite_Name}")
+        sprite_image=pygame.transform.scale(sprite_image,(width,height))
+            
+            
+        self._maps[name] = sprite_image
+
+    
+    def setMap(self, map_Name):
+
+        self._current_map = map_Name
+    
+
+
+    
+        
+        
+    
+    @property
+    def sprite_image(self):
+        return self._sprite_image
+    
+
+
+    
+    @property
+    def sprite_get_rect_bottom(self):
+        return self._sprite_image.get_rect().bottom
+    
+    @property
+    def sprite_get_rect_top(self):
+        return self._sprite_image.get_rect().top
+    
+
+    @property
+    def sprite_get_rect_right(self):
+        return self._sprite_image.get_rect().right
+    
+
+    @property
+    def sprite_get_rect_left(self):
+        return self._sprite_image.get_rect().left
+
+
+    @property
+    def sprite(self):
+        return self._sprite
+    
+    @property
+    def sprite_mask(self):
+        return self._sprite_mask
+
+    @sprite_image.setter
+    def sprite_image(self, value):
+        self._sprite_image = value
+
+    def awake(self, game_world):
+        self._game_world = game_world
+        self._sprite.rect.topleft = self.gameObject.transform.position
+
+    
+    def start(self):
+        pass
+
+    
+    def update(self, delta_time):
+
+       if len(self._maps)>0:
+         self._sprite.rect.topleft = self.gameObject.transform.position-self.gameObject.transform.offset
+         self._game_world.screen.blit(self._maps[self._current_map], self._sprite.rect)
+
+    
+    def scale(self,width,height):
+        self.sprite_image=pygame.transform.scale(self.sprite_image,(width,height))
 
 
 
@@ -301,7 +389,7 @@ class Collider(Component):
 
             
              
-             
+                 
                 if  not is_already_colliding:
                  self.collision_enter(other)
                  #other.collision_enter(self)

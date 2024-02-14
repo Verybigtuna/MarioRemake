@@ -25,7 +25,9 @@ class Player(Component):
         
         sr = self._gameObject.get_component("SpriteRenderer")
         
-        anim=self._gameObject.get_component("Animator")
+        self._animator=self._gameObject.get_component("Animator")
+
+       
      
 
       
@@ -78,7 +80,7 @@ class Player(Component):
         
         player_position_y = self._gameObject.transform.position.y
 
-        bottom_limit = self._screen_size.y -self._sprite_size.y
+        bottom_limit = self._screen_size.y-100 -self._sprite_size.y
         if keys[pygame.K_w]:
             movement.y -= speed
             
@@ -159,6 +161,8 @@ class Player(Component):
         
     def on_collision_enter(self, other):
         self.gameObject.destroy()
+
+        
         print("collision enter")
 
     def on_collision_exit(self, other):
@@ -166,6 +170,8 @@ class Player(Component):
 
     def on_pixel_collision_enter(self, other):
         print("pixel collision enter")
+
+        
 
     def on_pixel_collision_exit(self, other):
         print("pixel collision exit")

@@ -2,6 +2,7 @@ from abc import ABC, abstractclassmethod
 from GameObject import GameObject
 from Components import Animator
 from Components import SpriteRenderer
+from Components import MapRenderer
 from Player import Player
 from Enemy import Enemy
 from Goomba_Enemy import Goomba_Enemy
@@ -13,7 +14,7 @@ class Builder(ABC):
     @abstractclassmethod
     def build(self,game_world):
         pass
-
+    @abstractclassmethod
     def get_gameObject(self) -> GameObject:
         pass
 
@@ -109,3 +110,49 @@ class Goomba_EnemyBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+
+
+class MapBuilder(Builder):
+    def __init__(self,game_world) -> None:
+        super().__init__()
+        self._gameObjects=[]
+        self._game_world=game_world
+
+    def build(self):
+
+        background1=GameObject(pygame.math.Vector2(0,0),self._game_world)
+        sprite_height= self._game_world._screen.get_height()
+        sprite_width=self._game_world._screen.get_width()
+
+        mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
+
+        
+
+       
+
+        mapRen.add_map("World1", sprite_width, sprite_height, "World1.png",)
+
+
+
+        mapRen.setMap("World1")
+
+
+
+
+
+
+
+        self._gameObjects.append(background1)
+
+        
+
+        
+
+
+    
+        pass
+        
+    def get_gameObject(self) -> GameObject:
+        return self._gameObjects
+    
+
