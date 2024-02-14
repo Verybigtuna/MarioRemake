@@ -6,12 +6,21 @@ from Player import Player
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
 from Camera import Camera
+from Builder import MapBuilder
+
 class GameWorld:
 
     def __init__(self) -> None:
         pygame.init()
         self._gameObjects = []
         self._colliders = []
+
+        self._screen = pygame.display.set_mode((1280,720))
+        builder=MapBuilder(self)
+        builder.build()
+        
+        for mapitem in builder.get_gameObject():
+            self._gameObjects.append(mapitem)
 
         builder = PlayerBuilder(self)
         builder.build()
@@ -21,8 +30,16 @@ class GameWorld:
         builder.build(200,400)
         self._gameObjects.append(builder.get_gameObject())
 
-        builder.build(500,600)
+        builder.build(500,560)
         self._gameObjects.append(builder.get_gameObject())
+
+        builder.build(600,200)
+        self._gameObjects.append(builder.get_gameObject())
+
+
+        
+
+        
 
 
 
@@ -30,7 +47,8 @@ class GameWorld:
         
 
 
-        self._screen = pygame.display.set_mode((1280,720))
+       
+        
         self._running = True
         self._clock = pygame.time.Clock()
 
