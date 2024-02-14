@@ -10,6 +10,7 @@ class GameObject:
         self._is_destroyed = False
         self._follows_camera=False
         self._game_world=game_world
+        self._tag = "UnknownTag"
 
     @property
     def transform(self):
@@ -21,7 +22,14 @@ class GameObject:
 
     def destroy(self):
         self._is_destroyed = True
-      
+    
+    @property
+    def Tag(self):
+        return self._tag
+    
+    @Tag.setter
+    def Tag(self,value):
+        self._tag = value
         
     @property
     def follows_camera(self):

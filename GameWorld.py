@@ -5,6 +5,7 @@ from Components import Animator
 from Player import Player
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
+from Builder import Mushroom_PowerUpBuilder
 from Camera import Camera
 from Builder import MapBuilder
 
@@ -37,7 +38,9 @@ class GameWorld:
         self._gameObjects.append(builder.get_gameObject())
 
 
-        
+        builder = Mushroom_PowerUpBuilder(self)
+        builder.build()
+        self._gameObjects.append(builder.get_gameObject())
 
         
 
