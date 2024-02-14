@@ -21,13 +21,12 @@ class Player(Component):
         self._start_jump_position = 0
         
         self.gameObject.follows_camera=True
-        
+        self.gameObject.Tag = "Player"
         
         sr = self._gameObject.get_component("SpriteRenderer")
         
         self._animator=self._gameObject.get_component("Animator")
 
-       
      
 
       

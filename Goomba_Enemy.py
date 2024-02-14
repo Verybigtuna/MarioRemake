@@ -25,7 +25,9 @@ class Goomba_Enemy(Component):
         collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         collider.subscribe("collision_exit_top",self.on_collision_exit_top)
 
+        self.gameObject.Tag = "Enemy"
         self._speed=250
+        
 
     def start(self):
         pass

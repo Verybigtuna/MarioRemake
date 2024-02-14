@@ -15,7 +15,7 @@ class Mushroom_PowerUp(Component):
         collider.subscribe("collision_exit",self.on_collision_exit)
         collider.subscribe("collision_enter_powerUp",self.on_collision_enter)
         collider.subscribe("collision_exit_powerUp",self.on_collision_exit)
-        
+        self.gameObject.Tag = "PowerUp"
     
     def start(self):
         return super().start()
