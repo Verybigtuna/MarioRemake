@@ -264,10 +264,7 @@ class Collider(Component):
         pass
 
     def update(self, delta_time):
-        for i, collider1 in enumerate(self._colliders):
-                for j in range(i+1, len(self._colliders)):
-                    collider2 = self._colliders[j]
-                    collider1.collision_check(collider2)
+        pass
 
     def collision_check(self, other):
         
