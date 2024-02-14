@@ -10,7 +10,7 @@ class GameObject:
         self._is_destroyed = False
         self._follows_camera=False
         self._game_world=game_world
-        self._follow_camera = False
+        
 
     @property
     def transform(self):
@@ -20,10 +20,6 @@ class GameObject:
     def is_destroyed(self):
         return self._is_destroyed
     
-    @property
-    def follow_camera(self):
-        return self._follow_camera
-
     def destroy(self):
         self._is_destroyed = True
       

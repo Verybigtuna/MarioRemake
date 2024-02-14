@@ -27,7 +27,7 @@ class Player(Component):
         
         anim=self._gameObject.get_component("Animator")
      
-        self._gameObject.set_follow_camera(True)
+     
       
 
 
