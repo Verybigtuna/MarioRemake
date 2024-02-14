@@ -6,6 +6,7 @@ class Component(ABC):
     def __init__(self) -> None:
         super().__init__()
         self._gameObject =None
+        
 
 
     @property
@@ -56,7 +57,7 @@ class Transform(Component):
     def offset(self, value):
         self._offset = value
 
-    
+
 
     def translate(self, direction):
         self._position += direction
