@@ -18,6 +18,8 @@ class Lvl_Door(Component):
     def awake(self, game_world):
         sr = self.gameObject.get_component("SpriteRenderer")
 
+        self.gameObject.Tag = "Door"
+
 
         self._screen_size = pygame.math.Vector2(game_world._screen.get_width(), game_world._screen.get_height())
 
