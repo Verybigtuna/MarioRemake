@@ -2,6 +2,8 @@ import pygame
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
 from GameStates import GameStateManager
+from Builder import Door_Builder
+from GameStates import GameStates
 
 class GameWorld:
 
@@ -30,6 +32,11 @@ class GameWorld:
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(500, 600)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+
+        builder = Door_Builder(self)
+        builder.build(900, 500, GameStates.LVL2)
         self._lvl1_Objects.append(builder.get_gameObject())
 
         

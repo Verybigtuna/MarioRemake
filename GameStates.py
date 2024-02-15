@@ -142,6 +142,7 @@ class GameStateManager():
 
 
         elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
+            self._gameWorld._screen.fill("darkgreen")
             for gameObject in self._gameWorld._lvl2_Objects[:]:
 
                 if(gameObject.follows_camera==False):

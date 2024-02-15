@@ -8,6 +8,10 @@ from Goomba_Enemy import Goomba_Enemy
 import pygame
 import random
 from Components import Collider
+from Door import Lvl_Door
+
+
+
 class Builder(ABC):
 
     @abstractclassmethod
@@ -99,6 +103,36 @@ class Goomba_EnemyBuilder(Builder):
 
         self._gameObject.add_component(SpriteRenderer("Goompa_move1.png",sprite_width,sprite_height))
         self._gameObject.add_component(Goomba_Enemy(pos_x,pos_y))
+        self._gameObject.add_component(Collider())
+
+        
+        
+
+      
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+
+
+class Door_Builder(Builder):
+    
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y, enum):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+        
+        sprite_height=50
+        sprite_width=50
+
+        self._gameObject.add_component(SpriteRenderer("shield.png",sprite_width,sprite_height))
+        self._gameObject.add_component(Lvl_Door(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 
         
