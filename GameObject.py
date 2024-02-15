@@ -19,7 +19,7 @@ class GameObject:
     @property
     def is_destroyed(self):
         return self._is_destroyed
-
+    
     def destroy(self):
         self._is_destroyed = True
     

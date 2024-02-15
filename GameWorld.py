@@ -1,52 +1,62 @@
 import pygame
-from GameObject import GameObject
-from Components import SpriteRenderer
-from Components import Animator
-from Player import Player
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
 from Builder import Mushroom_PowerUpBuilder
-from Camera import Camera
+from GameStates import GameStateManager
+from Builder import Door_Builder
+from GameStates import GameStates
+
 from Builder import MapBuilder
 
 class GameWorld:
 
+    
+
     def __init__(self) -> None:
         pygame.init()
-        self._gameObjects = []
+        self._stateManager = GameStateManager(self)
+        self._mainMenu_Objects = []
+        self._lvl1_Objects = []
+        self._lvl2_Objects = []
+        self._bossLvl_Objects = []
+        self._options_Objects = []
+        self._win_Objects = []
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
-        builder=MapBuilder(self)
+        builder = MapBuilder(self)
         builder.build()
         
         for mapitem in builder.get_gameObject():
-            self._gameObjects.append(mapitem)
+            self._lvl1_Objects.append(mapitem)
 
         builder = PlayerBuilder(self)
         builder.build()
-        self._gameObjects.append(builder.get_gameObject())
-        
-        builder = Goomba_EnemyBuilder(self)
-        builder.build(200,400)
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
+        self._lvl2_Objects.append(builder.get_gameObject())
 
-        builder.build(500,560)
-        self._gameObjects.append(builder.get_gameObject())
+        builder = Goomba_EnemyBuilder(self)
+        builder.build(200, 400)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(500, 560)
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(600,200)
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
 
 
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         
+        builder = Door_Builder(self)
+        builder.build(900, 500, GameStates.LVL2)
+        self._lvl1_Objects.append(builder.get_gameObject())
 
 
-
-
+       # GameStateManager.currentState = GameStates.MAINMENU
         
 
 
@@ -66,20 +76,40 @@ class GameWorld:
     def instantiate(self, gameobject):
         gameobject.awake(self)
         gameobject.start()
-        self._gameObjects.append(gameobject)
+        if GameStateManager.currentState == GameStates.MAINMENU:
+            self._mainMenu_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.LVL1:
+            self._lvl1_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.LVL2:
+            self._lvl2_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.BOSSLVL:
+            self._bossLvl_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.OPTIONS:
+            self._options_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.WIN:
+            self._win_Objects.append(gameobject)
 
     def awake(self):
-        for gameObject in self._gameObjects[:]:
-            gameObject.awake(self)
+        self._stateManager.awake(self)
+
+        # for gameObject in self._gameObjects[:]:
+        #     gameObject.awake(self)
 
 
     def start(self):
-        for gameObject in self._gameObjects[:]:
-            gameObject.start()
+        self._stateManager.start()
+
+        # for gameObject in self._gameObjects[:]:
+        #     gameObject.start()
 
     def update(self):
 
-
+    
         while self._running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -87,23 +117,31 @@ class GameWorld:
 
             self._screen.fill("cornflowerblue")
 
+            
+
             delta_time = self._clock.tick(60) / 1000.0
 
             #Draw game here
-            for gameObject in self._gameObjects[:]:
+            
 
-                if(gameObject.follows_camera==False):
+            self._stateManager.update(delta_time)
+            
+
+
+            # for gameObject in self._gameObjects[:]:
+
+            #     if(gameObject.follows_camera==False):
                  
-                 gameObject.transform.offset+=Camera.camera_offset
+            #      gameObject.transform.offset+=Camera.camera_offset
 
                  
 
-                 gameObject.update(delta_time)
-                else:
+            #      gameObject.update(delta_time)
+            #     else:
                   
 
                   
-                  gameObject.update(delta_time)
+            #       gameObject.update(delta_time)
                   
                   
          
@@ -113,11 +151,15 @@ class GameWorld:
                     collider2 = self._colliders[j]
                     collider1.collision_check(collider2)
 
-            self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
+            #self._gameObjects = [obj for obj in self._gameObjects if not obj.is_destroyed]
             
-            self._colliders=[obj for obj in self._colliders if not obj.gameObject.is_destroyed]
+            #self._colliders=[obj for obj in self._colliders if not obj.gameObject.is_destroyed]
            
-                 
+            # if GameStateManager.currentState == GameStates.LVL1:
+            #     self._colliders = []
+            #     for obj in self._lvl1_Objects:
+            #         if not obj.is_destroyed:
+            #             self._colliders.append(obj.get_component("Collider"))
           
 
             pygame.display.flip()

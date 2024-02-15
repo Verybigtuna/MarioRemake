@@ -10,6 +10,10 @@ from Mushroom_PowerUp import Mushroom_PowerUp
 import pygame
 import random
 from Components import Collider
+from Door import Lvl_Door
+
+
+
 class Builder(ABC):
 
     @abstractclassmethod
@@ -117,7 +121,7 @@ class Goomba_EnemyBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
-    
+        
 
 class Mushroom_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
@@ -126,26 +130,58 @@ class Mushroom_PowerUpBuilder(Builder):
 
         self._game_world=game_world
 
-     
+
     def build(self):
 
         sprite_height=100
         sprite_width=100
         self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
         sprite = "shield.png"
-        
+
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
         self._gameObject.add_component(Mushroom_PowerUp())
         self._gameObject.add_component(Collider())
 
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+
+
+
+
+class Door_Builder(Builder):
+    
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
         
+
+    def build(self,pos_x,pos_y, enum):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+        
+        sprite_height=50
+        sprite_width=50
+
+        self._gameObject.add_component(SpriteRenderer("supply-crate.png",sprite_width,sprite_height))
+        self._gameObject.add_component(Lvl_Door(pos_x, pos_y, enum))
+        self._gameObject.add_component(Collider())
+
+        
+        
+
+      
+
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
 
 
 class MapBuilder(Builder):
-    def __init__(self,game_world) -> None:
+    def __init__(self, game_world) -> None:
         super().__init__()
         self._gameObjects=[]
         self._game_world=game_world
@@ -156,37 +192,22 @@ class MapBuilder(Builder):
         sprite_height= self._game_world._screen.get_height()
         sprite_width=self._game_world._screen.get_width()
 
-        mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
+        self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
 
-        
-
-       
-
-        mapRen.add_map("World1", sprite_width, sprite_height, "World1.png",)
+        self._mapRen.add_map("World1", sprite_width, sprite_height, "World1.png",)
+        self._mapRen.add_map("shield", sprite_width, sprite_height, "shield.png",)
 
 
-
-        mapRen.setMap("World1")
-
-
-
-
-
+        self._mapRen.setMap("World1")
 
 
         self._gameObjects.append(background1)
 
-        
-
-        
-
-
-    
         pass
-        
+
     def get_gameObject(self) -> GameObject:
         return self._gameObjects
-    
 
-    
 
+    def set_map(self,name):
+        self._mapRen.setMap(f"{name}")

@@ -28,7 +28,7 @@ class Player(Component):
         self._animator=self._gameObject.get_component("Animator")
 
      
-
+     
       
 
 
