@@ -46,6 +46,8 @@ class Player(Component):
         collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
+        collider.subscribe("collision_enter_powerUp",self.on_collision_enter_powerUp)
+        
         collider.subscribe("collision_enter_gun_powerup",self.on_collision_enter_gun_powerup)
 
     @property
@@ -92,10 +94,12 @@ class Player(Component):
 
         if keys[pygame.K_a]:
             movement.x -= speed
+            self._animator.play_animation(f"{self._animator._currentstate}left")
            
 
         if keys[pygame.K_d]:
             movement.x += speed
+            self._animator.play_animation(f"{self._animator._currentstate}right")
            
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
@@ -165,8 +169,12 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        self.gameObject.destroy()
+        
+        if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
 
+            self.gameObject.destroy()
+        else:
+            self._animator.play_animation(f"{self._animator._currentstate}right")
         
         print("collision enter")
 
@@ -182,8 +190,14 @@ class Player(Component):
         print("pixel collision exit")
     
     def on_collision_enter_top(self,other):
-        self.gameObject.destroy()
+        
         print("collision enter top")
+
+    def on_collision_enter_powerUp(self,other):
+        self._animator=self._gameObject.get_component("Animator")
+        self._animator._currentstate ="Upgrade"
+        self._animator.play_animation(f"{self._animator._currentstate}right")
+        print("collision enter powerup")
 
     
     def on_collision_enter_gun_powerup(self,other):

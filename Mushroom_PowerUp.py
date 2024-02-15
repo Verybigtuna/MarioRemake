@@ -5,17 +5,17 @@ import pygame
 class Mushroom_PowerUp(Component):
 
     def awake(self,game_world):
-
+        self.gameObject.Tag = "PowerUp"
         sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")
-        self.gameObject.transform.position = pygame.math.Vector2(0,0)
+        self.gameObject.transform.position = pygame.math.Vector2(200,200)
         
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
-        collider.subscribe("collision_enter_powerUp",self.on_collision_enter)
-        collider.subscribe("collision_exit_powerUp",self.on_collision_exit)
-        self.gameObject.Tag = "PowerUp"
+        collider.subscribe("collision_enter_powerUp",self.on_collision_enter_powerUp)
+        collider.subscribe("collision_exit_powerUp",self.on_collision_exit_powerUp)
+
     
     def start(self):
         return super().start()
@@ -25,16 +25,18 @@ class Mushroom_PowerUp(Component):
     
 
     def on_collision_enter(self, other):
+        
         print("collision enter my penis")
-        self.gameObject.destroy()
+
 
     def on_collision_exit(self,other):
         print("collision exit")
 
     def on_collision_enter_powerUp(self,other):
+        self.gameObject.destroy()
         
         print("collision enter powered up")
 
-    def on_collision_exter_powerUp(self,other):
-        pass
+    def on_collision_exit_powerUp(self,other):
+        print("Collsion exit powerup")
         

@@ -253,6 +253,7 @@ class Animator(Component):
         self._current_animation = None
         self._animation_time = 0
         self._current_frame_index = 0
+        self._currentstate = "Idle"
 
     def add_animation(self, name,width,height, *args,):
         frames = []
@@ -385,9 +386,10 @@ class Collider(Component):
             
                 #self._top_collision==True
             #else:
-            elif self.gameObject.Tag == "Player" and  other.gameObject.Tag == "Enemy":
-               
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy":
+                
             
+
 
 
             
