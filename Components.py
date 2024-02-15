@@ -303,7 +303,7 @@ class Laser(Component):
 
     def update(self, delta_time):
         speed = 500
-        movement = pygame.math.Vector2(0,-speed)
+        movement = pygame.math.Vector2(speed,0)
         
         self._gameObject.transform.translate(movement*delta_time)
 
@@ -385,8 +385,8 @@ class Collider(Component):
             
                 #self._top_collision==True
             #else:
-            elif self.gameObject.Tag == "Player" and (other.gameObject.Tag == "PowerUp" or other.gameObject.Tag == "Enemy"):
-                self.collision_enter_powerUp(other)
+            elif self.gameObject.Tag == "Player" and  other.gameObject.Tag == "Enemy":
+               
             
 
 
@@ -405,6 +405,17 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "PowerUp":
+                if  not is_already_colliding:
+                 self.collision_enter_powerUp(other)
+           
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "gun_powerup":
+                if  not is_already_colliding:
+                 self.collision_enter_gun_powerUp(other)
+                 other.collision_enter_gun_powerUp(self)
+            
+
+
 
         else:
             if is_already_colliding:
@@ -471,6 +482,20 @@ class Collider(Component):
 
         if "collition_exit_powerUp" in self._listeners:
           self._listeners["collision_exit_powerUp"](other)
+
+    
+    def collision_enter_gun_powerUp(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_gun_powerup" in self._listeners:
+            self._listeners["collision_enter_gun_powerup"](other)
+    
+    def collision_exit_gun_powerUp(self,other):
+        self._other_colliders.remove(other)
+
+        if "collition_exit_gun_powerUp" in self._listeners:
+          self._listeners["collision_exit_gun_powerup"](other)
+
+    
 
     
 

@@ -8,6 +8,7 @@ from Builder import Goomba_EnemyBuilder
 from Builder import Mushroom_PowerUpBuilder
 from Camera import Camera
 from Builder import MapBuilder
+from Builder import Gun_PowerUpBuilder
 
 class GameWorld:
 
@@ -17,14 +18,14 @@ class GameWorld:
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
-        builder=MapBuilder(self)
-        builder.build()
+        self._mapbuilder=MapBuilder(self)
+        self._mapbuilder.build()
         
-        for mapitem in builder.get_gameObject():
+        for mapitem in self._mapbuilder.get_gameObject():
             self._gameObjects.append(mapitem)
 
         builder = PlayerBuilder(self)
-        builder.build()
+        builder.build(self)
         self._gameObjects.append(builder.get_gameObject())
         
         builder = Goomba_EnemyBuilder(self)
@@ -41,6 +42,15 @@ class GameWorld:
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()
         self._gameObjects.append(builder.get_gameObject())
+
+        builder=Gun_PowerUpBuilder(self)
+        builder.build(pygame.math.Vector2(300,560))
+        self._gameObjects.append(builder.get_gameObject())
+        
+
+
+       
+
 
         
 
