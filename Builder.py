@@ -43,17 +43,27 @@ class PlayerBuilder(Builder):
         self._gameObject.add_component(Collider())
 
         animator = self._gameObject.add_component(Animator())
-        animator.add_animation("Idle",sprite_height,sprite_width, "mario_move_right2.png",
+        animator.add_animation("Idleright",sprite_height,sprite_width, "mario_move_right2.png",
                                "mario_move_right3.png",
                                "mario_move_right4.png",
                                "mario_move_right3.png")
         
-        animator.add_animation("Upgrade",sprite_height_upgrade,sprite_width_upgrade, "mario_move_right2.png",
+        animator.add_animation("Upgraderight",sprite_height_upgrade,sprite_width_upgrade, "mario_move_right2.png",
                                "mario_move_right3.png",
                                "mario_move_right4.png",
                                "mario_move_right3.png")
+        
+        animator.add_animation("Idleleft",sprite_height,sprite_height,"mario_move_left2.png",
+                               "mario_move_left3.png",
+                               "mario_move_left4.png",
+                               "mario_move_left3.png")
+        
+        animator.add_animation("Upgradeleft",sprite_height_upgrade,sprite_width_upgrade, "mario_move_left2.png",
+                               "mario_move_left3.png",
+                               "mario_move_left4.png",
+                               "mario_move_left3.png")    
 
-        animator.play_animation("Idle")
+        animator.play_animation("Idleright")
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject

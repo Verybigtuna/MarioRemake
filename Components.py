@@ -253,6 +253,7 @@ class Animator(Component):
         self._current_animation = None
         self._animation_time = 0
         self._current_frame_index = 0
+        self._currentstate = "Idle"
 
     def add_animation(self, name,width,height, *args,):
         frames = []
@@ -385,9 +386,10 @@ class Collider(Component):
             
                 #self._top_collision==True
             #else:
-            elif self.gameObject.Tag == "Player" and (other.gameObject.Tag == "PowerUp" or other.gameObject.Tag == "Enemy"):
-                self.collision_enter_powerUp(other)
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy":
+                
             
+
 
 
             
@@ -405,6 +407,10 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "PowerUp":
+                if  not is_already_colliding:
+                    other.collision_enter_powerUp(self)
+                    self.collision_enter_powerUp(other)
 
         else:
             if is_already_colliding:
