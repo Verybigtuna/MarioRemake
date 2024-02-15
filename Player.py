@@ -163,7 +163,8 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
-        
+
+
         if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
 
             self.gameObject.destroy()

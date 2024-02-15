@@ -42,7 +42,8 @@ class PlayerBuilder(Builder):
         sprite_height_upgrade =70
         sprite_width_upgrade = 70
 
-        self._gameObject.add_component(SpriteRenderer("player.png",sprite_width,sprite_height))
+
+        self._gameObject.add_component(SpriteRenderer("mario_move_right1.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player())
         self._gameObject.add_component(Collider())
 
