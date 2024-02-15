@@ -6,6 +6,7 @@ class Component(ABC):
     def __init__(self) -> None:
         super().__init__()
         self._gameObject =None
+        
 
 
     @property
@@ -56,7 +57,7 @@ class Transform(Component):
     def offset(self, value):
         self._offset = value
 
-    
+
 
     def translate(self, direction):
         self._position += direction
@@ -75,7 +76,95 @@ class Transform(Component):
 
 
     
- 
+class MapRenderer(Component):
+    def __init__(self,sprite_name,width, height)-> None:
+        super().__init__()
+
+        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}")
+        self._sprite = pygame.sprite.Sprite()
+        self._sprite_image=pygame.transform.scale(self._sprite_image,(width,height))
+        self._sprite.rect = self._sprite_image.get_rect()
+        self._sprite_mask = pygame.mask.from_surface(self.sprite_image)
+
+      
+        self._maps = {}
+        self._current_map = None
+
+    def add_map(self,name,width,height,sprite_Name):
+      
+        sprite_image = pygame.image.load(f"Assets\\{sprite_Name}")
+        sprite_image=pygame.transform.scale(sprite_image,(width,height))
+            
+            
+        self._maps[name] = sprite_image
+
+    
+    def setMap(self, map_Name):
+
+        self._current_map = map_Name
+    
+
+
+    
+        
+        
+    
+    @property
+    def sprite_image(self):
+        return self._sprite_image
+    
+
+
+    
+    @property
+    def sprite_get_rect_bottom(self):
+        return self._sprite_image.get_rect().bottom
+    
+    @property
+    def sprite_get_rect_top(self):
+        return self._sprite_image.get_rect().top
+    
+
+    @property
+    def sprite_get_rect_right(self):
+        return self._sprite_image.get_rect().right
+    
+
+    @property
+    def sprite_get_rect_left(self):
+        return self._sprite_image.get_rect().left
+
+
+    @property
+    def sprite(self):
+        return self._sprite
+    
+    @property
+    def sprite_mask(self):
+        return self._sprite_mask
+
+    @sprite_image.setter
+    def sprite_image(self, value):
+        self._sprite_image = value
+
+    def awake(self, game_world):
+        self._game_world = game_world
+        self._sprite.rect.topleft = self.gameObject.transform.position
+
+    
+    def start(self):
+        pass
+
+    
+    def update(self, delta_time):
+
+       if len(self._maps)>0:
+         self._sprite.rect.topleft = self.gameObject.transform.position-self.gameObject.transform.offset
+         self._game_world.screen.blit(self._maps[self._current_map], self._sprite.rect)
+
+    
+    def scale(self,width,height):
+        self.sprite_image=pygame.transform.scale(self.sprite_image,(width,height))
 
 
 
@@ -164,6 +253,7 @@ class Animator(Component):
         self._current_animation = None
         self._animation_time = 0
         self._current_frame_index = 0
+        self._currentstate = "Idle"
 
     def add_animation(self, name,width,height, *args,):
         frames = []
@@ -290,18 +380,21 @@ class Collider(Component):
 
         if is_rect_colliding:
 
-            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding):
+            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and other.gameObject.Tag == "Enemy"):
                 other.collision_enter_top(self)
                 
             
                 #self._top_collision==True
-            else:
+            #else:
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy":
+                
             
+
 
 
             
              
-             
+                 
                 if  not is_already_colliding:
                  self.collision_enter(other)
                  #other.collision_enter(self)
@@ -314,7 +407,11 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
-                    
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "PowerUp":
+                if  not is_already_colliding:
+                    other.collision_enter_powerUp(self)
+                    self.collision_enter_powerUp(other)
+
         else:
             if is_already_colliding:
                 self.collision_exit(other)
@@ -369,6 +466,17 @@ class Collider(Component):
 
         if "collition_exit_top" in self._listeners:
           self._listeners["collision_exit_top"](other)
+
+    def collision_enter_powerUp(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_powerUp" in self._listeners:
+            self._listeners["collision_enter_powerUp"](other)
+    
+    def collision_exit_powerUp(self,other):
+        self._other_colliders.remove(other)
+
+        if "collition_exit_powerUp" in self._listeners:
+          self._listeners["collision_exit_powerUp"](other)
 
     
 

@@ -1,9 +1,12 @@
 import pygame
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
+from Builder import Mushroom_PowerUpBuilder
 from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
+
+from Builder import MapBuilder
 
 class GameWorld:
 
@@ -20,7 +23,13 @@ class GameWorld:
         self._options_Objects = []
         self._win_Objects = []
         self._colliders = []
-        self._key_is_pressed = False
+
+        self._screen = pygame.display.set_mode((1280,720))
+        builder=MapBuilder(self)
+        builder.build()
+        
+        for mapitem in builder.get_gameObject():
+            self._gameObjects.append(mapitem)
 
         builder = PlayerBuilder(self)
         builder.build()
@@ -31,18 +40,29 @@ class GameWorld:
         builder.build(200, 400)
         self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(500, 600)
+        builder.build(500, 560)
+        self._gameObjects.append(builder.get_gameObject())
+
+        builder.build(600,200)
+        self._gameObjects.append(builder.get_gameObject())
+
+
+        builder = Mushroom_PowerUpBuilder(self)
+        builder.build()
         self._lvl1_Objects.append(builder.get_gameObject())
 
-
+        
         builder = Door_Builder(self)
         builder.build(900, 500, GameStates.LVL2)
         self._lvl1_Objects.append(builder.get_gameObject())
 
-        
-       # GameStateManager.currentState = GameStates.MAINMENU
 
-        self._screen = pygame.display.set_mode((1280,720))
+       # GameStateManager.currentState = GameStates.MAINMENU
+        
+
+
+       
+        
         self._running = True
         self._clock = pygame.time.Clock()
 
