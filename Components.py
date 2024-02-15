@@ -416,6 +416,11 @@ class Collider(Component):
                  self.collision_enter_gun_powerUp(other)
                  other.collision_enter_gun_powerUp(self)
             
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Door":
+                if  not is_already_colliding:
+                 self.collision_enter(other)
+                 other.collision_enter(self)
+            
 
 
 
