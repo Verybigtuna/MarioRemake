@@ -28,11 +28,11 @@ class GameWorld:
         self._mapbuilder=MapBuilder(self)
         self._mapbuilder.build()
         
-        for mapitem in builder.get_gameObject():
+        for mapitem in self._mapbuilder.get_gameObject():
             self._lvl1_Objects.append(mapitem)
 
         builder = PlayerBuilder(self)
-        builder.build()
+        builder.build(self)
         self._lvl1_Objects.append(builder.get_gameObject())
         self._lvl2_Objects.append(builder.get_gameObject())
 
@@ -53,7 +53,7 @@ class GameWorld:
 
         builder=Gun_PowerUpBuilder(self)
         builder.build(pygame.math.Vector2(300,560))
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
         
 
 

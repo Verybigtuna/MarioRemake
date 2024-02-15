@@ -174,7 +174,7 @@ class Gun_PowerUpBuilder(Builder):
         return self._gameObject
     
 
-class MapBuilder(Builder):
+class Door_Builder(Builder):
     def __init__(self,game_world) -> None:
 
         super().__init__()
