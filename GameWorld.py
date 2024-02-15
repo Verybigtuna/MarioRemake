@@ -15,7 +15,6 @@ class GameWorld:
     def __init__(self) -> None:
         pygame.init()
         self._stateManager = GameStateManager(self)
-        self._gameObjects = []
         self._mainMenu_Objects = []
         self._lvl1_Objects = []
         self._lvl2_Objects = []
@@ -25,11 +24,11 @@ class GameWorld:
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
-        builder=MapBuilder(self)
+        builder = MapBuilder(self)
         builder.build()
         
         for mapitem in builder.get_gameObject():
-            self._gameObjects.append(mapitem)
+            self._lvl1_Objects.append(mapitem)
 
         builder = PlayerBuilder(self)
         builder.build()
@@ -41,10 +40,10 @@ class GameWorld:
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(500, 560)
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(600,200)
-        self._gameObjects.append(builder.get_gameObject())
+        self._lvl1_Objects.append(builder.get_gameObject())
 
 
         builder = Mushroom_PowerUpBuilder(self)
@@ -77,7 +76,23 @@ class GameWorld:
     def instantiate(self, gameobject):
         gameobject.awake(self)
         gameobject.start()
-        self._gameObjects.append(gameobject)
+        if GameStateManager.currentState == GameStates.MAINMENU:
+            self._mainMenu_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.LVL1:
+            self._lvl1_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.LVL2:
+            self._lvl2_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.BOSSLVL:
+            self._bossLvl_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.OPTIONS:
+            self._options_Objects.append(gameobject)
+
+        if GameStateManager.currentState == GameStates.WIN:
+            self._win_Objects.append(gameobject)
 
     def awake(self):
         self._stateManager.awake(self)
