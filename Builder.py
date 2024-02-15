@@ -32,36 +32,42 @@ class PlayerBuilder(Builder):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         #Make sure to add 
 
-        sprite_height=70
-        sprite_width=70
+        sprite_height=40
+        sprite_width=40
 
+        sprite_height_upgrade =70
+        sprite_width_upgrade = 70
 
         self._gameObject.add_component(SpriteRenderer("player.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player())
         self._gameObject.add_component(Collider())
 
         animator = self._gameObject.add_component(Animator())
-        animator.add_animation("Idle",sprite_height,sprite_width, "player02.png",
-                               "player03.png",
-                               "player04.png",
-                               "player05.png",
-                               "player06.png",
-                               "player07.png",
-                               "player08.png",
-                               "player07.png",
-                               "player06.png",
-                               "player05.png",
-                               "player04.png",
-                               "player03.png")
+        animator.add_animation("Idleright",sprite_height,sprite_width, "mario_move_right2.png",
+                               "mario_move_right3.png",
+                               "mario_move_right4.png",
+                               "mario_move_right3.png")
         
+        animator.add_animation("Upgraderight",sprite_height_upgrade,sprite_width_upgrade, "mario_move_right2.png",
+                               "mario_move_right3.png",
+                               "mario_move_right4.png",
+                               "mario_move_right3.png")
         
+        animator.add_animation("Idleleft",sprite_height,sprite_height,"mario_move_left2.png",
+                               "mario_move_left3.png",
+                               "mario_move_left4.png",
+                               "mario_move_left3.png")
+        
+        animator.add_animation("Upgradeleft",sprite_height_upgrade,sprite_width_upgrade, "mario_move_left2.png",
+                               "mario_move_left3.png",
+                               "mario_move_left4.png",
+                               "mario_move_left3.png")    
 
-        animator.play_animation("Idle")
+        animator.play_animation("Idleright")
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
     
-
 
 class EnemyBuilder(Builder):
 
