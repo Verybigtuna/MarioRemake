@@ -7,6 +7,7 @@ from Builder import Door_Builder
 from GameStates import GameStates
 
 from Builder import MapBuilder
+from Builder import Gun_PowerUpBuilder
 
 class GameWorld:
 
@@ -24,14 +25,14 @@ class GameWorld:
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
-        builder = MapBuilder(self)
-        builder.build()
+        self._mapbuilder=MapBuilder(self)
+        self._mapbuilder.build()
         
-        for mapitem in builder.get_gameObject():
+        for mapitem in self._mapbuilder.get_gameObject():
             self._lvl1_Objects.append(mapitem)
 
         builder = PlayerBuilder(self)
-        builder.build()
+        builder.build(self)
         self._lvl1_Objects.append(builder.get_gameObject())
         self._lvl2_Objects.append(builder.get_gameObject())
 
@@ -49,6 +50,15 @@ class GameWorld:
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()
         self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder=Gun_PowerUpBuilder(self)
+        builder.build(pygame.math.Vector2(300,560))
+        self._lvl1_Objects.append(builder.get_gameObject())
+        
+
+
+       
+
 
         
         builder = Door_Builder(self)

@@ -6,7 +6,8 @@ from Components import SpriteRenderer
 from Camera import Camera
 class Player(Component):
 
-    #def __init__(self) -> None:
+    def __init__(self,game_world) -> None:
+        self._game_world = game_world
 
     
         
@@ -14,7 +15,8 @@ class Player(Component):
     def awake(self, game_world):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
-        self._game_world = game_world
+        self._can_shoot=False
+        
         self._is_jumping = False
         self._is_falling = True
         self._can_jump = False
@@ -46,6 +48,7 @@ class Player(Component):
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
         collider.subscribe("collision_enter_powerUp",self.on_collision_enter_powerUp)
         
+        collider.subscribe("collision_enter_gun_powerup",self.on_collision_enter_gun_powerup)
 
     @property
     def can_jump(self):
@@ -104,6 +107,9 @@ class Player(Component):
             self.can_jump = False
             self.is_jumping = True
             self._start_jump_position = player_position_y
+
+        if keys[pygame.K_f] and self._can_shoot==True:
+            self.shoot()
             
 
         #Gravity
@@ -149,12 +155,12 @@ class Player(Component):
 
     def shoot(self):
         if self._time_since_last_shot >= self._shoot_delay:
-            projectile = GameObject(None)
-            sr = projectile.add_component(SpriteRenderer("laser.png"))
+            projectile = GameObject(pygame.math.Vector2(0,0),self._game_world)
+            sr = projectile.add_component(SpriteRenderer("laser.png",20,20))
             projectile.add_component(Laser())
 
             projectile_position = pygame.math.Vector2(self._gameObject.transform.position.x+(self._sprite_size.x/2)-sr.sprite_image.get_width()/2
-                                                    ,self._gameObject.transform.position.y-40)
+                                                    ,self._gameObject.transform.position.y)
         
             projectile.transform.position = projectile_position
 
@@ -192,3 +198,8 @@ class Player(Component):
         self._animator._currentstate ="Upgrade"
         self._animator.play_animation(f"{self._animator._currentstate}right")
         print("collision enter powerup")
+
+    
+    def on_collision_enter_gun_powerup(self,other):
+       print("collision gun PowerUp")
+       self._can_shoot=True
