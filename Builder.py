@@ -14,6 +14,7 @@ from Door import Lvl_Door
 
 
 
+from Gun_PowerUp import Gun_PowerUp
 class Builder(ABC):
 
     @abstractclassmethod
@@ -32,7 +33,7 @@ class PlayerBuilder(Builder):
 
         self._game_world=game_world
 
-    def build(self):
+    def build(self,game_world):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         #Make sure to add 
 
@@ -42,9 +43,8 @@ class PlayerBuilder(Builder):
         sprite_height_upgrade =70
         sprite_width_upgrade = 70
 
-
-        self._gameObject.add_component(SpriteRenderer("mario_move_right1.png",sprite_width,sprite_height))
-        self._gameObject.add_component(Player())
+        self._gameObject.add_component(SpriteRenderer("player.png",sprite_width,sprite_height))
+        self._gameObject.add_component(Player(game_world))
         self._gameObject.add_component(Collider())
 
         animator = self._gameObject.add_component(Animator())
@@ -147,12 +147,34 @@ class Mushroom_PowerUpBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+    
 
+class Gun_PowerUpBuilder(Builder):
+    def __init__(self,game_world) -> None:
 
+        super().__init__()
 
+        self._game_world=game_world
+
+     
+    def build(self,position):
+
+        sprite_height=20
+        sprite_width=20
+        self._gameObject = GameObject(position, self._game_world)
+        sprite = "laser.png"
+        
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Gun_PowerUp())
+        self._gameObject.add_component(Collider())
+
+        
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
 
 class Door_Builder(Builder):
-    
     def __init__(self,game_world) -> None:
 
         super().__init__()
@@ -194,12 +216,20 @@ class MapBuilder(Builder):
         sprite_width=self._game_world._screen.get_width()
 
         self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
+        self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
 
         self._mapRen.add_map("World1", sprite_width, sprite_height, "World1.png",)
         self._mapRen.add_map("shield", sprite_width, sprite_height, "shield.png",)
 
 
         self._mapRen.setMap("World1")
+
+        
+
+
+
+
+
 
 
         self._gameObjects.append(background1)
@@ -208,6 +238,12 @@ class MapBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObjects
+    
+
+    def set_map(self,name):
+        self._mapRen.setMap(f"{name}")
+        
+    
 
 
     def set_map(self,name):
