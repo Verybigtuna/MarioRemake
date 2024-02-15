@@ -54,14 +54,16 @@ class PlayerBuilder(Builder):
                                "player04.png",
                                "player03.png")
         
-        
+        animator.add_animation("Upgrade",sprite_height,sprite_width, "mario_move_right2.png",
+                               "mario_move_right3.png",
+                               "mario_move_right4.png",
+                               "mario_move_right3.png")
 
         animator.play_animation("Idle")
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
     
-
 
 class EnemyBuilder(Builder):
 
