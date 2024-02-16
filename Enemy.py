@@ -22,5 +22,6 @@ class Enemy(Component):
 
         self._gameObject.transform.translate(movement*delta_time)
         bottom_limit = self._screen_size.y
+        
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.destroy()
