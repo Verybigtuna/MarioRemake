@@ -8,6 +8,7 @@ from GameStates import GameStates
 
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
+from Builder import SolidObject_Builder
 
 class GameWorld:
 
@@ -37,10 +38,10 @@ class GameWorld:
         self._lvl2_Objects.append(builder.get_gameObject())
 
         builder = Goomba_EnemyBuilder(self)
-        builder.build(200, 400)
+        builder.build(200, 100)
         self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(500, 560)
+        builder.build(600, 560)
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(600,200)
@@ -63,6 +64,10 @@ class GameWorld:
         
         builder = Door_Builder(self)
         builder.build(900, 500, GameStates.LVL2)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder=SolidObject_Builder(self)
+        builder.build(300,500,"mario_block.png")
         self._lvl1_Objects.append(builder.get_gameObject())
 
 

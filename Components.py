@@ -297,7 +297,7 @@ class Animator(Component):
 class Laser(Component):
 
     def awake(self, game_world):
-        pass
+        self.gameObject.Tag = "Projectile"
 
     def start(self):
         pass
@@ -380,7 +380,7 @@ class Collider(Component):
 
         if is_rect_colliding:
 
-            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and other.gameObject.Tag == "Enemy"):
+            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy"):
                 other.collision_enter_top(self)
                 
             
@@ -415,13 +415,26 @@ class Collider(Component):
                 if  not is_already_colliding:
                  self.collision_enter_gun_powerUp(other)
                  other.collision_enter_gun_powerUp(self)
+            elif self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_projectile(other)
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "SolidObject":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_solid_object(other,is_already_colliding)
+            
+
+            
             
 
 
 
         else:
             if is_already_colliding:
+                self.collision_exit_solid_object(other)
                 self.collision_exit(other)
+               
                
                
                
@@ -496,6 +509,29 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+
+    def collision_enter_projectile(self, other):
+        self._other_colliders.append(other)
+        if "collision_projectile" in self._listeners:
+            self._listeners["collision_projectile"](other)
+    
+    
+    def collision_enter_solid_object(self, other,is_already_colliding):
+        
+        if not is_already_colliding:
+         self._other_colliders.append(other)
+
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+    
+    def collision_exit_solid_object(self,other):
+        
+
+        if "collision_exit_solid_object" in self._listeners:
+          
+          self._listeners["collision_exit_solid_object"](other)
+
+    
 
     
 
