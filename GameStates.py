@@ -9,6 +9,7 @@ class GameStates(Enum):
     LVL2 = 4
     BOSSLVL = 5
     WIN = 6
+    RESTART = 7
 
 
 class GameStateManager():
@@ -16,39 +17,44 @@ class GameStateManager():
     
 
     currentState = GameStates.MAINMENU
+   
 
 
     def __init__(self, gameWorld):
-        type(self).currentState = GameStates.LVL1
+        
         self._gameWorld = gameWorld
-
+  
+   
     def awake(self, gameWorld):
 
         
 
 
-         if GameStateManager.currentState == GameStates.MAINMENU: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
+        #  if GameStateManager.currentState == GameStates.MAINMENU: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
             for game_object in self._gameWorld._mainMenu_Objects[:]:
                     game_object.awake(gameWorld)
 
-         elif GameStateManager.currentState == GameStates.LVL1:
+        #  elif GameStateManager.currentState == GameStates.LVL1:
             for game_object in self._gameWorld._lvl1_Objects[:]: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL1 state
                 game_object.awake(gameWorld)
 
-         elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
+        #  elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
                 for game_object in self._gameWorld._lvl2_Objects[:]:
                     game_object.awake(gameWorld)
             
-         elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
+        #  elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
                 for game_object in self._gameWorld._bossLvl_Objects[:]:
                     game_object.awake(gameWorld)
 
-         elif GameStateManager.currentState == GameStates.OPTIONS: # _gameObjects skal udskiftes senere til De lister af gameobjects der er OPTIONS state
+        #  elif GameStateManager.currentState == GameStates.OPTIONS: # _gameObjects skal udskiftes senere til De lister af gameobjects der er OPTIONS state
                 for game_object in self._gameWorld._options_Objects[:]:
                     game_object.awake(gameWorld)
 
-         elif GameStateManager.currentState == GameStates.WIN: # _gameObjects skal udskiftes senere til De lister af gameobjects der er WIN state
+        #  elif GameStateManager.currentState == GameStates.WIN: # _gameObjects skal udskiftes senere til De lister af gameobjects der er WIN state
                 for game_object in self._gameWorld._win_Objects[:]:
+                    game_object.awake(gameWorld)
+
+                for game_object in self._gameWorld._restart_Objects[:]:
                     game_object.awake(gameWorld)
 
 
@@ -59,28 +65,31 @@ class GameStateManager():
        
 
 
-        if GameStateManager.currentState == GameStates.MAINMENU: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
+        # if GameStateManager.currentState == GameStates.MAINMENU: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
             for game_object in self._gameWorld._mainMenu_Objects[:]:
                  game_object.start()
 
-        elif GameStateManager.currentState == GameStates.LVL1:
+        # elif GameStateManager.currentState == GameStates.LVL1:
             for game_object in self._gameWorld._lvl1_Objects[:]: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL1 state
                  game_object.start()
 
-        elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
+        # elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
             for game_object in self._gameWorld._lvl2_Objects[:]:
                 game_object.start()
             
-        elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
+        # elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
             for game_object in self._gameWorld._bossLvl_Objects[:]:
                 game_object.start()
 
-        elif GameStateManager.currentState == GameStates.OPTIONS: # _gameObjects skal udskiftes senere til De lister af gameobjects der er OPTIONS state
+        # elif GameStateManager.currentState == GameStates.OPTIONS: # _gameObjects skal udskiftes senere til De lister af gameobjects der er OPTIONS state
             for game_object in self._gameWorld._options_Objects[:]:
                 game_object.start()
 
-        elif GameStateManager.currentState == GameStates.WIN: # _gameObjects skal udskiftes senere til De lister af gameobjects der er WIN state
+        # elif GameStateManager.currentState == GameStates.WIN: # _gameObjects skal udskiftes senere til De lister af gameobjects der er WIN state
             for game_object in self._gameWorld._win_Objects[:]:
+                game_object.start()
+
+            for game_object in self._gameWorld._restart_Objects[:]:
                 game_object.start()
     
 
@@ -94,17 +103,15 @@ class GameStateManager():
 
         delta_time = self._gameWorld._clock.tick(60) / 1000.0
 
+        
+
 
         if GameStateManager.currentState == GameStates.MAINMENU: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
             for gameObject in self._gameWorld._mainMenu_Objects[:]:
 
-                if(gameObject.follows_camera==False):
-                 
-                    gameObject.transform.offset+=Camera.camera_offset
-
-                    gameObject.update(delta_time)
-                else:
-                    gameObject.update(delta_time)
+                
+              
+                gameObject.update(delta_time)
                   
                   
 
@@ -186,15 +193,11 @@ class GameStateManager():
 
 
         elif GameStateManager.currentState == GameStates.OPTIONS: # _gameObjects skal udskiftes senere til De lister af gameobjects der er OPTIONS state
+            self._gameWorld._screen.fill("yellow")
             for gameObject in self._gameWorld._options_Objects[:]:
 
-                if(gameObject.follows_camera==False):
-                 
-                    gameObject.transform.offset+=Camera.camera_offset
-
-                    gameObject.update(delta_time)
-                else:
-                    gameObject.update(delta_time)
+                
+                gameObject.update(delta_time)
             
 
             self._gameWorld._options_Objects = [obj for obj in self._gameWorld._options_Objects if not obj.is_destroyed]
@@ -209,19 +212,33 @@ class GameStateManager():
         elif GameStateManager.currentState == GameStates.WIN: # _gameObjects skal udskiftes senere til De lister af gameobjects der er WIN state
             for gameObject in self._gameWorld._win_Objects[:]:
 
-                if(gameObject.follows_camera==False):
-                 
-                    gameObject.transform.offset+=Camera.camera_offset
-
-                    gameObject.update(delta_time)
-                else:
-                    gameObject.update(delta_time)
+                
+                gameObject.update(delta_time)
             
 
             self._gameWorld._win_Objects = [obj for obj in self._gameWorld._win_Objects if not obj.is_destroyed]
             
             self._gameWorld._colliders = []
             for obj in self._gameWorld._win_Objects:
+                collider = obj.get_component("Collider")
+                if not obj.is_destroyed and collider != None:
+                    self._gameWorld._colliders.append(collider)
+
+        
+        if GameStateManager.currentState == GameStates.RESTART: # _gameObjects skal udskiftes senere til De lister af gameobjects der er MAINMENU
+            self._gameWorld._screen.fill("darkred")
+            for gameObject in self._gameWorld._restart_Objects[:]:
+
+                gameObject.update(delta_time)
+                  
+                  
+
+
+            self._gameWorld._restart_Objects = [obj for obj in self._gameWorld._restart_Objects if not obj.is_destroyed]
+
+
+            self._gameWorld._colliders = []
+            for obj in self._gameWorld._restart_Objects:
                 collider = obj.get_component("Collider")
                 if not obj.is_destroyed and collider != None:
                     self._gameWorld._colliders.append(collider)

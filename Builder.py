@@ -11,7 +11,8 @@ import pygame
 import random
 from Components import Collider
 from Door import Lvl_Door
-from SolidObject import SolidObject
+from Button import MarioButton
+from Text import TextBoxfrom SolidObject import SolidObject
 
 
 
@@ -278,3 +279,63 @@ class SolidObject_Builder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+
+
+
+class ButtonBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y, buttontype, enum):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+        
+        sprite_height= 64
+        sprite_width= 138
+
+
+
+
+        self._gameObject.add_component(SpriteRenderer(buttontype, sprite_width, sprite_height))
+        self._gameObject.add_component(MarioButton(pos_x, pos_y, enum))
+        self._gameObject.add_component(Collider())
+
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+
+
+
+class TextBoxBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y, textType, enum):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+        
+        text_sprite_height= 200
+        text_sprite_width= 500
+
+
+
+
+        self._gameObject.add_component(SpriteRenderer(textType, text_sprite_width, text_sprite_height))
+        self._gameObject.add_component(TextBox(pos_x, pos_y, enum))
+        self._gameObject.add_component(Collider())
+
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    

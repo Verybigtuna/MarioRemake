@@ -5,6 +5,9 @@ from Components import Laser
 from Components import SpriteRenderer
 from Components import Collider
 from Camera import Camera
+from GameStates import GameStateManager
+from GameStates import GameStates
+
 class Player(Component):
 
     def __init__(self,game_world) -> None:
@@ -189,6 +192,7 @@ class Player(Component):
         if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
 
             self.gameObject.destroy()
+            GameStateManager.currentState = GameStates.RESTART
         else:
             self._animator.play_animation(f"{self._animator._currentstate}right")
         
