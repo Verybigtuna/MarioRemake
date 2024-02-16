@@ -12,7 +12,8 @@ import random
 from Components import Collider
 from Door import Lvl_Door
 from Button import MarioButton
-from Text import TextBoxfrom SolidObject import SolidObject
+from Text import TextBox
+from SolidObject import SolidObject
 
 
 
