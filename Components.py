@@ -297,7 +297,7 @@ class Animator(Component):
 class Laser(Component):
 
     def awake(self, game_world):
-        pass
+        self.gameObject.Tag = "Projectile"
 
     def start(self):
         pass
@@ -380,7 +380,7 @@ class Collider(Component):
 
         if is_rect_colliding:
 
-            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and other.gameObject.Tag == "Enemy"):
+            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy"):
                 other.collision_enter_top(self)
                 
             
@@ -415,6 +415,17 @@ class Collider(Component):
                 if  not is_already_colliding:
                  self.collision_enter_gun_powerUp(other)
                  other.collision_enter_gun_powerUp(self)
+            elif self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_projectile(other)
+            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "SolidObject":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_solid_object(other,is_already_colliding)
+            
+
+            
             
             elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Door":
                 if  not is_already_colliding:
@@ -426,7 +437,9 @@ class Collider(Component):
 
         else:
             if is_already_colliding:
+                self.collision_exit_solid_object(other)
                 self.collision_exit(other)
+               
                
                
                
@@ -502,55 +515,30 @@ class Collider(Component):
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
 
+    def collision_enter_projectile(self, other):
+        self._other_colliders.append(other)
+        if "collision_projectile" in self._listeners:
+            self._listeners["collision_projectile"](other)
     
-
     
-
-
-
-    
-
-class Camera(Component):
-
-    camera_Position_x = 0
-    movement = 0
-
-    def __init__(self):
-       
-        type(self).camera_Position_x = 0
-        Camera._movement = 0
-
-    @staticmethod
-    def get_movement():
-        return Camera._movement
-
-    @staticmethod
-    def set_movement(value):
-        Camera._movement = value
-
-    @staticmethod
-    def get_camera_position():
-        return Camera._camera_position
-
-    @staticmethod
-    def set_camera_position(value):
-        Camera._camera_position = value
-
-    def update(self, delta_time):
-        self.move_camera(self.get_movement())
-
-    def move_camera(self, movement):
+    def collision_enter_solid_object(self, other,is_already_colliding):
         
-        #type(self).camera_Position.x += movement
-        pass
-        
-        # key_state = pygame.key.get_pressed()
-        # #her burde man definere hvis man er i Playing gamestate.
-        # self._camera_position.y = 0
-        # if self._camera_position.x < 0:
-        #         self._camera_position.x = 0
+        if not is_already_colliding:
+         self._other_colliders.append(other)
 
-        # if key_state[pygame.K_a] and self._camera_position.x > 0:
-        #     self._camera_position += pygame.math.Vector2(-1, 0) * self._movement
-        # if key_state[pygame.K_d] and self._camera_position.x < 1220:
-        #     self._camera_position += pygame.math.Vector2(1, 0) * self._movement
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+    
+    def collision_exit_solid_object(self,other):
+        
+
+        if "collision_exit_solid_object" in self._listeners:
+          
+          self._listeners["collision_exit_solid_object"](other)
+
+    
+
+    
+
+    
+

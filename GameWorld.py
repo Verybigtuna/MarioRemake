@@ -1,13 +1,18 @@
 import pygame
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
+from Builder import ButtonBuilder
 from Builder import Mushroom_PowerUpBuilder
+from Builder import TextBoxBuilder
 from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
-
+from Button import ButtonTypes
+from Text import TextTypes
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
+from Builder import SolidObject_Builder
+
 
 class GameWorld:
 
@@ -22,6 +27,7 @@ class GameWorld:
         self._bossLvl_Objects = []
         self._options_Objects = []
         self._win_Objects = []
+        self._restart_Objects = []
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
@@ -37,10 +43,10 @@ class GameWorld:
         self._lvl2_Objects.append(builder.get_gameObject())
 
         builder = Goomba_EnemyBuilder(self)
-        builder.build(200, 400)
+        builder.build(200, 100)
         self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(500, 560)
+        builder.build(600, 560)
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(600,200)
@@ -54,6 +60,40 @@ class GameWorld:
         builder=Gun_PowerUpBuilder(self)
         builder.build(pygame.math.Vector2(300,560))
         self._lvl1_Objects.append(builder.get_gameObject())
+
+
+        builder = ButtonBuilder(self)
+        builder.build(480, 500, "button_start.png", ButtonTypes.START)
+        self._mainMenu_Objects.append(builder.get_gameObject())
+
+
+        builder.build(620, 500, "button_quit.png", ButtonTypes.QUIT)
+        self._mainMenu_Objects.append(builder.get_gameObject())
+
+        builder.build(550, 600, "button_options.png", ButtonTypes.OPTIONS)
+        self._mainMenu_Objects.append(builder.get_gameObject())
+
+        
+
+        builder.build(550, 600, "button_restart.png", ButtonTypes.RESTART)
+        self._restart_Objects.append(builder.get_gameObject())
+
+
+        builder.build(550, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
+        self._options_Objects.append(builder.get_gameObject())
+
+        builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
+        self._options_Objects.append(builder.get_gameObject())
+
+
+        builder = TextBoxBuilder(self)
+        builder.build(380, 150, "TitleText.png", TextTypes.WELCOME)
+        self._mainMenu_Objects.append(builder.get_gameObject())
+
+        builder.build(380, 150, "you_are_dead.png", TextTypes.YOURDEAD)
+        self._restart_Objects.append(builder.get_gameObject())
+
+        
         
 
 
@@ -63,6 +103,10 @@ class GameWorld:
         
         builder = Door_Builder(self)
         builder.build(900, 500, GameStates.LVL2)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder=SolidObject_Builder(self)
+        builder.build(300,500,"mario_block.png")
         self._lvl1_Objects.append(builder.get_gameObject())
 
 

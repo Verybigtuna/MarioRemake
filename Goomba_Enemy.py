@@ -25,6 +25,8 @@ class Goomba_Enemy(Component):
         collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         collider.subscribe("collision_exit_top",self.on_collision_exit_top)
 
+        collider.subscribe("collision_projectile",self.on_collision_projectile)
+
         self.gameObject.Tag = "Enemy"
         self._speed=250
         
@@ -71,6 +73,10 @@ class Goomba_Enemy(Component):
 
     def on_collision_enter_top(self, other):
         self.gameObject.destroy()
+
+    def on_collision_projectile(self,other):
+       self.gameObject.destroy()
+       other.gameObject.destroy()
 
 
     def on_collision_exit_top(self,other):
