@@ -1,24 +1,19 @@
 import pygame
-from Components  import Component
-from GameStates import GameStateManager
-from GameStates import GameStates
+from Components import Component
 
+class SolidObject(Component):
 
-
-
-
-class Lvl_Door(Component):
-
-    def __init__(self,pos_x,pos_y, game_state_enum) -> None:
+    
+    def __init__(self,pos_x,pos_y) -> None:
         self._pos_x=pos_x
         self._pos_y=pos_y
-        self._game_state_enum = game_state_enum
+        
     
 
     def awake(self, game_world):
         sr = self.gameObject.get_component("SpriteRenderer")
 
-        self.gameObject.Tag = "Door"
+        self.gameObject.Tag = "SolidObject"
 
 
         self._screen_size = pygame.math.Vector2(game_world._screen.get_width(), game_world._screen.get_height())
@@ -44,7 +39,7 @@ class Lvl_Door(Component):
         pass
 
     def on_collision_enter(self, other):
-      GameStateManager.currentState = self._game_state_enum
+      pass
 
     def on_collision_exit(self,other):
       pass
@@ -56,4 +51,4 @@ class Lvl_Door(Component):
 
     def on_collision_exit_top(self,other):
      pass
-        
+

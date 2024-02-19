@@ -1,13 +1,19 @@
 import pygame
 from Builder import PlayerBuilder
 from Builder import Goomba_EnemyBuilder
+from Builder import ButtonBuilder
 from Builder import Mushroom_PowerUpBuilder
+from Builder import TextBoxBuilder
 from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
+from Button import ButtonTypes
+from Text import TextTypes
 from Components import MusicPlayer
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
+
+from Builder import SolidObject_Builder
 
 
 class GameWorld:
@@ -23,6 +29,7 @@ class GameWorld:
         self._bossLvl_Objects = []
         self._options_Objects = []
         self._win_Objects = []
+        self._restart_Objects = []
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
@@ -38,10 +45,10 @@ class GameWorld:
         self._lvl2_Objects.append(builder.get_gameObject())
 
         builder = Goomba_EnemyBuilder(self)
-        builder.build(200, 400)
+        builder.build(200, 100)
         self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(500, 560)
+        builder.build(600, 560)
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(600,200)
@@ -58,14 +65,16 @@ class GameWorld:
         
 
 
-        self.music_player = MusicPlayer("mariotrap.mp3")
-
-        self.music_player.play_music()
+       
 
 
         
         builder = Door_Builder(self)
         builder.build(900, 500, GameStates.LVL2)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder=SolidObject_Builder(self)
+        builder.build(300,500,"mario_block.png")
         self._lvl1_Objects.append(builder.get_gameObject())
 
 
