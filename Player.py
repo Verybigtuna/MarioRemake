@@ -8,6 +8,7 @@ from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
 
+import time
 class Player(Component):
 
     def __init__(self,game_world) -> None:
@@ -28,7 +29,9 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
-        
+
+
+
         sr = self._gameObject.get_component("SpriteRenderer")
         
         self._animator=self._gameObject.get_component("Animator")
@@ -98,6 +101,7 @@ class Player(Component):
 
         self._time_since_last_shot += delta_time
         self._gravity = 1700
+        
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
@@ -194,8 +198,12 @@ class Player(Component):
         
     def on_collision_enter(self, other):
         
+        self._animator.play_animation("Deathanimright")
+
+
         if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
 
+            
             self.gameObject.destroy()
             GameStateManager.currentState = GameStates.RESTART
         else:

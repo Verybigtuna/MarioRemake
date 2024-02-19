@@ -8,10 +8,11 @@ from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
 from Button import ButtonTypes
-from Text import TextTypes
+from Text import TextTypes  
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
+from Components import MusicPlayer
 
 
 class GameWorld:
@@ -93,9 +94,6 @@ class GameWorld:
         builder.build(380, 150, "you_are_dead.png", TextTypes.YOURDEAD)
         self._restart_Objects.append(builder.get_gameObject())
 
-        
-        
-
 
        
 
@@ -120,7 +118,8 @@ class GameWorld:
 
 
        # GameStateManager.currentState = GameStates.MAINMENU
-        
+        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
+        self.music_player.play_music()
 
 
        
