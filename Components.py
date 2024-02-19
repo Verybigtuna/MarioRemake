@@ -515,6 +515,80 @@ class Collider(Component):
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
 
+    
+class MusicPlayer:
+    def __init__(self,music_file):
+        pygame.mixer.init()
+
+        self.music_file = music_file
+        
+        self.load_music()
+    
+    def load_music(self):
+
+        pygame.mixer.music.load(f"Assets\\{self.music_file}")
+    
+    def play_music(self, loop_count =-1 ):
+        pygame.mixer.music.play(loop_count)
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def pause_music(self):
+         pygame.mixer.music.pause()
+
+    def unpause_music(self):
+         pygame.mixer.music.unpause()
+     
+
+
+
+    
+
+class Camera(Component):
+
+    camera_Position_x = 0
+    movement = 0
+
+    def __init__(self):
+       
+        type(self).camera_Position_x = 0
+        Camera._movement = 0
+
+    @staticmethod
+    def get_movement():
+        return Camera._movement
+
+    @staticmethod
+    def set_movement(value):
+        Camera._movement = value
+
+    @staticmethod
+    def get_camera_position():
+        return Camera._camera_position
+
+    @staticmethod
+    def set_camera_position(value):
+        Camera._camera_position = value
+
+    def update(self, delta_time):
+        self.move_camera(self.get_movement())
+
+    def move_camera(self, movement):
+        
+        #type(self).camera_Position.x += movement
+        pass
+        
+        # key_state = pygame.key.get_pressed()
+        # #her burde man definere hvis man er i Playing gamestate.
+        # self._camera_position.y = 0
+        # if self._camera_position.x < 0:
+        #         self._camera_position.x = 0
+
+        # if key_state[pygame.K_a] and self._camera_position.x > 0:
+        #     self._camera_position += pygame.math.Vector2(-1, 0) * self._movement
+        # if key_state[pygame.K_d] and self._camera_position.x < 1220:
+        #     self._camera_position += pygame.math.Vector2(1, 0) * self._movement
     def collision_enter_projectile(self, other):
         self._other_colliders.append(other)
         if "collision_projectile" in self._listeners:

@@ -12,7 +12,7 @@ import random
 from Components import Collider
 from Door import Lvl_Door
 from Button import MarioButton
-from Text import TextBox
+from Text import TextBox 
 from SolidObject import SolidObject
 
 
@@ -46,7 +46,7 @@ class PlayerBuilder(Builder):
         sprite_height_upgrade =70
         sprite_width_upgrade = 70
 
-        self._gameObject.add_component(SpriteRenderer("player.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("Mario_move_right1.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player(game_world))
         self._gameObject.add_component(Collider())
 
@@ -69,7 +69,15 @@ class PlayerBuilder(Builder):
         animator.add_animation("Upgradeleft",sprite_height_upgrade,sprite_width_upgrade, "mario_move_left2.png",
                                "mario_move_left3.png",
                                "mario_move_left4.png",
-                               "mario_move_left3.png")    
+                               "mario_move_left3.png")
+        
+        animator.add_animation("Deathanimleft",sprite_height,sprite_width,"Mario_death.png",
+                               "Mario_jump_left1.png",
+                               "Mario_jump_left2.png")  
+         
+        animator.add_animation("Deathanimright",sprite_height,sprite_width,"Mario_death.png",
+                               "Mario_death.png",
+                               "Mario_death.png") 
 
         animator.play_animation("Idleright")
 
@@ -216,16 +224,16 @@ class MapBuilder(Builder):
 
         background1=GameObject(pygame.math.Vector2(0,0),self._game_world)
         sprite_height= self._game_world._screen.get_height()
-        sprite_width=self._game_world._screen.get_width()
+        sprite_width=8196
 
-        self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
-        self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
+        self._mapRen=background1.add_component(MapRenderer("worldmap1.png",sprite_width,sprite_height))
+        self._mapRen=background1.add_component(MapRenderer("worldmap1.png",sprite_width,sprite_height))
 
-        self._mapRen.add_map("World1", sprite_width, sprite_height, "World1.png",)
+        self._mapRen.add_map("worldmap1", sprite_width, sprite_height, "worldmap1.png",)
         self._mapRen.add_map("shield", sprite_width, sprite_height, "shield.png",)
 
 
-        self._mapRen.setMap("World1")
+        self._mapRen.setMap("worldmap1")
 
         
 
