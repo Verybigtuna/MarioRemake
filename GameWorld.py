@@ -5,9 +5,10 @@ from Builder import Mushroom_PowerUpBuilder
 from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
-
+from Components import MusicPlayer
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
+
 
 class GameWorld:
 
@@ -57,7 +58,9 @@ class GameWorld:
         
 
 
-       
+        self.music_player = MusicPlayer("mariotrap.mp3")
+
+        self.music_player.play_music()
 
 
         

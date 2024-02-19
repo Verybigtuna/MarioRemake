@@ -498,8 +498,30 @@ class Collider(Component):
           self._listeners["collision_exit_gun_powerup"](other)
 
     
+class MusicPlayer:
+    def __init__(self,music_file):
+        pygame.mixer.init()
 
+        self.music_file = music_file
+        
+        self.load_music()
     
+    def load_music(self):
+
+        pygame.mixer.music.load(f"Assets\\{self.music_file}")
+    
+    def play_music(self, loop_count =-1 ):
+        pygame.mixer.music.play(loop_count)
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def pause_music(self):
+         pygame.mixer.music.pause()
+
+    def unpause_music(self):
+         pygame.mixer.music.unpause()
+     
 
 
 
