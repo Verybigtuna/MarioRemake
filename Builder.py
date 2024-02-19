@@ -69,7 +69,15 @@ class PlayerBuilder(Builder):
         animator.add_animation("Upgradeleft",sprite_height_upgrade,sprite_width_upgrade, "mario_move_left2.png",
                                "mario_move_left3.png",
                                "mario_move_left4.png",
-                               "mario_move_left3.png")    
+                               "mario_move_left3.png")
+        
+        animator.add_animation("Deathanimleft",sprite_height,sprite_width,"Mario_death.png",
+                               "Mario_jump_left1.png",
+                               "Mario_jump_left2.png")  
+         
+        animator.add_animation("Deathanimright",sprite_height,sprite_width,"Mario_death.png",
+                               "Mario_death.png",
+                               "Mario_death.png") 
 
         animator.play_animation("Idleright")
 

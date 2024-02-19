@@ -173,7 +173,8 @@ class SpriteRenderer(Component):
     def __init__(self, sprite_name,width,height) -> None:
         super().__init__()
 
-        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}")
+
+        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}").convert_alpha()
         self._sprite = pygame.sprite.Sprite()
         self._sprite_image=pygame.transform.scale(self._sprite_image,(width,height))
         self._sprite.rect = self._sprite_image.get_rect()
@@ -234,6 +235,13 @@ class SpriteRenderer(Component):
        
         self._sprite.rect.topleft = self.gameObject.transform.position-self.gameObject.transform.offset
         self._game_world.screen.blit(self._sprite_image, self._sprite.rect)
+        color = (255,0,0)
+          
+        # Drawing Rectangle
+        pygame.draw.rect(self._game_world.screen, color, self._sprite.rect,2)
+       
+
+        
 
     
     def scale(self,width,height):
@@ -385,18 +393,14 @@ class Collider(Component):
                 
             
                 #self._top_collision==True
-            #else:
-            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy":
-                
             
-
-
-
-            
-             
+            if self.gameObject.Tag=="Player":
                  
-                if  not is_already_colliding:
-                 self.collision_enter(other)
+             match other.gameObject.Tag:
+                case "Enemy":
+                 if  not is_already_colliding:
+                   self.collision_enter(other)
+                 
                  #other.collision_enter(self)
              #if self.check_pixel_collision(self._collision_box, other.collision_box, self._sprite_mask, other.sprite_mask):
               #  if other not in self._other_masks:
@@ -407,30 +411,36 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
-            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "PowerUp":
-                if  not is_already_colliding:
-                 self.collision_enter_powerUp(other)
+                case "PowerUp":
+                
+                 if  not is_already_colliding:
+                   self.collision_enter_powerUp(other)
            
-            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "gun_powerup":
-                if  not is_already_colliding:
-                 self.collision_enter_gun_powerUp(other)
-                 other.collision_enter_gun_powerUp(self)
-            elif self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
+                case "gun_powerup":
+       
+                  if  not is_already_colliding:
+                   self.collision_enter_gun_powerUp(other)
+                   other.collision_enter_gun_powerUp(self)
+                case "SolidObject":
+                  if  not is_already_colliding:
+                   self.collision_enter_solid_object(other,is_already_colliding)
+                   other.collision_enter_solid_object(self,is_already_colliding)
+                case "Door":
+                 if  not is_already_colliding:
+                  self.collision_enter(other)
+                  other.collision_enter(self)
+
+                    
+
+            if self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
                  
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
-            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "SolidObject":
-                 
-                if  not is_already_colliding:
-                 self.collision_enter_solid_object(other,is_already_colliding)
-            
+
 
             
             
-            elif self.gameObject.Tag == "Player" and other.gameObject.Tag == "Door":
-                if  not is_already_colliding:
-                 self.collision_enter(other)
-                 other.collision_enter(self)
+          
             
 
 
@@ -439,6 +449,8 @@ class Collider(Component):
             if is_already_colliding:
                 self.collision_exit_solid_object(other)
                 self.collision_exit(other)
+                other.collision_exit_solid_object(self)
+            
                
                
                
@@ -515,6 +527,80 @@ class Collider(Component):
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
 
+    
+class MusicPlayer:
+    def __init__(self,music_file):
+        pygame.mixer.init()
+
+        self.music_file = music_file
+        
+        self.load_music()
+    
+    def load_music(self):
+
+        pygame.mixer.music.load(f"Assets\\{self.music_file}")
+    
+    def play_music(self, loop_count =-1 ):
+        pygame.mixer.music.play(loop_count)
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def pause_music(self):
+         pygame.mixer.music.pause()
+
+    def unpause_music(self):
+         pygame.mixer.music.unpause()
+     
+
+
+
+    
+
+class Camera(Component):
+
+    camera_Position_x = 0
+    movement = 0
+
+    def __init__(self):
+       
+        type(self).camera_Position_x = 0
+        Camera._movement = 0
+
+    @staticmethod
+    def get_movement():
+        return Camera._movement
+
+    @staticmethod
+    def set_movement(value):
+        Camera._movement = value
+
+    @staticmethod
+    def get_camera_position():
+        return Camera._camera_position
+
+    @staticmethod
+    def set_camera_position(value):
+        Camera._camera_position = value
+
+    def update(self, delta_time):
+        self.move_camera(self.get_movement())
+
+    def move_camera(self, movement):
+        
+        #type(self).camera_Position.x += movement
+        pass
+        
+        # key_state = pygame.key.get_pressed()
+        # #her burde man definere hvis man er i Playing gamestate.
+        # self._camera_position.y = 0
+        # if self._camera_position.x < 0:
+        #         self._camera_position.x = 0
+
+        # if key_state[pygame.K_a] and self._camera_position.x > 0:
+        #     self._camera_position += pygame.math.Vector2(-1, 0) * self._movement
+        # if key_state[pygame.K_d] and self._camera_position.x < 1220:
+        #     self._camera_position += pygame.math.Vector2(1, 0) * self._movement
     def collision_enter_projectile(self, other):
         self._other_colliders.append(other)
         if "collision_projectile" in self._listeners:
@@ -526,10 +612,12 @@ class Collider(Component):
         if not is_already_colliding:
          self._other_colliders.append(other)
 
-        if "collision_enter_solid_object" in self._listeners:
+         if "collision_enter_solid_object" in self._listeners:
             self._listeners["collision_enter_solid_object"](other)
     
     def collision_exit_solid_object(self,other):
+        
+    
         
 
         if "collision_exit_solid_object" in self._listeners:

@@ -8,11 +8,12 @@ from GameStates import GameStateManager
 from Builder import Door_Builder
 from GameStates import GameStates
 from Button import ButtonTypes
-from Text import TextTypes
+from Text import TextTypes  
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from LvLMaker import LevelMaker
+from Components import MusicPlayer
 
 
 class GameWorld:
@@ -74,7 +75,8 @@ class GameWorld:
 
     
        # GameStateManager.currentState = GameStates.MAINMENU
-        
+        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
+        self.music_player.play_music()
 
 
        

@@ -8,6 +8,7 @@ from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
 
+import time
 class Player(Component):
 
     def __init__(self,game_world) -> None:
@@ -28,7 +29,9 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
-        
+
+
+
         sr = self._gameObject.get_component("SpriteRenderer")
         
         self._animator=self._gameObject.get_component("Animator")
@@ -98,6 +101,7 @@ class Player(Component):
 
         self._time_since_last_shot += delta_time
         self._gravity = 1700
+        
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
@@ -112,13 +116,13 @@ class Player(Component):
         if keys[pygame.K_a] and not self._left_blocked:
             self._movement.x -= speed
             self._animator.play_animation(f"{self._animator._currentstate}left")
-           
+          
            
 
         if keys[pygame.K_d] and not self._right_blocked:
             self._movement.x += speed
             self._animator.play_animation(f"{self._animator._currentstate}right")
-            
+           
            
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
@@ -126,6 +130,7 @@ class Player(Component):
             self.can_jump = False
             self.is_jumping = True
             self._start_jump_position = player_position_y
+            self._down_blocked=False
 
         if keys[pygame.K_f] and self._can_shoot==True:
             self.shoot()
@@ -141,7 +146,7 @@ class Player(Component):
             if player_position_y < (self._start_jump_position - jump_height) or self._up_blocked==True:
                 self.is_jumping = False
                 self.is_falling = True
-                
+               
 
         self._gameObject.transform.translate(self._movement*delta_time)
         self.gameObject.transform.offset+=self._movement*delta_time
@@ -161,6 +166,9 @@ class Player(Component):
         
         if self._gameObject.transform.position.y > bottom_limit:
             self._gameObject.transform.position.y = bottom_limit
+           
+
+
             
         # elif self._gameObject.transform.position.y < 0:
         #    self._gameObject.transform.position.y = 0
@@ -168,6 +176,7 @@ class Player(Component):
         if self._gameObject.transform.position.y == bottom_limit:
             self.can_jump = True
             self.is_falling = False
+            self._down_blocked=True
 
 
      
@@ -193,8 +202,12 @@ class Player(Component):
         
     def on_collision_enter(self, other):
         
+        self._animator.play_animation("Deathanimright")
+
+
         if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
 
+            
             self.gameObject.destroy()
             GameStateManager.currentState = GameStates.RESTART
         else:
@@ -247,18 +260,13 @@ class Player(Component):
         if enemyCol.bottom > playerCol.top and playerCol.centery>enemyCol.bottom:
            player._up_blocked=True
            
+ 
 
-
+        if enemyCol.top <= playerCol.bottom:
+                    
+         player._down_blocked=True
         
-
-
-
        
-                    
-
-        if enemyCol.top < playerCol.bottom and playerCol.centery < enemyCol.top:
-                    
-            player._down_blocked=True
                     
 
 
