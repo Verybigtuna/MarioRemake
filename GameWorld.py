@@ -104,8 +104,17 @@ class GameWorld:
         self._lvl1_Objects.append(builder.get_gameObject())
 
         builder=SolidObject_Builder(self)
-        builder.build(300,500,"mario_block.png")
+        
+
+       # for i in range():
+           
+        builder.build(300,400,"mario_block.png",50,200)
         self._lvl1_Objects.append(builder.get_gameObject())
+        
+
+
+
+    
 
 
        # GameStateManager.currentState = GameStates.MAINMENU
