@@ -394,7 +394,7 @@ class Collider(Component):
             
                 #self._top_collision==True
             
-            if self.gameObject.Tag=="Player":
+            elif self.gameObject.Tag=="Player":
                  
              match other.gameObject.Tag:
                 case "Enemy":
@@ -423,8 +423,8 @@ class Collider(Component):
                    other.collision_enter_gun_powerUp(self)
                 case "SolidObject":
                   if  not is_already_colliding:
-                   self.collision_enter_solid_object(other,is_already_colliding)
-                   other.collision_enter_solid_object(self,is_already_colliding)
+                   self.collision_enter_solid_object(other)
+                   other.collision_enter_solid_object(self)
                 case "Door":
                  if  not is_already_colliding:
                   self.collision_enter(other)
@@ -526,6 +526,16 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+    
+    def collision_enter_solid_object(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+
+    def collision_exit_solid_object(self, other):
+
+        if "collision_exit_solid_object" in self._listeners:
+            self._listeners["collision_exit_solid_object"](other)
 
     
 class MusicPlayer:
