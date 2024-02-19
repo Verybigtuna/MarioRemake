@@ -108,12 +108,12 @@ class GameWorld:
         builder=SolidObject_Builder(self)
         
 
-        for i in range(4):
+       # for i in range():
            
-            builder.build(300,400+i*50,"mario_block.png")
-            self._lvl1_Objects.append(builder.get_gameObject())
+        builder.build(300,400,"mario_block.png",50,200)
+        self._lvl1_Objects.append(builder.get_gameObject())
         
-        
+
 
 
     
