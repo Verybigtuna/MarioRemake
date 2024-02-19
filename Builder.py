@@ -236,8 +236,8 @@ class MapBuilder(Builder):
 
         self._mapRen.setMap("worldmap1")
 
-        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
-        self.music_player.play_music()
+
+        
 
 
 

@@ -185,6 +185,10 @@ class Player(Component):
             sr = projectile.add_component(SpriteRenderer("laser.png",20,20))
             projectile.add_component(Laser())
             projectile.add_component(Collider())
+            self.sound_player = SoundPlayer("laserbeam.mp3")
+            self.sound_player.play_sound()
+            
+            self.sound_player.set_volume(0.05)
 
         
 
@@ -194,7 +198,7 @@ class Player(Component):
             projectile.transform.position = projectile_position
 
             self._game_world.instantiate(projectile)
-            self.sound_player = SoundPlayer("laserbeam.mp3")
+            
 
             self._time_since_last_shot = 0
         

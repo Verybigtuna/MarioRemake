@@ -394,7 +394,7 @@ class Collider(Component):
             
                 #self._top_collision==True
             
-            if self.gameObject.Tag=="Player":
+            elif self.gameObject.Tag=="Player":
                  
              match other.gameObject.Tag:
                 case "Enemy":
@@ -424,8 +424,8 @@ class Collider(Component):
 
                 case "SolidObject":
                   if  not is_already_colliding:
-                   self.collision_enter_solid_object(other,is_already_colliding)
-                   other.collision_enter_solid_object(self,is_already_colliding)
+                   self.collision_enter_solid_object(other)
+                   other.collision_enter_solid_object(self)
 
                 case "Door":
                  if  not is_already_colliding:
@@ -528,6 +528,20 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+    def collision_enter_solid_object(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+
+    def collision_exit_solid_object(self, other):
+
+        if "collision_exit_solid_object" in self._listeners:
+            self._listeners["collision_exit_solid_object"](other)
+
+    def collision_enter_projectile(self, other):
+         self._other_colliders.append(other)
+         if "collision_enter_projectile" in self._listeners:
+            self._listeners["collision_enter_projectile"](other)
 
     
 class MusicPlayer:
@@ -553,6 +567,10 @@ class MusicPlayer:
 
     def unpause_music(self):
          pygame.mixer.music.unpause()
+
+    def set_volume(self,volume):
+         
+        pygame.mixer.music.set_volume(volume)
      
 class SoundPlayer:
     def __init__(self,sound_file):
@@ -564,6 +582,10 @@ class SoundPlayer:
     
     def play_sound(self):
         self.sound.play()
+
+    def set_volume(self,volume):
+         
+        pygame.mixer.Sound.set_volume(self.sound,volume)
 
 
     
