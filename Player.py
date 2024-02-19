@@ -20,7 +20,7 @@ class Player(Component):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
         self._can_shoot=False
-        
+        self._player_position_x = self._gameObject.transform.position.x
         self._is_jumping = False
         self._is_falling = True
         self._can_jump = False
@@ -49,8 +49,8 @@ class Player(Component):
 
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
-        self._gameObject.transform.position.x = 50
-        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)
+        self._gameObject.transform.position.x = 150
+        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y) - 100
         
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
@@ -101,8 +101,12 @@ class Player(Component):
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
+        
 
-        bottom_limit = self._screen_size.y-100 -self._sprite_size.y
+        
+            
+
+        bottom_limit = self._screen_size.y+100 -self._sprite_size.y
       
 
         if keys[pygame.K_a] and not self._left_blocked:

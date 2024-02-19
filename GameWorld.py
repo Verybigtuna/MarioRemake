@@ -12,6 +12,7 @@ from Text import TextTypes
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
+from LvLMaker import LevelMaker
 
 
 class GameWorld:
@@ -31,36 +32,10 @@ class GameWorld:
         self._colliders = []
 
         self._screen = pygame.display.set_mode((1280,720))
-        self._mapbuilder=MapBuilder(self)
-        self._mapbuilder.build()
-        
-        for mapitem in self._mapbuilder.get_gameObject():
-            self._lvl1_Objects.append(mapitem)
 
         builder = PlayerBuilder(self)
         builder.build(self)
-        self._lvl1_Objects.append(builder.get_gameObject())
         self._lvl2_Objects.append(builder.get_gameObject())
-
-        builder = Goomba_EnemyBuilder(self)
-        builder.build(200, 100)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(600, 560)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(600,200)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-
-        builder = Mushroom_PowerUpBuilder(self)
-        builder.build()
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder=Gun_PowerUpBuilder(self)
-        builder.build(pygame.math.Vector2(300,560))
-        self._lvl1_Objects.append(builder.get_gameObject())
-
 
         builder = ButtonBuilder(self)
         builder.build(480, 500, "button_start.png", ButtonTypes.START)
@@ -93,23 +68,11 @@ class GameWorld:
         builder.build(380, 150, "you_are_dead.png", TextTypes.YOURDEAD)
         self._restart_Objects.append(builder.get_gameObject())
 
-        
-        
+        levelOne = LevelMaker(self)
+        levelOne.Level_One_map()
 
 
-       
-
-
-        
-        builder = Door_Builder(self)
-        builder.build(900, 500, GameStates.LVL2)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder=SolidObject_Builder(self)
-        builder.build(300,500,"mario_block.png")
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-
+    
        # GameStateManager.currentState = GameStates.MAINMENU
         
 

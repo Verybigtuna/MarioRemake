@@ -2,6 +2,7 @@ from enum import Enum
 from Camera import Camera
 
 
+
 class GameStates(Enum):
     MAINMENU = 1
     OPTIONS = 2
