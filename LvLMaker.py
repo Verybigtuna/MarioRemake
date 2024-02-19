@@ -35,13 +35,13 @@ class LevelMaker():
 
 #ENEMIES
         builder = Goomba_EnemyBuilder(self._gameWorld)
-        builder.build(200, 100)
+        builder.build(3000, 550)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(600, 560)
+        builder.build(600, 550)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(600,200)
+        builder.build(1400,550)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
 #ENEMIES
@@ -66,23 +66,57 @@ class LevelMaker():
 # BLOCKS
         builder=SolidObject_Builder(self)
 
-        for i in range(5):
-            builder.build(400+i*50,400,"mario_block.png")
-            self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+        builder.build(-50, -70,"mario_block.png", 720, 50)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        
+        builder.build(700,400,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(1000,400,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(850,200,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+
+
+
+        builder.build(2620,200,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(2260,200,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(2480,400,"mario_block.png", 50, 200)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+
+
+
+
+
+        builder.build(4900, -70,"mario_block.png", 720, 50)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        
 
 
 #GROUND
-        for i in range(30):
-            builder.build(0 + i*50,600,"ground.png")
-            self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+        
+        builder.build(0 ,600,"ground.png", 50, 1400)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        for i in range(30):
-            builder.build(1700 + i*50,600,"ground.png")
-            self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+        
+        builder.build(1400 ,600,"ground.png", 50, 1000)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+        
+        builder.build(2720 ,600,"ground.png", 50, 600)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        for i in range(30):
-            builder.build(3500 + i*50,600,"ground.png")
-            self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+        
+        builder.build(3500 ,600,"ground.png", 50, 1400)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 #GROUND
         
 

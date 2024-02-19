@@ -112,13 +112,13 @@ class Player(Component):
         if keys[pygame.K_a] and not self._left_blocked:
             self._movement.x -= speed
             self._animator.play_animation(f"{self._animator._currentstate}left")
-            self._left_blocked=False
+           
            
 
         if keys[pygame.K_d] and not self._right_blocked:
             self._movement.x += speed
             self._animator.play_animation(f"{self._animator._currentstate}right")
-            self._right_blocked=False
+            
            
 
         if keys[pygame.K_SPACE] and self.can_jump is True:
@@ -141,7 +141,7 @@ class Player(Component):
             if player_position_y < (self._start_jump_position - jump_height) or self._up_blocked==True:
                 self.is_jumping = False
                 self.is_falling = True
-                self._up_blocked=False
+                
 
         self._gameObject.transform.translate(self._movement*delta_time)
         self.gameObject.transform.offset+=self._movement*delta_time

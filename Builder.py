@@ -255,11 +255,12 @@ class SolidObject_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, sprite_name):
+    def build(self,pos_x,pos_y, sprite_name, height, width):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=50
-        sprite_width=50
+        
+        sprite_height = height
+        sprite_width = width
 
         self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
         self._gameObject.add_component(SolidObject(pos_x, pos_y))

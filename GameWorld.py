@@ -50,7 +50,7 @@ class GameWorld:
 
         
 
-        builder.build(550, 600, "button_restart.png", ButtonTypes.RESTART)
+        builder.build(550, 400, "button_restart.png", ButtonTypes.RESTART)
         self._restart_Objects.append(builder.get_gameObject())
 
 
