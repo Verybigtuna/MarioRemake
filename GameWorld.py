@@ -9,7 +9,6 @@ from Builder import Door_Builder
 from GameStates import GameStates
 from Button import ButtonTypes
 from Text import TextTypes
-from Components import MusicPlayer
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 
@@ -62,7 +61,7 @@ class GameWorld:
         builder=Gun_PowerUpBuilder(self)
         builder.build(pygame.math.Vector2(300,560))
         self._lvl1_Objects.append(builder.get_gameObject())
-        
+
 
 
        
