@@ -421,10 +421,12 @@ class Collider(Component):
                   if  not is_already_colliding:
                    self.collision_enter_gun_powerUp(other)
                    other.collision_enter_gun_powerUp(self)
+
                 case "SolidObject":
                   if  not is_already_colliding:
                    self.collision_enter_solid_object(other,is_already_colliding)
                    other.collision_enter_solid_object(self,is_already_colliding)
+
                 case "Door":
                  if  not is_already_colliding:
                   self.collision_enter(other)
