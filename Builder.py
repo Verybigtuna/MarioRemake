@@ -14,6 +14,7 @@ from Door import Lvl_Door
 from Button import MarioButton
 from Text import TextBox 
 from SolidObject import SolidObject
+from Components import MusicPlayer
 
 
 
@@ -235,7 +236,8 @@ class MapBuilder(Builder):
 
         self._mapRen.setMap("worldmap1")
 
-        
+        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
+        self.music_player.play_music()
 
 
 

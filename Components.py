@@ -540,7 +540,16 @@ class MusicPlayer:
     def unpause_music(self):
          pygame.mixer.music.unpause()
      
+class SoundPlayer:
+    def __init__(self,sound_file):
 
+        pygame.mixer.init()
+        self.sound_file = sound_file
+        
+        self.sound = pygame.mixer.Sound(f"Assets\\{self.sound_file}")
+    
+    def play_sound(self):
+        self.sound.play()
 
 
     

@@ -7,6 +7,7 @@ from Components import Collider
 from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
+from Components import SoundPlayer
 
 import time
 class Player(Component):
@@ -188,6 +189,7 @@ class Player(Component):
             projectile.transform.position = projectile_position
 
             self._game_world.instantiate(projectile)
+            self.sound_player = SoundPlayer("laserbeam.mp3")
 
             self._time_since_last_shot = 0
         
