@@ -1,12 +1,25 @@
 import pygame
 from Components import Component
+from enum import Enum
+
+
+class SolidObjectType(Enum):
+   normal = 1
+   moveX = 2
+   moveY = 3
+   moveY2 = 4
+
 
 class SolidObject(Component):
 
+
+    currentObjectType = SolidObjectType.normal
+
     
-    def __init__(self,pos_x,pos_y) -> None:
+    def __init__(self,pos_x,pos_y, objectType) -> None:
         self._pos_x=pos_x
         self._pos_y=pos_y
+        self._objectType = objectType
         
     
 
@@ -21,9 +34,14 @@ class SolidObject(Component):
         self.gameObject.transform.position =pygame.math.Vector2(self._pos_x,self._pos_y)
         
         self._spawnPosition_x=self._pos_x
+        self._spawnPosition_y=self._pos_y
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        self._speed=150
+
+        if self._objectType == SolidObjectType.moveY2:
+           self._spawnPosition_y += 100
 
 
 
@@ -31,12 +49,55 @@ class SolidObject(Component):
         pass
 
     def update(self, delta_time):
-       pass
+       if self._objectType == SolidObjectType.moveX:
+          self.simple_move_pattern_x(delta_time)
+        
+       if self._objectType == SolidObjectType.moveY:
+          self.simple_move_pattern_y(delta_time)
+        
+       if self._objectType == SolidObjectType.moveY2:
+          self.simple_move_pattern_y2(delta_time)
 
 
+    def simple_move_pattern_x(self,delta_time):
+        
+        if(self.gameObject.transform.position.x>self._spawnPosition_x+100):
+         self._speed=-150
+         
+        elif(self.gameObject.transform.position.x<self._spawnPosition_x-100):
+            self._speed=150
+            
+        movement = pygame.math.Vector2(self._speed,0)
 
-    def simple_move_pattern(self,delta_time):
-        pass
+        self.gameObject.transform.translate(movement*delta_time)
+
+
+    def simple_move_pattern_y(self,delta_time):
+        
+        if(self.gameObject.transform.position.y>self._spawnPosition_y+100):
+         self._speed=-150
+         
+        elif(self.gameObject.transform.position.y<self._spawnPosition_y-100):
+            self._speed=150
+            
+        movement = pygame.math.Vector2(0,self._speed)
+
+        self.gameObject.transform.translate(movement*delta_time)
+
+
+    def simple_move_pattern_y2(self,delta_time):
+
+       
+         
+        if(self.gameObject.transform.position.y<self._spawnPosition_y-100):
+            self._speed=150
+
+        elif(self.gameObject.transform.position.y>self._spawnPosition_y+100):
+            self._speed=-150
+            
+        movement = pygame.math.Vector2(0,self._speed)
+
+        self.gameObject.transform.translate(movement*delta_time)
 
     def on_collision_enter(self, other):
       pass

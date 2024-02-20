@@ -17,7 +17,7 @@ class GameStateManager():
 
     
 
-    currentState = GameStates.MAINMENU
+    currentState = GameStates.BOSSLVL
    
 
 
@@ -150,7 +150,7 @@ class GameStateManager():
 
 
         elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state
-            self._gameWorld._screen.fill("darkgreen")
+            self._gameWorld._screen.fill("darkgrey")
             for gameObject in self._gameWorld._lvl2_Objects[:]:
 
                 if(gameObject.follows_camera==False):
@@ -172,7 +172,7 @@ class GameStateManager():
             
 
         elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
-            self._gameWorld._screen.fill("skyblue")
+            self._gameWorld._screen.fill("black")
             for gameObject in self._gameWorld._bossLvl_Objects[:]:
             
                 if(gameObject.follows_camera==False):
