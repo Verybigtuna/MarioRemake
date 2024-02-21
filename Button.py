@@ -4,6 +4,7 @@ from GameStates import GameStateManager
 from GameStates import GameStates
 from enum import Enum
 from Score import GameScore
+from Components import MusicPlayer
 
 
 
@@ -16,6 +17,8 @@ class ButtonTypes(Enum):
     MUTESOUND = 5
     WIN = 6
     GOBACK = 7
+    UNMUTESOUND = 8
+
 
 class MarioButton(Component):
 
@@ -28,8 +31,7 @@ class MarioButton(Component):
         self._pos_y=pos_y
         self._buttonType = buttonType
         self._clicked = False
-       
-       
+        self.music_player = MusicPlayer
 
 
     
@@ -89,8 +91,27 @@ class MarioButton(Component):
 
 
             if self._buttonType == ButtonTypes.MUTESOUND:
+
+                self.music_player = MusicPlayer("mariotrap.mp3")
+                self.music_player.play_music()
+
                 self._clicked = True
-                #Mute Sound
+                
+                self.music_player.set_volume(0.0)
+
+                
+
+            if self._buttonType == ButtonTypes.UNMUTESOUND:
+                
+                self._clicked = True
+                
+
+                self.music_player = MusicPlayer("mariotrap.mp3")
+
+                self.music_player.play_music()
+
+                self.music_player.set_volume(0.10)
+
                 pass
 
             if self._buttonType == ButtonTypes.RESTART:

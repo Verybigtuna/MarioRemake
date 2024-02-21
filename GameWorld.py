@@ -14,6 +14,7 @@ from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from LvLMaker import LevelMaker
 from Components import MusicPlayer
+from Builder import Shooter_EnemyBuilder
 from Score import GameScore
 
 class GameWorld:
@@ -33,6 +34,42 @@ class GameWorld:
        
 
         self._screen = pygame.display.set_mode((1280,720))
+        self._mapbuilder=MapBuilder(self)
+        self._mapbuilder.build()
+        
+        for mapitem in self._mapbuilder.get_gameObject():
+            self._lvl1_Objects.append(mapitem)
+
+        builder = PlayerBuilder(self)
+        builder.build(self)
+        self._lvl1_Objects.append(builder.get_gameObject())
+        self._lvl2_Objects.append(builder.get_gameObject())
+
+        builder = Goomba_EnemyBuilder(self)
+        builder.build(200, 100)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(600, 560)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(600,200)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder = Shooter_EnemyBuilder(self)
+        builder.build(500,500)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder = Mushroom_PowerUpBuilder(self)
+        builder.build()
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder=Gun_PowerUpBuilder(self)
+        builder.build(pygame.math.Vector2(300,560))
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        self.music_player = MusicPlayer("mariotrap.mp3")
+        self.music_player.play_music()
+        self.music_player.set_volume(0.03)
         
 
         self.WHITE = (255, 255, 255) 
@@ -56,14 +93,18 @@ class GameWorld:
         self._restart_Objects.append(builder.get_gameObject())
 
 
-        builder.build(550, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
+        builder.build(350, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
         self._options_Objects.append(builder.get_gameObject())
 
-        builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
+        builder.build(850, 360, "button_mute_sound.png", ButtonTypes.UNMUTESOUND)
+        self._options_Objects.append(builder.get_gameObject())
+
+        builder.build(550, 660, "button_go_back.png", ButtonTypes.GOBACK)
         self._options_Objects.append(builder.get_gameObject())
 
         builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
         self._win_Objects.append(builder.get_gameObject())
+
 
 
         builder = TextBoxBuilder(self)
@@ -88,10 +129,9 @@ class GameWorld:
         levelTwo.Level_Boss_map()
 
 
-    
-        # GameStateManager.currentState = GameStates.MAINMENU
-        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
-        #self.music_player.play_music()
+
+       # GameStateManager.currentState = GameStates.MAINMENU
+
 
 
        

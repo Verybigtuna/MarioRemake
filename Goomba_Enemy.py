@@ -2,6 +2,7 @@ from Components import Component
 import random
 import pygame
 from Score import GameScore
+from Components import SoundPlayer
 
 class Goomba_Enemy(Component):
 
@@ -49,6 +50,7 @@ class Goomba_Enemy(Component):
         if(self.gameObject.transform.position.x>self._spawnPosition_x+100):
          self._speed=-250
          
+         
         elif(self.gameObject.transform.position.x<self._spawnPosition_x-100):
             self._speed=250
             
@@ -64,6 +66,10 @@ class Goomba_Enemy(Component):
 
 
     def on_collision_enter_top(self, other):
+        self.sound_player = SoundPlayer("stomp.wav")
+        self.sound_player.play_sound()  
+        self.sound_player.set_volume(0.05)
+
         
         self.gameObject.destroy()
         GameScore.score += 100
