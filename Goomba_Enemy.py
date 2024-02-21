@@ -45,22 +45,13 @@ class Goomba_Enemy(Component):
 
     def simple_move_pattern(self,delta_time):
 
-       
-       
-        
         if(self.gameObject.transform.position.x>self._spawnPosition_x+100):
          self._speed=-250
          
         elif(self.gameObject.transform.position.x<self._spawnPosition_x-100):
             self._speed=250
             
-
-      
         movement = pygame.math.Vector2(self._speed,0)
-
-       
-
-
 
         self.gameObject.transform.translate(movement*delta_time)
 

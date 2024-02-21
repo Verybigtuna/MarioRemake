@@ -425,6 +425,7 @@ class Collider(Component):
                   if  not is_already_colliding:
                    self.collision_enter_solid_object(other)
                    other.collision_enter_solid_object(self)
+                   other.collision_enter_top(self)
                 case "Door":
                  if  not is_already_colliding:
                   self.collision_enter(other)
@@ -503,6 +504,8 @@ class Collider(Component):
 
         if "collition_exit_top" in self._listeners:
           self._listeners["collision_exit_top"](other)
+
+    
 
     def collision_enter_powerUp(self, other):
         self._other_colliders.append(other)

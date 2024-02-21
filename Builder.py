@@ -194,13 +194,13 @@ class Door_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, enum):
+    def build(self,pos_x,pos_y, sprite_name, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=50
-        sprite_width=50
+        sprite_height=150
+        sprite_width=150
 
-        self._gameObject.add_component(SpriteRenderer("supply-crate.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
         self._gameObject.add_component(Lvl_Door(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 

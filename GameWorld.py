@@ -34,8 +34,11 @@ class GameWorld:
        
 
         self._screen = pygame.display.set_mode((1280,720))
-
         
+
+        self.WHITE = (255, 255, 255)  # Define as an attribute of the class
+
+        self.font = pygame.font.SysFont(None, 36)
 
         builder = ButtonBuilder(self)
         builder.build(480, 500, "button_start.png", ButtonTypes.START)
@@ -104,6 +107,14 @@ class GameWorld:
     @property
     def colliders(self):
         return self._colliders
+    
+    def display_score(self, score):
+       score_text = self.font.render("Score: " + str(score), True, self.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topright = (self._screen.get_width() - 10, 10)  # Adjust the position as needed
+       self._screen.blit(score_text, score_rect)
+
+
 
     def instantiate(self, gameobject):
         gameobject.awake(self)
@@ -142,19 +153,13 @@ class GameWorld:
 
     def update(self):
 
-      
+        score = 0
 
     
         while self._running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._running = False
-
-
-            
-
-
-            
 
             self._screen.fill("cornflowerblue")
 
@@ -163,6 +168,7 @@ class GameWorld:
             delta_time = self._clock.tick(60) / 1000.0
 
             
+            
 
 
             #Draw game here
@@ -170,7 +176,7 @@ class GameWorld:
 
             self._stateManager.update(delta_time)
             
-
+            self.display_score(score)
 
             # for gameObject in self._gameObjects[:]:
 

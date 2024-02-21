@@ -17,7 +17,7 @@ class GameStateManager():
 
     
 
-    currentState = GameStates.BOSSLVL
+    currentState = GameStates.MAINMENU
    
 
 

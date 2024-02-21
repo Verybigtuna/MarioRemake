@@ -1,13 +1,15 @@
 import pygame
 from Components import Component
 from enum import Enum
-
+from GameStates import GameStateManager
+from GameStates import GameStates
 
 class SolidObjectType(Enum):
    normal = 1
    moveX = 2
    moveY = 3
    moveY2 = 4
+   death = 5
 
 
 class SolidObject(Component):
@@ -38,6 +40,7 @@ class SolidObject(Component):
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
+        collider.subscribe("collision_enter_top",self.on_collision_enter_top)
         self._speed=150
 
         if self._objectType == SolidObjectType.moveY2:
@@ -107,7 +110,10 @@ class SolidObject(Component):
 
 
     def on_collision_enter_top(self, other):
-        pass
+      if self._objectType == SolidObjectType.death:
+         other.gameObject.destroy()
+         GameStateManager.currentState = GameStates.RESTART
+       
 
 
     def on_collision_exit_top(self,other):

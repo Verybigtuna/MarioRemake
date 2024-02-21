@@ -47,7 +47,7 @@ class LevelMaker():
         builder.build(600, 550)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(1600,550)
+        builder.build(2110, 150)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
 #ENEMIES
@@ -65,7 +65,7 @@ class LevelMaker():
 
 # DOORS
         builder = Door_Builder(self)
-        builder.build(4600, 500, GameStates.LVL2)
+        builder.build(4600, 450, "castle.png",  GameStates.LVL2)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 #DOORS
         
@@ -85,16 +85,23 @@ class LevelMaker():
         builder.build(850,200,"mario_block.png", 50, 200, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
+        builder.build(1700, 550,"mario_block.png", 50, 200, SolidObjectType.moveX)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+
+        builder.build(1500 ,600,"Spiky (1).png", 50, 300, SolidObjectType.death)
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
 
 
 
         builder.build(2420,200,"mario_block.png", 50, 200, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(2060,200,"mario_block.png", 50, 200, SolidObjectType.normal)
+        builder.build(2060,200,"mario_block.png", 50, 250, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(2280,400,"mario_block.png", 50, 200, SolidObjectType.normal)
+        builder.build(2200,400,"mario_block.png", 50, 280, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
         builder.build(4000,400,"mario_block.png", 50, 200, SolidObjectType.normal)
@@ -118,8 +125,7 @@ class LevelMaker():
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
         
-        builder.build(1500 ,600,"ground.png", 50, 700, SolidObjectType.normal)
-        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+       
         
         builder.build(2720 ,600,"ground.png", 50, 600, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
@@ -176,7 +182,7 @@ class LevelMaker():
 
 # DOORS
         builder = Door_Builder(self)
-        builder.build(4600, 500, GameStates.BOSSLVL)
+        builder.build(4600, 450, "castle.png", GameStates.BOSSLVL)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 #DOORS
         
@@ -284,7 +290,7 @@ class LevelMaker():
 
 # DOORS
         builder = Door_Builder(self)
-        builder.build(4600, 500, GameStates.WIN)
+        builder.build(4600, 450, "mario_star.png", GameStates.WIN)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 #DOORS
         
@@ -324,6 +330,9 @@ class LevelMaker():
 
 
         builder.build(2000 ,140,"ground2.png", 50, 500, SolidObjectType.normal)
+        self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
+
+        builder.build(3000 ,600,"ground2.png", 50, 2000, SolidObjectType.normal)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
         

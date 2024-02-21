@@ -174,9 +174,8 @@ class Player(Component):
         #    self._gameObject.transform.position.y = 0
         
         if self._gameObject.transform.position.y == bottom_limit:
-            self.can_jump = True
-            self.is_falling = False
-            self._down_blocked=True
+            self.gameObject.destroy()
+            GameStateManager.currentState = GameStates.RESTART
 
 
      
