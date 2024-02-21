@@ -13,6 +13,7 @@ from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from Components import MusicPlayer
+from Builder import Shooter_EnemyBuilder
 
 
 class GameWorld:
@@ -53,6 +54,9 @@ class GameWorld:
         builder.build(600,200)
         self._lvl1_Objects.append(builder.get_gameObject())
 
+        builder = Shooter_EnemyBuilder(self)
+        builder.build(500,500)
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()
@@ -62,6 +66,9 @@ class GameWorld:
         builder.build(pygame.math.Vector2(300,560))
         self._lvl1_Objects.append(builder.get_gameObject())
 
+        self.music_player = MusicPlayer("mariotrap.mp3")
+        self.music_player.play_music()
+        self.music_player.set_volume(0.03)
 
         builder = ButtonBuilder(self)
         builder.build(480, 500, "button_start.png", ButtonTypes.START)
@@ -80,11 +87,15 @@ class GameWorld:
         self._restart_Objects.append(builder.get_gameObject())
 
 
-        builder.build(550, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
+        builder.build(350, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
         self._options_Objects.append(builder.get_gameObject())
 
-        builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
+        builder.build(850, 360, "button_mute_sound.png", ButtonTypes.UNMUTESOUND)
         self._options_Objects.append(builder.get_gameObject())
+
+        builder.build(550, 660, "button_go_back.png", ButtonTypes.GOBACK)
+        self._options_Objects.append(builder.get_gameObject())
+
 
 
         builder = TextBoxBuilder(self)
@@ -118,8 +129,7 @@ class GameWorld:
 
 
        # GameStateManager.currentState = GameStates.MAINMENU
-        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
-        self.music_player.play_music()
+
 
 
        

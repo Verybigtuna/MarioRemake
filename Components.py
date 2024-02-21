@@ -262,6 +262,7 @@ class Animator(Component):
         self._animation_time = 0
         self._current_frame_index = 0
         self._currentstate = "Idle"
+        self._thisstate = "Gunbrother_"
 
     def add_animation(self, name,width,height, *args,):
         frames = []
@@ -304,6 +305,10 @@ class Animator(Component):
 
 class Laser(Component):
 
+    def __init__(self,speed) -> None:
+        self._speed = speed
+        
+
     def awake(self, game_world):
         self.gameObject.Tag = "Projectile"
 
@@ -311,14 +316,39 @@ class Laser(Component):
         pass
 
     def update(self, delta_time):
-        speed = 500
-        movement = pygame.math.Vector2(speed,0)
+        
+        movement = pygame.math.Vector2(self._speed,0)
         
         self._gameObject.transform.translate(movement*delta_time)
 
         if self._gameObject.transform.position.y < 0:
             self._gameObject.destroy()
 
+class EnemyLaser(Component):
+    def __init__(self,speed) -> None:
+        self._speed = speed
+        
+
+    def awake(self, game_world):
+        self.gameObject.Tag = "EnemyProjectile"
+        self._bullet_time = 1
+
+    def start(self):
+        pass
+
+    def update(self, delta_time):
+
+        self._bullet_time += delta_time
+
+        if self._bullet_time == 4:
+            self.gameObject.destroy()
+            self._bullet_time = 0       
+        movement = pygame.math.Vector2(self._speed,0)
+        
+        self._gameObject.transform.translate(movement*delta_time)
+
+        if self._gameObject.transform.position.y < 0:
+            self._gameObject.destroy()
 
 class Collider(Component):
     
@@ -394,7 +424,7 @@ class Collider(Component):
             
                 #self._top_collision==True
             
-            if self.gameObject.Tag=="Player":
+            elif self.gameObject.Tag=="Player":
                  
              match other.gameObject.Tag:
                 case "Enemy":
@@ -421,10 +451,12 @@ class Collider(Component):
                   if  not is_already_colliding:
                    self.collision_enter_gun_powerUp(other)
                    other.collision_enter_gun_powerUp(self)
+
                 case "SolidObject":
                   if  not is_already_colliding:
-                   self.collision_enter_solid_object(other,is_already_colliding)
-                   other.collision_enter_solid_object(self,is_already_colliding)
+                   self.collision_enter_solid_object(other)
+                   other.collision_enter_solid_object(self)
+
                 case "Door":
                  if  not is_already_colliding:
                   self.collision_enter(other)
@@ -433,6 +465,11 @@ class Collider(Component):
                     
 
             if self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_projectile(other)
+
+            if self.gameObject.Tag == "Player" and other.gameObject.Tag == "EnemyProjectile":
                  
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
@@ -526,6 +563,20 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+    def collision_enter_solid_object(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+
+    def collision_exit_solid_object(self, other):
+
+        if "collision_exit_solid_object" in self._listeners:
+            self._listeners["collision_exit_solid_object"](other)
+
+    def collision_enter_projectile(self, other):
+         self._other_colliders.append(other)
+         if "collision_enter_projectile" in self._listeners:
+            self._listeners["collision_enter_projectile"](other)
 
     
 class MusicPlayer:
@@ -551,8 +602,25 @@ class MusicPlayer:
 
     def unpause_music(self):
          pygame.mixer.music.unpause()
-     
 
+    def set_volume(self,volume):
+         
+        pygame.mixer.music.set_volume(volume)
+     
+class SoundPlayer:
+    def __init__(self,sound_file):
+
+        pygame.mixer.init()
+        self.sound_file = sound_file
+        
+        self.sound = pygame.mixer.Sound(f"Assets\\{self.sound_file}")
+    
+    def play_sound(self):
+        self.sound.play()
+
+    def set_volume(self,volume):
+         
+        pygame.mixer.Sound.set_volume(self.sound,volume)
 
 
     
