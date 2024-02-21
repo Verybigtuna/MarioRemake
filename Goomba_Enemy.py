@@ -1,6 +1,7 @@
 from Components import Component
 import random
 import pygame
+from Score import GameScore
 
 class Goomba_Enemy(Component):
 
@@ -63,7 +64,9 @@ class Goomba_Enemy(Component):
 
 
     def on_collision_enter_top(self, other):
+        
         self.gameObject.destroy()
+        GameScore.score += 100
 
     def on_collision_projectile(self,other):
        self.gameObject.destroy()

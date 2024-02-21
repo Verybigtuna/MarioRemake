@@ -8,8 +8,14 @@ from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
 
-import time
+
+
 class Player(Component):
+
+    
+
+
+
 
     def __init__(self,game_world) -> None:
         self._game_world = game_world
@@ -30,7 +36,7 @@ class Player(Component):
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
 
-
+        
 
         sr = self._gameObject.get_component("SpriteRenderer")
         

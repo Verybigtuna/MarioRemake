@@ -14,11 +14,10 @@ from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from LvLMaker import LevelMaker
 from Components import MusicPlayer
-
+from Score import GameScore
 
 class GameWorld:
 
-    
 
     def __init__(self) -> None:
         pygame.init()
@@ -36,7 +35,7 @@ class GameWorld:
         self._screen = pygame.display.set_mode((1280,720))
         
 
-        self.WHITE = (255, 255, 255)  # Define as an attribute of the class
+        self.WHITE = (255, 255, 255) 
 
         self.font = pygame.font.SysFont(None, 36)
 
@@ -153,7 +152,7 @@ class GameWorld:
 
     def update(self):
 
-        score = 0
+        
 
     
         while self._running:
@@ -176,7 +175,7 @@ class GameWorld:
 
             self._stateManager.update(delta_time)
             
-            self.display_score(score)
+            self.display_score(GameScore.score)
 
             # for gameObject in self._gameObjects[:]:
 
