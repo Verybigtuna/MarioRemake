@@ -15,7 +15,7 @@ from Door import Lvl_Door
 from Button import MarioButton
 from Text import TextBox
 from SolidObject import SolidObject
-from Components import MusicPlayer
+from Heart import Heart
 
 
 
@@ -390,17 +390,17 @@ class HeartBuilder(Builder):
         self._game_world=game_world
 
 
-    def build(self,pos_x,pos_y):
+    def build(self, position):
         
 
-        sprite_height=10
-        sprite_width=10
+        sprite_height=50
+        sprite_width=50
 
-        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
+        self._gameObject = GameObject(position, self._game_world)
         sprite = "laser.png"
 
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Mushroom_PowerUp())
+        self._gameObject.add_component(Heart())
         self._gameObject.add_component(Collider())
 
         

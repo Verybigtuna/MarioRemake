@@ -2,23 +2,32 @@ from Components import Component
 
 import pygame
 
-class Mushroom_PowerUp(Component):
+class Heart(Component):
 
+
+        
     def awake(self,game_world):
+        self._game_world = game_world   
 
         self.sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")
-        self.gameObject.transform.position = pygame.math.Vector2(50,50)
-        
+
+     
         collider = self._gameObject.get_component("Collider")
 
 
     
     def start(self):
-        return super().start()
+        pass
     
     def update(self, delta_time):
-        return super().update(delta_time)
+
+        if self.gameObject.health == 2:
+            self.gameObject.destroy(self)
+
+        if self.gameObject.health == 1:
+            self.gameObject.destroy(self)
+        
     
 
 

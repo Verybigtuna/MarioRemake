@@ -11,6 +11,7 @@ class GameObject:
         self._follows_camera=False
         self._game_world=game_world
         self._tag = "UnknownTag"
+        self._health = 3
 
     @property
     def transform(self):

@@ -14,6 +14,7 @@ from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from Components import MusicPlayer
 from Builder import Shooter_EnemyBuilder
+from Builder import HeartBuilder
 
 
 class GameWorld:
@@ -43,6 +44,16 @@ class GameWorld:
         builder.build(self)
         self._lvl1_Objects.append(builder.get_gameObject())
         self._lvl2_Objects.append(builder.get_gameObject())
+
+        builder = HeartBuilder(self)
+        builder.build(pygame.math.Vector2(0,0))
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(pygame.math.Vector2(100,0))
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(pygame.math.Vector2(200,0))
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder = Goomba_EnemyBuilder(self)
         builder.build(200, 100)
