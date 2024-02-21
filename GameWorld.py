@@ -113,6 +113,12 @@ class GameWorld:
        score_rect.topright = (self._screen.get_width() - 10, 10)  # Adjust the position as needed
        self._screen.blit(score_text, score_rect)
 
+    def display_final_score(self, score):
+       score_text = self.font.render("Final Score: " + str(score), True, self.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topright = (self._screen.get_width() - 580, 360)  # Adjust the position as needed
+       self._screen.blit(score_text, score_rect)
+
 
 
     def instantiate(self, gameobject):
@@ -175,7 +181,12 @@ class GameWorld:
 
             self._stateManager.update(delta_time)
             
-            self.display_score(GameScore.score)
+            
+
+            if GameStateManager.currentState == GameStates.RESTART or GameStateManager.currentState == GameStates.WIN:
+                self.display_final_score(GameScore.score)
+            else:
+                self.display_score(GameScore.score)
 
             # for gameObject in self._gameObjects[:]:
 
