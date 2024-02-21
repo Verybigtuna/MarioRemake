@@ -13,6 +13,7 @@ from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
 from Components import MusicPlayer
+from Builder import Shooter_EnemyBuilder
 
 
 class GameWorld:
@@ -53,6 +54,9 @@ class GameWorld:
         builder.build(600,200)
         self._lvl1_Objects.append(builder.get_gameObject())
 
+        builder = Shooter_EnemyBuilder(self)
+        builder.build(500,500)
+        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder = Mushroom_PowerUpBuilder(self)
         builder.build()

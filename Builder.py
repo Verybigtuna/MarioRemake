@@ -7,6 +7,7 @@ from Player import Player
 from Enemy import Enemy
 from Goomba_Enemy import Goomba_Enemy
 from Mushroom_PowerUp import Mushroom_PowerUp
+from Shooter_Enemy import Shooter_Enemy
 import pygame
 import random
 from Components import Collider
@@ -78,7 +79,9 @@ class PlayerBuilder(Builder):
          
         animator.add_animation("Deathanimright",sprite_height,sprite_width,"Mario_death.png",
                                "Mario_death.png",
-                               "Mario_death.png") 
+                               "Mario_death.png",
+                               "Mario_death.png",
+                               "Mario_death.png",) 
 
         animator.play_animation("Idleright")
 
@@ -135,6 +138,44 @@ class Goomba_EnemyBuilder(Builder):
     def get_gameObject(self) -> GameObject:
         return self._gameObject
         
+class Shooter_EnemyBuilder(Builder):
+    
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y):
+
+        
+        sprite_height=50
+        sprite_width=50
+        sprite = "gunbrother_move_right1.png"
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Shooter_Enemy(pos_x,pos_y))
+        self._gameObject.add_component(Collider())
+
+        animator = self._gameObject.add_component(Animator())
+        animator.add_animation("Gunbrother_right",sprite_height,sprite_width, "gunbrother_move_right1.png",
+                               "gunbrother_move_right2.png")
+        
+        animator.add_animation("Gunbrother_left",sprite_height,sprite_width, "gunbrother_move_left1.png",
+                               "gunbrother_move_left2.png")        
+        
+        animator.play_animation("Gunbrother_right")
+        
+        
+
+      
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
 
 class Mushroom_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
@@ -235,15 +276,6 @@ class MapBuilder(Builder):
 
 
         self._mapRen.setMap("worldmap1")
-
-
-        
-
-
-
-
-
-
 
         self._gameObjects.append(background1)
 
@@ -346,6 +378,32 @@ class TextBoxBuilder(Builder):
         self._gameObject.add_component(Collider())
 
 
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+class HeartBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+    def build(self,pos_x,pos_y):
+        
+
+        sprite_height=10
+        sprite_width=10
+
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
+        sprite = "laser.png"
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Mushroom_PowerUp())
+        self._gameObject.add_component(Collider())
+
+        
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject

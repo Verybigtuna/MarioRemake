@@ -15,6 +15,7 @@ class Player(Component):
     def __init__(self,game_world) -> None:
         self._game_world = game_world
 
+
     
         
     
@@ -30,6 +31,9 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
+        self.gameObject.health = 3
+        self.death = False
+        self.keyinactive = False
 
 
 
@@ -45,7 +49,8 @@ class Player(Component):
         self._down_blocked=False
 
 
-     
+
+
      
       
 
@@ -68,6 +73,7 @@ class Player(Component):
 
         collider.subscribe("collision_enter_solid_object",self.on_collision_enter_solid_object)
         collider.subscribe("collision_exit_solid_object",self.on_collision_exit_solid_object)
+        collider.subscribe("collision_enter_projectile",self.collision_enter_projectile)
 
 
     @property
@@ -110,26 +116,30 @@ class Player(Component):
         bottom_limit = self._screen_size.y-100 -self._sprite_size.y
       
 
-        if keys[pygame.K_a] and not self._left_blocked:
+        if keys[pygame.K_a] and not self._left_blocked and self.keyinactive == False:
             self._movement.x -= speed
             self._animator.play_animation(f"{self._animator._currentstate}left")
           
            
 
-        if keys[pygame.K_d] and not self._right_blocked:
+        if keys[pygame.K_d] and not self._right_blocked and self.keyinactive == False:
             self._movement.x += speed
             self._animator.play_animation(f"{self._animator._currentstate}right")
            
            
 
-        if keys[pygame.K_SPACE] and self.can_jump is True:
+        if keys[pygame.K_SPACE] and self.can_jump is True and self.keyinactive == False:
             self.is_falling = False
             self.can_jump = False
             self.is_jumping = True
             self._start_jump_position = player_position_y
             self._down_blocked=False
+            self.sound_player = SoundPlayer("jump-small.wav")
+            self.sound_player.play_sound()  
+            self.sound_player.set_volume(0.05)        
 
         if keys[pygame.K_f] and self._can_shoot==True:
+
             self.shoot()
             
 
@@ -183,7 +193,11 @@ class Player(Component):
         if self._time_since_last_shot >= self._shoot_delay:
             projectile = GameObject(pygame.math.Vector2(0,0),self._game_world)
             sr = projectile.add_component(SpriteRenderer("laser.png",20,20))
-            projectile.add_component(Laser())
+            if self._animator._current_animation == f"{self._animator._currentstate}right":
+                projectile.add_component(Laser(500))
+            elif self._animator._current_animation == f"{self._animator._currentstate}left":
+                projectile.add_component(Laser(-500))
+
             projectile.add_component(Collider())
             self.sound_player = SoundPlayer("laserbeam.mp3")
             self.sound_player.play_sound()
@@ -203,17 +217,28 @@ class Player(Component):
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
+
+        self.gameObject.health -= 1
         
-        self._animator.play_animation("Deathanimright")
 
+        if self.gameObject.health == 0:
+            self._animator.play_animation("Deathanimright")
+            self.death = True
+            self.sound_player = SoundPlayer("mariodie.wav")
+            self.sound_player.play_sound()  
+            self.sound_player.set_volume(0.05)
 
-        if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
-
+            self.keyinactive = True
             
-            self.gameObject.destroy()
+        elif self.death == True:
+
             GameStateManager.currentState = GameStates.RESTART
-        else:
-            self._animator.play_animation(f"{self._animator._currentstate}right")
+
+        
+
+
+
+
         
         print("collision enter")
 
@@ -233,6 +258,10 @@ class Player(Component):
         print("collision enter top")
 
     def on_collision_enter_powerUp(self,other):
+        self.sound_player = SoundPlayer("powerup.wav")
+        self.sound_player.play_sound()  
+        self.sound_player.set_volume(0.05)
+
         self._animator=self._gameObject.get_component("Animator")
         self._animator._currentstate ="Upgrade"
         self._animator.play_animation(f"{self._animator._currentstate}right")
@@ -240,8 +269,12 @@ class Player(Component):
 
     
     def on_collision_enter_gun_powerup(self,other):
+       
        print("collision gun PowerUp")
        self._can_shoot=True
+       self.sound_player = SoundPlayer("1-up.wav")
+       self.sound_player.play_sound()  
+       self.sound_player.set_volume(0.05)       
 
     def on_collision_enter_solid_object(self,other):
         sr_enemy=other.gameObject.get_component("SpriteRenderer")
@@ -289,6 +322,10 @@ class Player(Component):
         player._left_blocked=False
         player._up_blocked=False
         player._down_blocked=False
+
+    def collision_enter_projectile(self, other):
+       self.gameObject.destroy()
+       other.gameObject.destroy()
 
         
                     

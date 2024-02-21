@@ -262,6 +262,7 @@ class Animator(Component):
         self._animation_time = 0
         self._current_frame_index = 0
         self._currentstate = "Idle"
+        self._thisstate = "Gunbrother_"
 
     def add_animation(self, name,width,height, *args,):
         frames = []
@@ -304,6 +305,10 @@ class Animator(Component):
 
 class Laser(Component):
 
+    def __init__(self,speed) -> None:
+        self._speed = speed
+        
+
     def awake(self, game_world):
         self.gameObject.Tag = "Projectile"
 
@@ -311,14 +316,39 @@ class Laser(Component):
         pass
 
     def update(self, delta_time):
-        speed = 500
-        movement = pygame.math.Vector2(speed,0)
+        
+        movement = pygame.math.Vector2(self._speed,0)
         
         self._gameObject.transform.translate(movement*delta_time)
 
         if self._gameObject.transform.position.y < 0:
             self._gameObject.destroy()
 
+class EnemyLaser(Component):
+    def __init__(self,speed) -> None:
+        self._speed = speed
+        
+
+    def awake(self, game_world):
+        self.gameObject.Tag = "EnemyProjectile"
+        self._bullet_time = 1
+
+    def start(self):
+        pass
+
+    def update(self, delta_time):
+
+        self._bullet_time += delta_time
+
+        if self._bullet_time == 4:
+            self.gameObject.destroy()
+            self._bullet_time = 0       
+        movement = pygame.math.Vector2(self._speed,0)
+        
+        self._gameObject.transform.translate(movement*delta_time)
+
+        if self._gameObject.transform.position.y < 0:
+            self._gameObject.destroy()
 
 class Collider(Component):
     
@@ -435,6 +465,11 @@ class Collider(Component):
                     
 
             if self.gameObject.Tag == "Enemy" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_projectile(other)
+
+            if self.gameObject.Tag == "Player" and other.gameObject.Tag == "EnemyProjectile":
                  
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
