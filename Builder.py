@@ -48,7 +48,7 @@ class PlayerBuilder(Builder):
         sprite_height_upgrade =70
         sprite_width_upgrade = 70
 
-        self._gameObject.add_component(SpriteRenderer("Mario_move_right1.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("mario_move_right2.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player(game_world))
         self._gameObject.add_component(Collider())
 
@@ -236,13 +236,13 @@ class Door_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, enum):
+    def build(self,pos_x,pos_y, sprite_name, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=50
-        sprite_width=50
+        sprite_height=150
+        sprite_width=150
 
-        self._gameObject.add_component(SpriteRenderer("supply-crate.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
         self._gameObject.add_component(Lvl_Door(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 
@@ -266,10 +266,10 @@ class MapBuilder(Builder):
 
         background1=GameObject(pygame.math.Vector2(0,0),self._game_world)
         sprite_height= self._game_world._screen.get_height()
-        sprite_width=8196
+        sprite_width=self._game_world._screen.get_width() * 4
 
+        self._mapRen=background1.add_component(MapRenderer("worldmap1.png",sprite_width,sprite_height))
         self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
-        
 
         self._mapRen.add_map("worldmap1", sprite_width, sprite_height, "worldmap1.png",)
         self._mapRen.add_map("shield", sprite_width, sprite_height, "shield.png",)
@@ -304,14 +304,15 @@ class SolidObject_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, sprite_name,height,width):
+    def build(self,pos_x,pos_y, sprite_name, height, width, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=height
-        sprite_width=width
+        
+        sprite_height = height
+        sprite_width = width
 
         self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
-        self._gameObject.add_component(SolidObject(pos_x, pos_y))
+        self._gameObject.add_component(SolidObject(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 
         
