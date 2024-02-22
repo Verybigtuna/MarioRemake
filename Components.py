@@ -312,6 +312,10 @@ class Laser(Component):
     def awake(self, game_world):
         self.gameObject.Tag = "Projectile"
 
+        collider = self._gameObject.get_component("Collider")
+
+        collider.subscribe("collision_enter_projectile",self.on_collision_projectile)
+
     def start(self):
         pass
 
@@ -323,6 +327,10 @@ class Laser(Component):
 
         if self._gameObject.transform.position.y < 0:
             self._gameObject.destroy()
+
+    def on_collision_projectile(self,other):
+       self._gameObject.destroy()
+       other._gameObject.destroy()
 
 class EnemyLaser(Component):
     def __init__(self,speed) -> None:
@@ -331,7 +339,7 @@ class EnemyLaser(Component):
 
     def awake(self, game_world):
         self.gameObject.Tag = "EnemyProjectile"
-        self._bullet_time = 1
+        self._bullet_time = 0
 
     def start(self):
         pass
@@ -340,15 +348,17 @@ class EnemyLaser(Component):
 
         self._bullet_time += delta_time
 
-        if self._bullet_time == 4:
+        if self._bullet_time >= 4:
             self.gameObject.destroy()
             self._bullet_time = 0       
         movement = pygame.math.Vector2(self._speed,0)
         
         self._gameObject.transform.translate(movement*delta_time)
 
-        if self._gameObject.transform.position.y < 0:
+        if self._gameObject.transform.position.x < 0:
             self._gameObject.destroy()
+
+        
 
 class Collider(Component):
     
@@ -473,6 +483,11 @@ class Collider(Component):
                  
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
+
+            if self.gameObject.Tag == "EnemyProjectile" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 other.collision_enter_projectile(self)
 
 
             

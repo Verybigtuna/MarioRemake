@@ -12,6 +12,8 @@ from Builder import Door_Builder
 from GameStates import GameStates
 from Text import TextTypes
 from SolidObject import SolidObjectType
+from Builder import BossEnemyBuilder
+from Builder import Shooter_EnemyBuilder
 
 
 class LevelMaker():
@@ -267,13 +269,17 @@ class LevelMaker():
         builder.build(self._gameWorld)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 #PLAYER
-
-#ENEMIES
-        builder = Goomba_EnemyBuilder(self._gameWorld)
+        
+        builder = Shooter_EnemyBuilder(self._gameWorld)
         builder.build(3000, 550)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
-#ENEMIES
+#ENEMIESBoSS
+        builder = BossEnemyBuilder(self._gameWorld)
+        builder.build(5000, 460)
+        self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
+
+#ENEMIESBoSS
 
 #POWER UPS
         builder = Mushroom_PowerUpBuilder(self._gameWorld)
@@ -290,7 +296,7 @@ class LevelMaker():
 
 # DOORS
         builder = Door_Builder(self)
-        builder.build(4600, 450, "mario_star.png", GameStates.WIN)
+        builder.build(6600, 450, "mario_star.png", GameStates.WIN)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 #DOORS
         
@@ -315,7 +321,7 @@ class LevelMaker():
 
 
 
-        builder.build(4900, -70,"mario_block.png", 720, 50, SolidObjectType.normal)
+        builder.build(6900, -70,"mario_block.png", 720, 50, SolidObjectType.normal)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
 
@@ -332,7 +338,7 @@ class LevelMaker():
         builder.build(2000 ,140,"ground2.png", 50, 500, SolidObjectType.normal)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
-        builder.build(3000 ,600,"ground2.png", 50, 2000, SolidObjectType.normal)
+        builder.build(3000 ,600,"ground2.png", 50, 4000, SolidObjectType.normal)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
         

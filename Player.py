@@ -54,14 +54,6 @@ class Player(Component):
         self._up_blocked=False
         self._down_blocked=False
 
-
-
-
-     
-      
-
-
-
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
         self._gameObject.transform.position.x = 150
@@ -218,7 +210,7 @@ class Player(Component):
             projectile_position = pygame.math.Vector2(self._gameObject.transform.position.x+(self._sprite_size.x/2)-sr.sprite_image.get_width()/2
                                                     ,self._gameObject.transform.position.y)
         
-            projectile.transform.position = projectile_position
+            projectile.transform.position = projectile_position - self.gameObject.transform.offset
 
             self._game_world.instantiate(projectile)
             

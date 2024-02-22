@@ -16,6 +16,7 @@ from Button import MarioButton
 from Text import TextBox
 from SolidObject import SolidObject
 from Components import MusicPlayer
+from BossEnemy import BossEnemy
 
 
 
@@ -176,6 +177,42 @@ class Shooter_EnemyBuilder(Builder):
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+    
+
+class BossEnemyBuilder(Builder):
+    
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y):
+
+        
+        sprite_height=150
+        sprite_width=150
+        sprite = "Bowser_move_left1.png"
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(BossEnemy(pos_x,pos_y))
+        self._gameObject.add_component(Collider())
+
+        animator = self._gameObject.add_component(Animator())
+        animator.add_animation("Bowser_right",sprite_height,sprite_width, "Bowser_move_left1.png",
+                               "Bowser_move_left2.png")
+        
+        animator.add_animation("Bowser_left",sprite_height,sprite_width, "Bowser_move_left1.png",
+                               "Bowser_move_left2.png")        
+        
+        animator.play_animation("Bowser_left")
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+
 
 class Mushroom_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
