@@ -36,45 +36,8 @@ class GameWorld:
        
 
         self._screen = pygame.display.set_mode((1280,720))
-        self._mapbuilder=MapBuilder(self)
-        self._mapbuilder.build()
         
-        for mapitem in self._mapbuilder.get_gameObject():
-            self._lvl1_Objects.append(mapitem)
 
-        builder = PlayerBuilder(self)
-        builder.build(self)
-        self._lvl1_Objects.append(builder.get_gameObject())
-        self._lvl2_Objects.append(builder.get_gameObject())
-
-        builder = HeartBuilder(self)
-        builder.build(pygame.math.Vector2(0,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(pygame.math.Vector2(100,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(pygame.math.Vector2(200,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder = Goomba_EnemyBuilder(self)
-        builder.build(200, 100)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(600, 560)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(600,200)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-
-        builder = Mushroom_PowerUpBuilder(self)
-        builder.build(50,50)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder=Gun_PowerUpBuilder(self)
-        builder.build(300,560)
-        self._lvl1_Objects.append(builder.get_gameObject())
 
         self.music_player = MusicPlayer("mariotrap.mp3")
         self.music_player.play_music()
@@ -124,31 +87,20 @@ class GameWorld:
         self._restart_Objects.append(builder.get_gameObject())
 
 
-       
-
-
-        
-        builder = Door_Builder(self)
-        builder.build(900, 500, GameStates.LVL2)
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder=SolidObject_Builder(self)
-        
-
-       # for i in range():
-           
-        builder.build(300,400,"mario_block.png",50,200)
-        self._lvl1_Objects.append(builder.get_gameObject())
-        
-
-
-
-    
-
 
        # GameStateManager.currentState = GameStates.MAINMENU
         self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
-        self.music_player.play_music()
+        #self.music_player.play_music()
+
+        levelOne = LevelMaker(self)
+        levelOne.Level_One_map()
+
+        levelTwo = LevelMaker(self)
+        levelTwo.Level_Two_map()
+
+        levelTwo = LevelMaker(self)
+        levelTwo.Level_Boss_map()
+
 
 
        

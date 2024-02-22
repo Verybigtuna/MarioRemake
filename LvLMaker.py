@@ -12,6 +12,7 @@ from Builder import Door_Builder
 from GameStates import GameStates
 from Text import TextTypes
 from SolidObject import SolidObjectType
+from Builder import HeartBuilder
 
 
 class LevelMaker():
@@ -28,6 +29,18 @@ class LevelMaker():
         
 
     def Level_One_map(self):
+
+
+
+        builder = HeartBuilder(self)
+        builder.build(pygame.math.Vector2(0,0))
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(pygame.math.Vector2(100,0))
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
+
+        builder.build(pygame.math.Vector2(200,0))
+        self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
         
         self._mapbuilder.build()
@@ -54,11 +67,11 @@ class LevelMaker():
 
 #POWER UPS
         builder = Mushroom_PowerUpBuilder(self._gameWorld)
-        builder.build()
+        builder.build(100,100)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
         builder=Gun_PowerUpBuilder(self._gameWorld)
-        builder.build(pygame.math.Vector2(300,560))
+        builder.build(300,560)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
 #POWER UPS
@@ -72,7 +85,7 @@ class LevelMaker():
 # BLOCKS
         builder=SolidObject_Builder(self)
 
-        builder.build(-50, -70,"mario_block.png", 720, 50, SolidObjectType.normal)
+        builder.build(-50, 330,"mario_block.png", 320, 50, SolidObjectType.normal)
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
         
@@ -164,18 +177,18 @@ class LevelMaker():
 
 #POWER UPS
         builder = Mushroom_PowerUpBuilder(self._gameWorld)
-        builder.build()
+        builder.build(150,150)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 
         builder=Gun_PowerUpBuilder(self._gameWorld)
-        builder.build(pygame.math.Vector2(300,560))
+        builder.build(300,560)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 
-        builder.build(pygame.math.Vector2(350,560))
+        builder.build(350,560)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 
 
-        builder.build(pygame.math.Vector2(2160,420))
+        builder.build(2160,420)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
 #POWER UPS
@@ -277,11 +290,11 @@ class LevelMaker():
 
 #POWER UPS
         builder = Mushroom_PowerUpBuilder(self._gameWorld)
-        builder.build()
+        builder.build(200,200)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
         builder=Gun_PowerUpBuilder(self._gameWorld)
-        builder.build(pygame.math.Vector2(300,560))
+        builder.build(300,560)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
         

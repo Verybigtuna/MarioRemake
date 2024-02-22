@@ -134,7 +134,7 @@ class GameStateManager():
 
                 if(gameObject.follows_camera==False):
                  
-                    #gameObject.transform.offset+=Camera.camera_offset
+                    gameObject.transform.offset+=Camera.camera_offset
 
                     gameObject.update(delta_time)
                 else:

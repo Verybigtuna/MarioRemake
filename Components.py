@@ -468,9 +468,7 @@ class Collider(Component):
                    self.collision_enter_gun_powerUp(other)
                    other.collision_enter_gun_powerUp(self)
 
-                case "SolidObject":
-                  
-                   pass
+               
                    
                    
 
@@ -496,20 +494,7 @@ class Collider(Component):
                  other.collision_enter_projectile(self)
         
          
-            
-             
-                
-                 
-                
-            
-                
-
-
-            
-            
           
-            
-
 
 
         else:
