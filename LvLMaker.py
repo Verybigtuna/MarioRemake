@@ -12,7 +12,9 @@ from Builder import Door_Builder
 from GameStates import GameStates
 from Text import TextTypes
 from SolidObject import SolidObjectType
-
+from Builder import HeartBuilder
+from Builder import HeartBuilder2
+from Builder import HeartBuilder3
 
 class LevelMaker():
     
@@ -51,6 +53,8 @@ class LevelMaker():
         self._gameWorld._lvl1_Objects.append(builder.get_gameObject())
 
 #ENEMIES
+
+ 
 
 #POWER UPS
         builder = Mushroom_PowerUpBuilder(self._gameWorld)

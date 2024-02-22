@@ -8,19 +8,23 @@ from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
 from Components import SoundPlayer
-from Heart import Heart
+
+
 
 
 
 class Player(Component):
+    health = 3
 
-    
+ 
+
 
 
 
 
     def __init__(self,game_world) -> None:
         self._game_world = game_world
+
 
 
     
@@ -41,6 +45,7 @@ class Player(Component):
         self.gameObject.health = 3
         self.death = False
         self.keyinactive = False
+
 
         
 
@@ -229,7 +234,11 @@ class Player(Component):
     def on_collision_enter(self, other):
 
         self.gameObject.health -= 1
-        
+
+
+        if self.gameObject.health ==2:
+            Player.health -= 1
+
 
         if self.gameObject.health == 0:
             self._animator.play_animation("Deathanimright")
