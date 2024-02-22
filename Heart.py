@@ -23,10 +23,10 @@ class Heart(Component):
     def update(self, delta_time):
 
         if self.gameObject.health == 2:
-            self.gameObject.destroy(self)
+            self.gameObject.destroy()
 
         if self.gameObject.health == 1:
-            self.gameObject.destroy(self)
+            self.gameObject.destroy()
         
     
 
