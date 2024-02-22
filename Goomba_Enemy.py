@@ -1,6 +1,7 @@
 from Components import Component
 import random
 import pygame
+from Score import GameScore
 from Components import SoundPlayer
 
 class Goomba_Enemy(Component):
@@ -46,9 +47,6 @@ class Goomba_Enemy(Component):
 
     def simple_move_pattern(self,delta_time):
 
-       
-       
-        
         if(self.gameObject.transform.position.x>self._spawnPosition_x+100):
          self._speed=-250
          
@@ -56,13 +54,7 @@ class Goomba_Enemy(Component):
         elif(self.gameObject.transform.position.x<self._spawnPosition_x-100):
             self._speed=250
             
-
-      
         movement = pygame.math.Vector2(self._speed,0)
-
-       
-
-
 
         self.gameObject.transform.translate(movement*delta_time)
 
@@ -78,7 +70,9 @@ class Goomba_Enemy(Component):
         self.sound_player.play_sound()  
         self.sound_player.set_volume(0.05)
 
+        
         self.gameObject.destroy()
+        GameScore.score += 100
 
     def on_collision_projectile(self,other):
        self.gameObject.destroy()

@@ -12,14 +12,14 @@ from Text import TextTypes
 from Builder import MapBuilder
 from Builder import Gun_PowerUpBuilder
 from Builder import SolidObject_Builder
+from LvLMaker import LevelMaker
 from Components import MusicPlayer
 from Builder import Shooter_EnemyBuilder
 from Builder import HeartBuilder
-
+from Score import GameScore
 
 class GameWorld:
 
-    
 
     def __init__(self) -> None:
         pygame.init()
@@ -32,6 +32,7 @@ class GameWorld:
         self._win_Objects = []
         self._restart_Objects = []
         self._colliders = []
+       
 
         self._screen = pygame.display.set_mode((1280,720))
         self._mapbuilder=MapBuilder(self)
@@ -80,6 +81,11 @@ class GameWorld:
         self.music_player = MusicPlayer("mariotrap.mp3")
         self.music_player.play_music()
         self.music_player.set_volume(0.03)
+        
+
+        self.WHITE = (255, 255, 255) 
+
+        self.font = pygame.font.SysFont(None, 36)
 
         builder = ButtonBuilder(self)
         builder.build(480, 500, "button_start.png", ButtonTypes.START)
@@ -94,7 +100,7 @@ class GameWorld:
 
         
 
-        builder.build(550, 600, "button_restart.png", ButtonTypes.RESTART)
+        builder.build(550, 400, "button_restart.png", ButtonTypes.RESTART)
         self._restart_Objects.append(builder.get_gameObject())
 
 
@@ -107,6 +113,9 @@ class GameWorld:
         builder.build(550, 660, "button_go_back.png", ButtonTypes.GOBACK)
         self._options_Objects.append(builder.get_gameObject())
 
+        builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
+        self._win_Objects.append(builder.get_gameObject())
+
 
 
         builder = TextBoxBuilder(self)
@@ -116,27 +125,20 @@ class GameWorld:
         builder.build(380, 150, "you_are_dead.png", TextTypes.YOURDEAD)
         self._restart_Objects.append(builder.get_gameObject())
 
-
-       
-
+        builder.build(380, 150, "you_win.png", TextTypes.YOUWIN)
+        self._win_Objects.append(builder.get_gameObject())
 
         
-        builder = Door_Builder(self)
-        builder.build(900, 500, GameStates.LVL2)
-        self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder=SolidObject_Builder(self)
-        
+        levelOne = LevelMaker(self)
+        levelOne.Level_One_map()
 
-       # for i in range():
-           
-        builder.build(300,400,"mario_block.png",50,200)
-        self._lvl1_Objects.append(builder.get_gameObject())
-        
+        levelTwo = LevelMaker(self)
+        levelTwo.Level_Two_map()
 
+        levelTwo = LevelMaker(self)
+        levelTwo.Level_Boss_map()
 
-
-    
 
 
        # GameStateManager.currentState = GameStates.MAINMENU
@@ -155,6 +157,20 @@ class GameWorld:
     @property
     def colliders(self):
         return self._colliders
+    
+    def display_score(self, score):
+       score_text = self.font.render("Score: " + str(score), True, self.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topright = (self._screen.get_width() - 10, 10)  # Adjust the position as needed
+       self._screen.blit(score_text, score_rect)
+
+    def display_final_score(self, score):
+       score_text = self.font.render("Final Score: " + str(score), True, self.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topright = (self._screen.get_width() - 580, 360)  # Adjust the position as needed
+       self._screen.blit(score_text, score_rect)
+
+
 
     def instantiate(self, gameobject):
         gameobject.awake(self)
@@ -186,11 +202,14 @@ class GameWorld:
 
     def start(self):
         self._stateManager.start()
+        
 
         # for gameObject in self._gameObjects[:]:
         #     gameObject.start()
 
     def update(self):
+
+        
 
     
         while self._running:
@@ -204,12 +223,21 @@ class GameWorld:
 
             delta_time = self._clock.tick(60) / 1000.0
 
+            
+            
+
+
             #Draw game here
             
 
             self._stateManager.update(delta_time)
             
+            
 
+            if GameStateManager.currentState == GameStates.RESTART or GameStateManager.currentState == GameStates.WIN:
+                self.display_final_score(GameScore.score)
+            else:
+                self.display_score(GameScore.score)
 
             # for gameObject in self._gameObjects[:]:
 
