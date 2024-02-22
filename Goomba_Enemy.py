@@ -75,6 +75,7 @@ class Goomba_Enemy(Component):
         GameScore.score += 100
 
     def on_collision_projectile(self,other):
+       
        self.gameObject.destroy()
        other.gameObject.destroy()
 

@@ -8,6 +8,7 @@ from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
 from Components import SoundPlayer
+from Heart import Heart
 
 
 
