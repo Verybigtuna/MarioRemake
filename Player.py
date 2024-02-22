@@ -335,6 +335,7 @@ class Player(Component):
     def collision_enter_projectile(self, other):
        self.gameObject.destroy()
        other.gameObject.destroy()
+       GameStateManager.currentState = GameStates.RESTART
 
         
                     
