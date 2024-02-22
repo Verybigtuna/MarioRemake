@@ -489,6 +489,11 @@ class Collider(Component):
                 if  not is_already_colliding:
                  other.collision_enter_projectile(self)
 
+            if self.gameObject.Tag == "BossEnemy" and other.gameObject.Tag == "Projectile":
+                 
+                if  not is_already_colliding:
+                 self.collision_enter_projectile(other)
+
 
             
             

@@ -1,7 +1,7 @@
 from enum import Enum
 from Camera import Camera
-
-
+from BossEnemy import BossEnemy
+import pygame
 
 class GameStates(Enum):
     MAINMENU = 1
@@ -20,7 +20,11 @@ class GameStateManager():
 
     currentState = GameStates.BOSSLVL
    
-
+    def display_bowser_health(self):
+       score_text = self._gameWorld.font.render("Bowsers Health: " + str(BossEnemy.bowser_life), True, self._gameWorld.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topright = (self._gameWorld._screen.get_width() - 10, 50) # Adjust the position as needed
+       self._gameWorld._screen.blit(score_text, score_rect)
 
     def __init__(self, gameWorld):
         
@@ -174,6 +178,8 @@ class GameStateManager():
 
         elif GameStateManager.currentState == GameStates.BOSSLVL: # _gameObjects skal udskiftes senere til De lister af gameobjects der er BOSSLVL state
             self._gameWorld._screen.fill("black")
+
+            self.display_bowser_health()
             for gameObject in self._gameWorld._bossLvl_Objects[:]:
             
                 if(gameObject.follows_camera==False):

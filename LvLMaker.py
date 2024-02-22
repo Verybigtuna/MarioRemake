@@ -279,6 +279,7 @@ class LevelMaker():
         builder.build(5000, 460)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
+
 #ENEMIESBoSS
 
 #POWER UPS

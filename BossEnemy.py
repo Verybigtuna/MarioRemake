@@ -6,8 +6,13 @@ from Components import SpriteRenderer
 from Components import Collider
 from Components import EnemyLaser
 from Components import SoundPlayer
+from Score import GameScore
 
 class BossEnemy(Component):
+
+    bowser_life = 5
+
+
     def __init__(self,pos_x,pos_y)-> None:
 
         self._pos_x=pos_x
@@ -20,10 +25,12 @@ class BossEnemy(Component):
 
         self._shoot_delay = 2
         self._can_shoot=False
-        self.gameObject.Tag = "BossProjectile"
+        self.gameObject.Tag = "BossEnemy"
         self._game_world = game_world
         sr = self.gameObject.get_component("SpriteRenderer")
         self._animator=self._gameObject.get_component("Animator")
+
+        
 
 
         self._boss_enemyPosition_y = self._gameObject.transform.position.y
@@ -41,7 +48,8 @@ class BossEnemy(Component):
         collider = self._gameObject.get_component("Collider")
 
         collider.subscribe("collision_enter",self.on_collision_enter)
-        collider.subscribe("collision_exit",self.on_collision_exit)      
+        collider.subscribe("collision_exit",self.on_collision_exit)   
+        collider.subscribe("collision_enter_projectile",self.on_collision_projectile)   
 
         self._speed=250
 
@@ -63,6 +71,11 @@ class BossEnemy(Component):
         self._delta_time=delta_time
 
         self._time_since_last_shot += delta_time
+
+
+        if BossEnemy.bowser_life == 0:
+           self.gameObject.destroy()
+           GameScore.score += 1000
 
 
 
@@ -137,6 +150,15 @@ class BossEnemy(Component):
 
     def on_collision_enter(self,other):
       pass
+
+
+    def on_collision_projectile(self,other):
+      
+       other.gameObject.destroy()
+       BossEnemy.bowser_life -= 1
+       
+       
+       
 
     def on_collision_exit(self,other):
       pass
