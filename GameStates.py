@@ -23,6 +23,8 @@ class GameStateManager():
     def __init__(self, gameWorld):
         
         self._gameWorld = gameWorld
+
+        self._empty_colliders=True
   
    
     def awake(self, gameWorld):
@@ -110,7 +112,6 @@ class GameStateManager():
             for gameObject in self._gameWorld._mainMenu_Objects[:]:
 
                 
-              
                 gameObject.update(delta_time)
                   
                   
@@ -118,7 +119,7 @@ class GameStateManager():
 
             self._gameWorld._mainMenu_Objects = [obj for obj in self._gameWorld._mainMenu_Objects if not obj.is_destroyed]
 
-
+            
             self._gameWorld._colliders = []
             for obj in self._gameWorld._mainMenu_Objects:
                 collider = obj.get_component("Collider")
@@ -131,7 +132,7 @@ class GameStateManager():
 
                 if(gameObject.follows_camera==False):
                  
-                    gameObject.transform.offset+=Camera.camera_offset
+                    #gameObject.transform.offset+=Camera.camera_offset
 
                     gameObject.update(delta_time)
                 else:
@@ -140,12 +141,16 @@ class GameStateManager():
             
             self._gameWorld._lvl1_Objects = [obj for obj in self._gameWorld._lvl1_Objects if not obj.is_destroyed]
 
+            if self._empty_colliders==True:
+             self._gameWorld._colliders = []
+             self._empty_colliders=False
             
-            self._gameWorld._colliders = []
-            for obj in self._gameWorld._lvl1_Objects:
+             for obj in self._gameWorld._lvl1_Objects:
                 collider = obj.get_component("Collider")
                 if not obj.is_destroyed and collider != None:
                     self._gameWorld._colliders.append(collider)
+            
+            self._gameWorld._colliders=[obj for obj in self._gameWorld._colliders if not obj.gameObject.is_destroyed]
 
 
         elif GameStateManager.currentState == GameStates.LVL2: # _gameObjects skal udskiftes senere til De lister af gameobjects der er LVL2 state

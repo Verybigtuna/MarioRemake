@@ -174,11 +174,12 @@ class SpriteRenderer(Component):
         super().__init__()
 
 
-        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}").convert_alpha()
+        self._sprite_image = pygame.image.load(f"Assets\\{sprite_name}")
         self._sprite = pygame.sprite.Sprite()
         self._sprite_image=pygame.transform.scale(self._sprite_image,(width,height))
         self._sprite.rect = self._sprite_image.get_rect()
         self._sprite_mask = pygame.mask.from_surface(self.sprite_image)
+      
         
         
     
@@ -186,7 +187,9 @@ class SpriteRenderer(Component):
     def sprite_image(self):
         return self._sprite_image
     
-
+    @property
+    def sprite_get_rect(self):
+        return self._sprite_image.get_rect()
 
     
     @property
@@ -230,6 +233,7 @@ class SpriteRenderer(Component):
 
     
     def update(self, delta_time):
+        
 
 
        
@@ -368,9 +372,20 @@ class Collider(Component):
         
         self._sr = self.gameObject.get_component("SpriteRenderer")
 
-        is_rect_colliding = self._collision_box.colliderect(other._collision_box)
-
+        #is_rect_colliding = self._collision_box.colliderect(other._collision_box)
         
+        is_rect_colliding =pygame.Rect.colliderect(self._sr.sprite.rect,other._sr.sprite.rect)
+       
+        if self.gameObject.Tag=="Player" and other.gameObject.Tag=="SolidObject" :
+            p=self.gameObject.get_component("Player")
+            p.on_collision_solid_object(other)
+
+        if self.gameObject.Tag=="Player" and other.gameObject.Tag=="MysteryBox" :
+            p=self.gameObject.get_component("Player")
+            p.on_collision_MysteryBox(other)
+
+      
+
 
         
         
@@ -379,27 +394,27 @@ class Collider(Component):
        
 
 
-        
-
-
-                
-
-
 
         if is_rect_colliding:
 
-            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom and not is_already_colliding and self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy"):
-                other.collision_enter_top(self)
+
+           
+
+
+
+            if(self._rect.bottom>other._rect.top and other._rect.bottom>self._rect.bottom  and self.gameObject.Tag == "Player" and other.gameObject.Tag == "Enemy"):
+                if not is_already_colliding:
+                 other.collision_enter_top(self)
                 
             
                 #self._top_collision==True
-            
             if self.gameObject.Tag=="Player":
                  
              match other.gameObject.Tag:
                 case "Enemy":
                  if  not is_already_colliding:
                    self.collision_enter(other)
+
                  
                  #other.collision_enter(self)
              #if self.check_pixel_collision(self._collision_box, other.collision_box, self._sprite_mask, other.sprite_mask):
@@ -415,6 +430,7 @@ class Collider(Component):
                 
                  if  not is_already_colliding:
                    self.collision_enter_powerUp(other)
+                   other.collision_enter_powerUp(self)
            
                 case "gun_powerup":
        
@@ -422,13 +438,21 @@ class Collider(Component):
                    self.collision_enter_gun_powerUp(other)
                    other.collision_enter_gun_powerUp(self)
                 case "SolidObject":
-                  if  not is_already_colliding:
-                   self.collision_enter_solid_object(other,is_already_colliding)
-                   other.collision_enter_solid_object(self,is_already_colliding)
+                  
+                   pass
+                   
+                   
+
+               
+
                 case "Door":
                  if  not is_already_colliding:
                   self.collision_enter(other)
                   other.collision_enter(self)
+
+
+            if(other._rect.bottom>self._rect.top and self._rect.bottom>other._rect.bottom and not is_already_colliding and self.gameObject.Tag == "Player" and other.gameObject.Tag == "MysteryBox"):
+                other.collision_enter_MysteryBox_bottom(self)
 
                     
 
@@ -436,6 +460,16 @@ class Collider(Component):
                  
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
+                 other.collision_enter_projectile(self)
+        
+         
+            
+             
+                
+                 
+                
+            
+                
 
 
             
@@ -447,9 +481,16 @@ class Collider(Component):
 
         else:
             if is_already_colliding:
-                self.collision_exit_solid_object(other)
+                
+                #self.collision_exit_MysteryBox(other)
                 self.collision_exit(other)
-                other.collision_exit_solid_object(self)
+                #other.collision_exit_solid_object(self)
+           
+            #if self.gameObject.Tag=="Player":
+             #p=self.gameObject.get_component("Player")
+             #p.on_collision_solid_object_exit(other)
+            
+
             
                
                
@@ -526,6 +567,42 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+    
+    
+    
+    def collision_enter_solid_object(self, other):
+       # self._other_colliders.append(other)
+        if "collision_enter_solid_object" in self._listeners:
+            self._listeners["collision_enter_solid_object"](other)
+
+    def collision_exit_solid_object(self, other):
+       
+        if "collision_exit_solid_object" in self._listeners:
+            self._listeners["collision_exit_solid_object"](other)
+
+    def collision_enter_projectile(self, other):
+         self._other_colliders.append(other)
+         if "collision_enter_projectile" in self._listeners:
+            self._listeners["collision_enter_projectile"](other)
+
+    def collision_enter_MysteryBox(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_MysteryBox" in self._listeners:
+         self._listeners["collision_enter_MysteryBox"](other)
+    
+    def collision_exit_MysteryBox(self, other):
+       
+        if "collision_exit_MysteryBox" in self._listeners:
+            self._listeners["collision_exit_MysteryBox"](other)
+
+    
+    def collision_enter_MysteryBox_bottom(self, other):
+        self._other_colliders.append(other)
+        if "collision_enter_bottom" in self._listeners:
+         self._listeners["collision_enter_bottom"](other)
+
+
+
 
     
 class MusicPlayer:

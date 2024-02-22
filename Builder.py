@@ -14,7 +14,7 @@ from Door import Lvl_Door
 from Button import MarioButton
 from Text import TextBox
 from SolidObject import SolidObject
-
+from MysteryBox import MysteryBox
 
 
 from Gun_PowerUp import Gun_PowerUp
@@ -43,8 +43,8 @@ class PlayerBuilder(Builder):
         sprite_height=40
         sprite_width=40
 
-        sprite_height_upgrade =70
-        sprite_width_upgrade = 70
+        sprite_height_upgrade =50
+        sprite_width_upgrade = 50
 
         self._gameObject.add_component(SpriteRenderer("Mario_move_right1.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player(game_world))
@@ -143,15 +143,15 @@ class Mushroom_PowerUpBuilder(Builder):
         self._game_world=game_world
 
 
-    def build(self):
+    def build(self,pos_x,pos_y):
 
-        sprite_height=100
-        sprite_width=100
+        sprite_height=35
+        sprite_width=35
         self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
-        sprite = "shield.png"
+        sprite = "power_up_mushroom.png"
 
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Mushroom_PowerUp())
+        self._gameObject.add_component(Mushroom_PowerUp(pos_x,pos_y))
         self._gameObject.add_component(Collider())
 
 
@@ -168,15 +168,15 @@ class Gun_PowerUpBuilder(Builder):
         self._game_world=game_world
 
      
-    def build(self,position):
+    def build(self,pos_x,pos_y):
 
         sprite_height=20
         sprite_width=20
-        self._gameObject = GameObject(position, self._game_world)
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
         sprite = "laser.png"
         
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Gun_PowerUp())
+        self._gameObject.add_component(Gun_PowerUp(pos_x,pos_y))
         self._gameObject.add_component(Collider())
 
         
@@ -281,11 +281,31 @@ class SolidObject_Builder(Builder):
         self._gameObject.add_component(Collider())
 
         
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+
+class MysteryBox_Builder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
         
 
-      
+    def build(self,pos_x,pos_y, sprite_name,height,width):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+        
+        sprite_height=height
+        sprite_width=width
 
+        self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
+        self._gameObject.add_component(MysteryBox(pos_x, pos_y))
+        self._gameObject.add_component(Collider())
 
+        
+        
     def get_gameObject(self) -> GameObject:
         return self._gameObject
 

@@ -4,10 +4,16 @@ import pygame
 
 class Gun_PowerUp(Component):
 
+    def __init__(self,pos_x,pos_y) -> None:
+        self._pos_x=pos_x
+        self._pos_y=pos_y
+
     def awake(self,game_world):
 
         sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")
+
+        self.gameObject.transform.position =pygame.math.Vector2(self._pos_x,self._pos_y)
        
         
         collider = self._gameObject.get_component("Collider")

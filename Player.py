@@ -43,6 +43,10 @@ class Player(Component):
         self._up_blocked=False
         self._down_blocked=False
 
+        self._collision_Happened=False
+
+        self._stop_gravity=False
+
 
      
      
@@ -52,9 +56,8 @@ class Player(Component):
 
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
-        self._gameObject.transform.position.x = 50
-        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)
-        
+        self._gameObject.transform.position.x = 100
+        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y)-200        
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
         collider.subscribe("collision_exit",self.on_collision_exit)
@@ -65,8 +68,15 @@ class Player(Component):
         
         collider.subscribe("collision_enter_gun_powerup",self.on_collision_enter_gun_powerup)
 
-        collider.subscribe("collision_enter_solid_object",self.on_collision_enter_solid_object)
-        collider.subscribe("collision_exit_solid_object",self.on_collision_exit_solid_object)
+       # collider.subscribe("collision_enter_solid_object",self.on_collision_enter_solid_object)
+        #collider.subscribe("collision_exit_solid_object",self.on_collision_exit_solid_object)
+        
+        
+       
+        
+       
+
+
 
 
     @property
@@ -96,6 +106,8 @@ class Player(Component):
         speed = 1000
         self._movement = pygame.math.Vector2(0,0)
         Camera.camera_offset=pygame.math.Vector2(0,0)
+        
+        
 
         self._delta_time=delta_time
 
@@ -125,16 +137,20 @@ class Player(Component):
             self.is_falling = False
             self.can_jump = False
             self.is_jumping = True
-            self._start_jump_position = player_position_y
-            self._down_blocked=False
+            self._start_jump_position = player_position_y-self.gameObject.transform.offset.y
+           
 
         if keys[pygame.K_f] and self._can_shoot==True:
             self.shoot()
             
 
         #Gravity
-        if self.is_falling and self._down_blocked==False:
+        if self.is_falling and not self._down_blocked:
             self._movement.y += self._gravity
+            
+
+
+            
 
         #Jumping
         if self.is_jumping:
@@ -142,17 +158,18 @@ class Player(Component):
             if player_position_y < (self._start_jump_position - jump_height) or self._up_blocked==True:
                 self.is_jumping = False
                 self.is_falling = True
-               
-
-        self._gameObject.transform.translate(self._movement*delta_time)
-        self.gameObject.transform.offset+=self._movement*delta_time
-
-
+                
+                
         
+      
 
+   
+        #self.gameObject.transform.offset+=self._movement*delta_time
+       
+        self._gameObject.transform.translate(self._movement*delta_time)
+       
 
-
-        Camera.camera_offset+=self._movement*delta_time
+       # Camera.camera_offset+=self._movement*delta_time
 
        # if self._gameObject.transform.position.x < -self._sprite_size.x:
         #    self._gameObject.transform.position.x = self._screen_size.x
@@ -160,8 +177,8 @@ class Player(Component):
         #    self._gameObject.transform.position.x = -self._sprite_size.x
 
         
-        if self._gameObject.transform.position.y > bottom_limit:
-            self._gameObject.transform.position.y = bottom_limit
+       # if self._gameObject.transform.position.y > bottom_limit:
+       #     self._gameObject.transform.position.y = bottom_limit
            
 
 
@@ -169,10 +186,10 @@ class Player(Component):
         # elif self._gameObject.transform.position.y < 0:
         #    self._gameObject.transform.position.y = 0
         
-        if self._gameObject.transform.position.y == bottom_limit:
-            self.can_jump = True
-            self.is_falling = False
-            self._down_blocked=True
+      #  if self._gameObject.transform.position.y == bottom_limit:
+      #      self.can_jump = True
+      #      self.is_falling = False
+           # self._down_blocked=True
 
 
      
@@ -185,10 +202,13 @@ class Player(Component):
             projectile.add_component(Laser())
             projectile.add_component(Collider())
 
+
+
+            shoot_offset=pygame.math.Vector2(20,0)
+
         
 
-            projectile_position = pygame.math.Vector2(self._gameObject.transform.position.x+(self._sprite_size.x/2)-sr.sprite_image.get_width()/2
-                                                    ,self._gameObject.transform.position.y)
+            projectile_position =self.gameObject.transform.position-self.gameObject.transform.offset+shoot_offset
         
             projectile.transform.position = projectile_position
 
@@ -230,6 +250,17 @@ class Player(Component):
         self._animator=self._gameObject.get_component("Animator")
         self._animator._currentstate ="Upgrade"
         self._animator.play_animation(f"{self._animator._currentstate}right")
+        sr=self.gameObject.get_component("SpriteRenderer")
+        
+        sprite_height_upgrade =50
+        sprite_width_upgrade = 50
+       
+        sr._sprite_image=pygame.transform.scale(sr._sprite_image,(sprite_height_upgrade,sprite_width_upgrade))
+        sr._sprite.rect = sr._sprite_image.get_rect()
+        sr._sprite_mask = pygame.mask.from_surface(sr.sprite_image)
+        
+        
+
         print("collision enter powerup")
 
     
@@ -237,52 +268,168 @@ class Player(Component):
        print("collision gun PowerUp")
        self._can_shoot=True
 
-    def on_collision_enter_solid_object(self,other):
+    def on_collision_solid_object(self,other):
+        self._sr = self.gameObject.get_component("SpriteRenderer")
+
+        self._col = self.gameObject.get_component("Collider")
+
+
+        other._col=other.gameObject.get_component("Collider")
+        
         sr_enemy=other.gameObject.get_component("SpriteRenderer")
         enemyCol = sr_enemy.sprite.rect
 
         sr_player=self.gameObject.get_component("SpriteRenderer")
         playerCol = sr_player.sprite.rect
 
+        is_rect_colliding =pygame.Rect.colliderect(sr_player._sprite.rect,sr_enemy._sprite.rect)
+     
+        
         player=self.gameObject.get_component("Player")
+        
+        
 
-        player.can_jump = True
+       # if self.check_pixel_collision(self._col._collision_box, other._col._collision_box, self._col._sprite_mask, other._col.sprite_mask):
 
+        if is_rect_colliding==True:
+          self._collision_Happened=True
 
-        print("Solid OBject collision")
+         
 
+          player.can_jump = True
+         
 
+          keys = pygame.key.get_pressed()
 
-        if enemyCol.bottom > playerCol.top and playerCol.centery>enemyCol.bottom:
-           player._up_blocked=True
-           
- 
+          print("SolidObject collision")
 
-        if enemyCol.top <= playerCol.bottom:
-                    
-         player._down_blocked=True
+    
+          if enemyCol.bottom > playerCol.top and playerCol.bottom>enemyCol.bottom:
+             self._up_blocked=True
+             self.is_falling=True
+             self.is_jumping=False
+             self.gameObject.transform.position= pygame.math.Vector2(self.gameObject.transform.position.x,sr_enemy._sprite.rect.bottom+39)
+          elif enemyCol.top < playerCol.bottom and playerCol.top<enemyCol.top:
+             player._down_blocked=True
+             if not keys[pygame.K_SPACE] and self.is_jumping==False:
+              self.gameObject.transform.position= pygame.math.Vector2(self.gameObject.transform.position.x,sr_enemy._sprite.rect.top-39)
+         
         
        
+          if enemyCol.left < playerCol.right and playerCol.left < enemyCol.left:
+                    
+             player._right_blocked=True
+             
+             
+             self.gameObject.transform.position= pygame.math.Vector2(sr_enemy._sprite.rect.left-sr_player._sprite_image.get_width(),self.gameObject.transform.position.y)
                     
 
 
-        if enemyCol.left < playerCol.right and playerCol.centerx < enemyCol.left:
-                    
-           player._right_blocked=True
-                    
-
-
-        if enemyCol.right > playerCol.left and playerCol.centerx > enemyCol.right:
+          if enemyCol.right > playerCol.left and playerCol.right > enemyCol.right:
             
-            player._left_blocked=True
+             #player._left_blocked=True
+             self.gameObject.transform.position= pygame.math.Vector2(sr_enemy._sprite.rect.left+sr_enemy._sprite_image.get_width(),self.gameObject.transform.position.y)
+
+        elif self._collision_Happened==True:
+            self.on_collision_solid_object_exit(other)
+            
+            self._collision_Happened=False
+           
+
+    
+            
+    def check_pixel_collision(self, collision_box1, collision_box2, mask1, mask2):
+        offset_x = collision_box2.x - collision_box1.x
+        offset_y = collision_box2.y - collision_box1.y
+
+        return mask1.overlap(mask2,(offset_x,offset_y)) is not None
+
+    
+    def on_collision_MysteryBox(self,other):
+        self._sr = self.gameObject.get_component("SpriteRenderer")
+
+        self._col = self.gameObject.get_component("Collider")
 
 
-    def on_collision_exit_solid_object(self,other):
+        other._col=other.gameObject.get_component("Collider")
+        
+        sr_enemy=other.gameObject.get_component("SpriteRenderer")
+        enemyCol = sr_enemy.sprite.rect
+
+        sr_player=self.gameObject.get_component("SpriteRenderer")
+        playerCol = sr_player.sprite.rect
+
+        is_rect_colliding =pygame.Rect.colliderect(sr_player._sprite.rect,sr_enemy._sprite.rect)
+     
+        
+        player=self.gameObject.get_component("Player")
+        
+        
+
+       # if self.check_pixel_collision(self._col._collision_box, other._col._collision_box, self._col._sprite_mask, other._col.sprite_mask):
+
+        if is_rect_colliding==True:
+          self._collision_Happened=True
+
+         
+
+          player.can_jump = True
+         
+
+          keys = pygame.key.get_pressed()
+
+          print("MysteryBox collision")
+
+    
+          if enemyCol.bottom > playerCol.top and playerCol.bottom>enemyCol.bottom:
+             self._up_blocked=True
+             self.is_falling=True
+             self.is_jumping=False
+             self.gameObject.transform.position= pygame.math.Vector2(self.gameObject.transform.position.x,sr_enemy._sprite.rect.bottom+39)
+          elif enemyCol.top < playerCol.bottom and playerCol.top<enemyCol.top:
+             player._down_blocked=True
+             if not keys[pygame.K_SPACE] and self.is_jumping==False:
+              self.gameObject.transform.position= pygame.math.Vector2(self.gameObject.transform.position.x,sr_enemy._sprite.rect.top-39)
+         
+        
+       
+          if enemyCol.left < playerCol.right and playerCol.left < enemyCol.left:
+                    
+             player._right_blocked=True
+             
+             
+             self.gameObject.transform.position= pygame.math.Vector2(sr_enemy._sprite.rect.left-sr_player._sprite_image.get_width(),self.gameObject.transform.position.y)
+                    
+
+
+          if enemyCol.right > playerCol.left and playerCol.right > enemyCol.right:
+            
+             #player._left_blocked=True
+             self.gameObject.transform.position= pygame.math.Vector2(sr_enemy._sprite.rect.left+sr_enemy._sprite_image.get_width(),self.gameObject.transform.position.y)
+
+        elif self._collision_Happened==True:
+            self.on_collision_exit_MysteryBox(other)
+            
+            self._collision_Happened=False
+           
+
+
+
+    def on_collision_solid_object_exit(self,other):
         player=self.gameObject.get_component("Player")
         player._right_blocked=False
         player._left_blocked=False
         player._up_blocked=False
         player._down_blocked=False
+
+    def on_collision_exit_MysteryBox(self,other):
+        player=self.gameObject.get_component("Player")
+        player._right_blocked=False
+        player._left_blocked=False
+        player._up_blocked=False
+        player._down_blocked=False
+        
+
 
         
                     
