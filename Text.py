@@ -10,11 +10,11 @@ from enum import Enum
 class TextTypes(Enum):
     WELCOME = 1
     YOURDEAD = 2
+    YOUWIN = 3
     
 
 class TextBox(Component):
 
-    down = True
     
     def __init__(self,pos_x,pos_y, textType) -> None:
         self._pos_x=pos_x
@@ -45,7 +45,7 @@ class TextBox(Component):
         pass
 
     def update(self, delta_time):
-               pass
+        pass
 
     
     def on_collision_enter(self, other):

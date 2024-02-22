@@ -7,12 +7,21 @@ from Components import Collider
 from Camera import Camera
 from GameStates import GameStateManager
 from GameStates import GameStates
+from Components import SoundPlayer
+from Heart import Heart
 
-import time
+
+
 class Player(Component):
+
+    
+
+
+
 
     def __init__(self,game_world) -> None:
         self._game_world = game_world
+
 
     
         
@@ -21,7 +30,7 @@ class Player(Component):
         self._time_since_last_shot = 1
         self._shoot_delay = 1
         self._can_shoot=False
-        
+        self._player_position_x = self._gameObject.transform.position.x
         self._is_jumping = False
         self._is_falling = True
         self._can_jump = False
@@ -29,8 +38,11 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
+        self.gameObject.health = 3
+        self.death = False
+        self.keyinactive = False
 
-
+        
 
         sr = self._gameObject.get_component("SpriteRenderer")
         
@@ -48,7 +60,7 @@ class Player(Component):
         self._stop_gravity=False
 
 
-     
+
      
       
 
@@ -117,30 +129,38 @@ class Player(Component):
         jump_height = 300
         
         player_position_y = self._gameObject.transform.position.y
+        
 
-        bottom_limit = self._screen_size.y-100 -self._sprite_size.y
+        
+            
+
+        bottom_limit = self._screen_size.y+100 -self._sprite_size.y
       
 
-        if keys[pygame.K_a] and not self._left_blocked:
+        if keys[pygame.K_a] and not self._left_blocked and self.keyinactive == False:
             self._movement.x -= speed
             self._animator.play_animation(f"{self._animator._currentstate}left")
           
            
 
-        if keys[pygame.K_d] and not self._right_blocked:
+        if keys[pygame.K_d] and not self._right_blocked and self.keyinactive == False:
             self._movement.x += speed
             self._animator.play_animation(f"{self._animator._currentstate}right")
            
            
 
-        if keys[pygame.K_SPACE] and self.can_jump is True:
+        if keys[pygame.K_SPACE] and self.can_jump is True and self.keyinactive == False:
             self.is_falling = False
             self.can_jump = False
             self.is_jumping = True
-            self._start_jump_position = player_position_y-self.gameObject.transform.offset.y
-           
+            self._start_jump_position = player_position_y
+            self._down_blocked=False
+            self.sound_player = SoundPlayer("jump-small.wav")
+            self.sound_player.play_sound()  
+            self.sound_player.set_volume(0.05)        
 
         if keys[pygame.K_f] and self._can_shoot==True:
+
             self.shoot()
             
 
@@ -186,10 +206,9 @@ class Player(Component):
         # elif self._gameObject.transform.position.y < 0:
         #    self._gameObject.transform.position.y = 0
         
-      #  if self._gameObject.transform.position.y == bottom_limit:
-      #      self.can_jump = True
-      #      self.is_falling = False
-           # self._down_blocked=True
+        if self._gameObject.transform.position.y == bottom_limit:
+            self.gameObject.destroy()
+            GameStateManager.currentState = GameStates.RESTART
 
 
      
@@ -199,7 +218,11 @@ class Player(Component):
         if self._time_since_last_shot >= self._shoot_delay:
             projectile = GameObject(pygame.math.Vector2(0,0),self._game_world)
             sr = projectile.add_component(SpriteRenderer("laser.png",20,20))
-            projectile.add_component(Laser())
+            if self._animator._current_animation == f"{self._animator._currentstate}right":
+                projectile.add_component(Laser(500))
+            elif self._animator._current_animation == f"{self._animator._currentstate}left":
+                projectile.add_component(Laser(-500))
+
             projectile.add_component(Collider())
 
 
@@ -213,21 +236,33 @@ class Player(Component):
             projectile.transform.position = projectile_position
 
             self._game_world.instantiate(projectile)
+            
 
             self._time_since_last_shot = 0
         
     def on_collision_enter(self, other):
+
+        self.gameObject.health -= 1
         
-        self._animator.play_animation("Deathanimright")
 
+        if self.gameObject.health == 0:
+            self._animator.play_animation("Deathanimright")
+            self.death = True
+            self.sound_player = SoundPlayer("mariodie.wav")
+            self.sound_player.play_sound()  
+            self.sound_player.set_volume(0.05)
 
-        if self._animator._current_animation !="Upgraderight" and self._animator._current_animation !="Upgradeleft":
-
+            self.keyinactive = True
             
-            self.gameObject.destroy()
+        elif self.death == True:
+
             GameStateManager.currentState = GameStates.RESTART
-        else:
-            self._animator.play_animation(f"{self._animator._currentstate}right")
+
+        
+
+
+
+
         
         print("collision enter")
 
@@ -247,6 +282,10 @@ class Player(Component):
         print("collision enter top")
 
     def on_collision_enter_powerUp(self,other):
+        self.sound_player = SoundPlayer("powerup.wav")
+        self.sound_player.play_sound()  
+        self.sound_player.set_volume(0.05)
+
         self._animator=self._gameObject.get_component("Animator")
         self._animator._currentstate ="Upgrade"
         self._animator.play_animation(f"{self._animator._currentstate}right")
@@ -265,8 +304,12 @@ class Player(Component):
 
     
     def on_collision_enter_gun_powerup(self,other):
+       
        print("collision gun PowerUp")
        self._can_shoot=True
+       self.sound_player = SoundPlayer("1-up.wav")
+       self.sound_player.play_sound()  
+       self.sound_player.set_volume(0.05)       
 
     def on_collision_solid_object(self,other):
         self._sr = self.gameObject.get_component("SpriteRenderer")
@@ -428,8 +471,6 @@ class Player(Component):
         player._left_blocked=False
         player._up_blocked=False
         player._down_blocked=False
-        
-
 
         
                     

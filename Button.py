@@ -3,6 +3,8 @@ from Components  import Component
 from GameStates import GameStateManager
 from GameStates import GameStates
 from enum import Enum
+from Score import GameScore
+from Components import MusicPlayer
 
 
 
@@ -15,18 +17,21 @@ class ButtonTypes(Enum):
     MUTESOUND = 5
     WIN = 6
     GOBACK = 7
+    UNMUTESOUND = 8
+
 
 class MarioButton(Component):
 
     down = True
     
+
+
     def __init__(self,pos_x,pos_y, buttonType) -> None:
         self._pos_x=pos_x
         self._pos_y=pos_y
         self._buttonType = buttonType
         self._clicked = False
-       
-       
+        self.music_player = MusicPlayer
 
 
     
@@ -35,6 +40,8 @@ class MarioButton(Component):
         
 
         self.gameObject.Tag = "button"
+
+        self._gameWorld = game_world
 
         
         self._screen_size = pygame.math.Vector2(game_world._screen.get_width(), game_world._screen.get_height())
@@ -84,20 +91,46 @@ class MarioButton(Component):
 
 
             if self._buttonType == ButtonTypes.MUTESOUND:
+
+                self.music_player = MusicPlayer("mariotrap.mp3")
+                self.music_player.play_music()
+
                 self._clicked = True
-                #Mute Sound
+                
+                self.music_player.set_volume(0.0)
+
+                
+
+            if self._buttonType == ButtonTypes.UNMUTESOUND:
+                
+                self._clicked = True
+                
+
+                self.music_player = MusicPlayer("mariotrap.mp3")
+
+                self.music_player.play_music()
+
+                self.music_player.set_volume(0.10)
+
                 pass
 
             if self._buttonType == ButtonTypes.RESTART:
                 self._clicked = True
+                self._gameWorld._stateManager.init2()
+                self._gameWorld._stateManager.awake(self._gameWorld)
+                self._gameWorld._stateManager.start()
+
                 GameStateManager.currentState = GameStates.MAINMENU
+
+                GameScore.score = 0
+                
 
             if self._buttonType == ButtonTypes.GOBACK:
                 self._clicked = True
                 GameStateManager.currentState = GameStates.MAINMENU
                 
-            if pygame.mouse.get_pressed()[0] == 0:
-                self._clicked = False
+        if pygame.mouse.get_pressed()[0] == 0:
+            self._clicked = False
 
 
     

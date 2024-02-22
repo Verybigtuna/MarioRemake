@@ -14,7 +14,7 @@ class Mushroom_PowerUp(Component):
     def awake(self,game_world):
 
         self.gameObject.Tag = "PowerUp"
-        sr = self.gameObject.get_component("SpriteRenderer")
+        self.sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")
         self.gameObject.transform.position =pygame.math.Vector2(self._pos_x,self._pos_y)
         

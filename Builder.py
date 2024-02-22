@@ -7,6 +7,7 @@ from Player import Player
 from Enemy import Enemy
 from Goomba_Enemy import Goomba_Enemy
 from Mushroom_PowerUp import Mushroom_PowerUp
+from Shooter_Enemy import Shooter_Enemy
 import pygame
 import random
 from Components import Collider
@@ -15,6 +16,8 @@ from Button import MarioButton
 from Text import TextBox
 from SolidObject import SolidObject
 from MysteryBox import MysteryBox
+from Heart import Heart
+
 
 
 from Gun_PowerUp import Gun_PowerUp
@@ -46,7 +49,7 @@ class PlayerBuilder(Builder):
         sprite_height_upgrade =50
         sprite_width_upgrade = 50
 
-        self._gameObject.add_component(SpriteRenderer("Mario_move_right1.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("mario_move_right2.png",sprite_width,sprite_height))
         self._gameObject.add_component(Player(game_world))
         self._gameObject.add_component(Collider())
 
@@ -77,7 +80,9 @@ class PlayerBuilder(Builder):
          
         animator.add_animation("Deathanimright",sprite_height,sprite_width,"Mario_death.png",
                                "Mario_death.png",
-                               "Mario_death.png") 
+                               "Mario_death.png",
+                               "Mario_death.png",
+                               "Mario_death.png",) 
 
         animator.play_animation("Idleright")
 
@@ -134,6 +139,44 @@ class Goomba_EnemyBuilder(Builder):
     def get_gameObject(self) -> GameObject:
         return self._gameObject
         
+class Shooter_EnemyBuilder(Builder):
+    
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+        
+
+    def build(self,pos_x,pos_y):
+
+        
+        sprite_height=50
+        sprite_width=50
+        sprite = "gunbrother_move_right1.png"
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Shooter_Enemy(pos_x,pos_y))
+        self._gameObject.add_component(Collider())
+
+        animator = self._gameObject.add_component(Animator())
+        animator.add_animation("Gunbrother_right",sprite_height,sprite_width, "gunbrother_move_right1.png",
+                               "gunbrother_move_right2.png")
+        
+        animator.add_animation("Gunbrother_left",sprite_height,sprite_width, "gunbrother_move_left1.png",
+                               "gunbrother_move_left2.png")        
+        
+        animator.play_animation("Gunbrother_right")
+        
+        
+
+      
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
 
 class Mushroom_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
@@ -194,13 +237,13 @@ class Door_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, enum):
+    def build(self,pos_x,pos_y, sprite_name, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=50
-        sprite_width=50
+        sprite_height=150
+        sprite_width=150
 
-        self._gameObject.add_component(SpriteRenderer("supply-crate.png",sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
         self._gameObject.add_component(Lvl_Door(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 
@@ -224,24 +267,16 @@ class MapBuilder(Builder):
 
         background1=GameObject(pygame.math.Vector2(0,0),self._game_world)
         sprite_height= self._game_world._screen.get_height()
-        sprite_width=8196
+        sprite_width=self._game_world._screen.get_width() * 4
 
+        self._mapRen=background1.add_component(MapRenderer("worldmap1.png",sprite_width,sprite_height))
         self._mapRen=background1.add_component(MapRenderer("World1.png",sprite_width,sprite_height))
-        
 
         self._mapRen.add_map("worldmap1", sprite_width, sprite_height, "worldmap1.png",)
         self._mapRen.add_map("shield", sprite_width, sprite_height, "shield.png",)
 
 
         self._mapRen.setMap("worldmap1")
-
-        
-
-
-
-
-
-
 
         self._gameObjects.append(background1)
 
@@ -270,14 +305,15 @@ class SolidObject_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, sprite_name,height,width):
+    def build(self,pos_x,pos_y, sprite_name, height, width, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=height
-        sprite_width=width
+        
+        sprite_height = height
+        sprite_width = width
 
         self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
-        self._gameObject.add_component(SolidObject(pos_x, pos_y))
+        self._gameObject.add_component(SolidObject(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
 
         
@@ -294,18 +330,23 @@ class MysteryBox_Builder(Builder):
 
         
 
-    def build(self,pos_x,pos_y, sprite_name,height,width):
+    def build(self,pos_x,pos_y, sprite_name, height, width, enum):
         self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
         
-        sprite_height=height
-        sprite_width=width
+        
+        sprite_height = height
+        sprite_width = width
 
         self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
-        self._gameObject.add_component(MysteryBox(pos_x, pos_y))
+        self._gameObject.add_component(SolidObject(pos_x, pos_y))
         self._gameObject.add_component(Collider())
 
         
         
+
+      
+
+
     def get_gameObject(self) -> GameObject:
         return self._gameObject
 
@@ -364,6 +405,32 @@ class TextBoxBuilder(Builder):
         self._gameObject.add_component(Collider())
 
 
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+class HeartBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+    def build(self, position):
+        
+
+        sprite_height=50
+        sprite_width=50
+
+        self._gameObject = GameObject(position, self._game_world)
+        sprite = "laser.png"
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Heart())
+        self._gameObject.add_component(Collider())
+
+        
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
