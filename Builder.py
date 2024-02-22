@@ -400,9 +400,9 @@ class HeartBuilder(Builder):
         sprite_width=50
 
         self._gameObject = GameObject(position, self._game_world)
-        sprite = "laser.png"
+        
 
-        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("laser.png",sprite_width,sprite_height))
         self._gameObject.add_component(Heart1())
         self._gameObject.add_component(Collider())
 
@@ -426,9 +426,9 @@ class HeartBuilder2(Builder):
         sprite_width=50
 
         self._gameObject = GameObject(position, self._game_world)
-        sprite = "laser.png"
+        
 
-        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("laser.png",sprite_width,sprite_height))
         self._gameObject.add_component(Heart2())
         self._gameObject.add_component(Collider())
 
@@ -452,9 +452,9 @@ class HeartBuilder3(Builder):
         sprite_width=50
 
         self._gameObject = GameObject(position, self._game_world)
-        sprite = "laser.png"
+        
 
-        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(SpriteRenderer("laser.png",sprite_width,sprite_height))
         self._gameObject.add_component(Heart3())
         self._gameObject.add_component(Collider())
 

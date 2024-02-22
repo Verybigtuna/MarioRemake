@@ -19,6 +19,7 @@ from Builder import HeartBuilder
 from Score import GameScore
 from Builder import HeartBuilder2
 from Builder import HeartBuilder3
+from Player import Player
 
 class GameWorld:
 
@@ -178,6 +179,13 @@ class GameWorld:
        score_rect.topright = (self._screen.get_width() - 580, 360)  # Adjust the position as needed
        self._screen.blit(score_text, score_rect)
 
+    def display_health(self):
+        health_txt = self.font.render("Health"+ str(Player.health),True,self.WHITE)
+        health_rect = health_txt.get_rect()
+        health_rect.topright = (self.screen.get_width()-10,50)
+        self._screen.blit(health_txt,health_rect)
+
+
 
 
 
@@ -248,6 +256,7 @@ class GameWorld:
                 self.display_final_score(GameScore.score)
             else:
                 self.display_score(GameScore.score)
+                self.display_health()
 
 
             # for gameObject in self._gameObjects[:]:
