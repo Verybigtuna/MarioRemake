@@ -59,10 +59,15 @@ class PlayerBuilder(Builder):
                                "mario_move_right4.png",
                                "mario_move_right3.png")
         
-        animator.add_animation("Upgraderight",sprite_height_upgrade,sprite_width_upgrade, "mario_move_right2.png",
+        animator.add_animation("Upgraderight",sprite_height_upgrade,sprite_width_upgrade, "Mario_move_right2.png",
                                "mario_move_right3.png",
                                "mario_move_right4.png",
                                "mario_move_right3.png")
+        
+        animator.add_animation("GunUpgraderight",sprite_width,sprite_height, "Mariogun_move_right2.png",
+                               "Mariogun_move_right3.png",
+                               "Mariogun_move_right4.png",
+                               "Mariogun_move_right3.png")
         
         animator.add_animation("Idleleft",sprite_height,sprite_height,"mario_move_left2.png",
                                "mario_move_left3.png",
@@ -73,6 +78,11 @@ class PlayerBuilder(Builder):
                                "mario_move_left3.png",
                                "mario_move_left4.png",
                                "mario_move_left3.png")
+        
+        animator.add_animation("GunUpgradeleft",sprite_width,sprite_height, "Mariogun_move_left2.png",
+                               "Mariogun_move_left3.png",
+                               "Mariogun_move_left4.png",
+                               "Mariogun_move_left3.png")
         
         animator.add_animation("Deathanimleft",sprite_height,sprite_width,"Mario_death.png",
                                "Mario_jump_left1.png",

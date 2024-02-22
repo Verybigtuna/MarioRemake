@@ -18,7 +18,7 @@ class GameStateManager():
 
     
 
-    currentState = GameStates.BOSSLVL
+    currentState = GameStates.MAINMENU
    
     def display_bowser_health(self):
        score_text = self._gameWorld.font.render("Bowsers Health: " + str(BossEnemy.bowser_life), True, self._gameWorld.WHITE)

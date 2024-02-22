@@ -275,7 +275,12 @@ class Player(Component):
        self._can_shoot=True
        self.sound_player = SoundPlayer("1-up.wav")
        self.sound_player.play_sound()  
-       self.sound_player.set_volume(0.05)       
+       self.sound_player.set_volume(0.05)
+
+
+       self._animator=self._gameObject.get_component("Animator")
+       self._animator._currentstate ="GunUpgrade"
+       self._animator.play_animation(f"{self._animator._currentstate}right")    
 
     def on_collision_enter_solid_object(self,other):
         sr_enemy=other.gameObject.get_component("SpriteRenderer")
