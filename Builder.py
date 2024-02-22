@@ -15,7 +15,9 @@ from Door import Lvl_Door
 from Button import MarioButton
 from Text import TextBox
 from SolidObject import SolidObject
-from Heart import Heart
+from Heart import Heart1
+from Heart import Heart2
+from Heart import Heart3
 
 
 
@@ -401,11 +403,64 @@ class HeartBuilder(Builder):
         sprite = "laser.png"
 
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Heart())
+        self._gameObject.add_component(Heart1())
         self._gameObject.add_component(Collider())
 
         
 
     def get_gameObject(self) -> GameObject:
         return self._gameObject
+
+class HeartBuilder2(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+    def build(self, position):
+        
+
+        sprite_height=50
+        sprite_width=50
+
+        self._gameObject = GameObject(position, self._game_world)
+        sprite = "laser.png"
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Heart2())
+        self._gameObject.add_component(Collider())
+
+        
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+
+class HeartBuilder3(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+    def build(self, position):
+        
+
+        sprite_height=50
+        sprite_width=50
+
+        self._gameObject = GameObject(position, self._game_world)
+        sprite = "laser.png"
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Heart3())
+        self._gameObject.add_component(Collider())
+
+        
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
     

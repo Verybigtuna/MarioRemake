@@ -17,6 +17,8 @@ from Components import MusicPlayer
 from Builder import Shooter_EnemyBuilder
 from Builder import HeartBuilder
 from Score import GameScore
+from Builder import HeartBuilder2
+from Builder import HeartBuilder3
 
 class GameWorld:
 
@@ -46,15 +48,7 @@ class GameWorld:
         self._lvl1_Objects.append(builder.get_gameObject())
         self._lvl2_Objects.append(builder.get_gameObject())
 
-        builder = HeartBuilder(self)
-        builder.build(pygame.math.Vector2(0,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
 
-        builder.build(pygame.math.Vector2(100,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
-
-        builder.build(pygame.math.Vector2(200,0))
-        self._lvl1_Objects.append(builder.get_gameObject())
 
         builder = Goomba_EnemyBuilder(self)
         builder.build(200, 100)
@@ -82,6 +76,8 @@ class GameWorld:
         self.music_player.play_music()
         self.music_player.set_volume(0.03)
         
+
+
 
         self.WHITE = (255, 255, 255) 
 
@@ -139,7 +135,7 @@ class GameWorld:
         levelTwo = LevelMaker(self)
         levelTwo.Level_Boss_map()
 
-
+        self.display_hearts()
 
        # GameStateManager.currentState = GameStates.MAINMENU
 
@@ -149,6 +145,18 @@ class GameWorld:
         
         self._running = True
         self._clock = pygame.time.Clock()
+
+    def display_hearts(self):
+        builder = HeartBuilder(self)
+        builder.build((self._screen.get_width() - 10, 90))
+        
+
+        builder = HeartBuilder2(self)
+        builder.build((self._screen.get_width() - 10, 150))
+
+
+        builder = HeartBuilder3(self)
+        builder.build((self._screen.get_width() - 10, 210))
 
     @property
     def screen(self):
@@ -169,6 +177,8 @@ class GameWorld:
        score_rect = score_text.get_rect()
        score_rect.topright = (self._screen.get_width() - 580, 360)  # Adjust the position as needed
        self._screen.blit(score_text, score_rect)
+
+
 
 
 
@@ -232,12 +242,13 @@ class GameWorld:
 
             self._stateManager.update(delta_time)
             
-            
+            self.display_hearts()
 
             if GameStateManager.currentState == GameStates.RESTART or GameStateManager.currentState == GameStates.WIN:
                 self.display_final_score(GameScore.score)
             else:
                 self.display_score(GameScore.score)
+
 
             # for gameObject in self._gameObjects[:]:
 
