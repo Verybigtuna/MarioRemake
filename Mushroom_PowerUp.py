@@ -31,7 +31,7 @@ class Mushroom_PowerUp(Component):
 
     def on_collision_enter(self, other):
         
-        print("collision enter my penis")
+        print("collision enter on")
 
 
     def on_collision_exit(self,other):

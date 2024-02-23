@@ -158,6 +158,7 @@ class Player(Component):
             if player_position_y < (self._start_jump_position - jump_height) or self._up_blocked==True:
                 self.is_jumping = False
                 self.is_falling = True
+                self._down_blocked = False
                
 
         self._gameObject.transform.translate(self._movement*delta_time)
@@ -196,10 +197,11 @@ class Player(Component):
     def shoot(self):
         if self._time_since_last_shot >= self._shoot_delay:
             projectile = GameObject(pygame.math.Vector2(0,0),self._game_world)
-            sr = projectile.add_component(SpriteRenderer("laser.png",20,20))
+            sr = projectile.add_component(SpriteRenderer("bulletRight.png",20,20))
             if self._animator._current_animation == f"{self._animator._currentstate}right":
                 projectile.add_component(Laser(500))
             elif self._animator._current_animation == f"{self._animator._currentstate}left":
+                sr = projectile.add_component(SpriteRenderer("bulletleft.png",20,20))
                 projectile.add_component(Laser(-500))
 
             projectile.add_component(Collider())
@@ -271,6 +273,15 @@ class Player(Component):
         self._animator.play_animation(f"{self._animator._currentstate}right")
         print("collision enter powerup")
 
+        sr=self.gameObject.get_component("SpriteRenderer")
+
+        sprite_height_upgrade =50
+        sprite_width_upgrade = 50
+
+        sr._sprite_image=pygame.transform.scale(sr._sprite_image,(sprite_height_upgrade,sprite_width_upgrade))
+        sr._sprite.rect = sr._sprite_image.get_rect()
+        sr._sprite_mask = pygame.mask.from_surface(sr.sprite_image)
+
     
     def on_collision_enter_gun_powerup(self,other):
        
@@ -284,6 +295,15 @@ class Player(Component):
        self._animator=self._gameObject.get_component("Animator")
        self._animator._currentstate ="GunUpgrade"
        self._animator.play_animation(f"{self._animator._currentstate}right")    
+
+       sr=self.gameObject.get_component("SpriteRenderer")
+
+       sprite_height_upgrade =40
+       sprite_width_upgrade = 40
+
+       sr._sprite_image=pygame.transform.scale(sr._sprite_image,(sprite_height_upgrade,sprite_width_upgrade))
+       sr._sprite.rect = sr._sprite_image.get_rect()
+       sr._sprite_mask = pygame.mask.from_surface(sr.sprite_image)
 
 
     def on_collision_MysteryBox(self, other):
@@ -333,23 +353,23 @@ class Player(Component):
         sr_player=self.gameObject.get_component("SpriteRenderer")
         playerCol = sr_player.sprite.rect
 
-        player=self.gameObject.get_component("Player")
+        
 
-        player.can_jump = True
+        self.can_jump = True
 
 
         print("Solid OBject collision")
 
 
 
-        if enemyCol.bottom > playerCol.top and playerCol.centery>enemyCol.bottom:
-           player._up_blocked=True
+        if enemyCol.bottom > playerCol.top and playerCol.bottom>enemyCol.bottom:
+           self._up_blocked=True
            
  
 
         if enemyCol.top <= playerCol.bottom:
                     
-         player._down_blocked=True
+         self._down_blocked=True
         
        
                     
@@ -357,21 +377,21 @@ class Player(Component):
 
         if enemyCol.left < playerCol.right and playerCol.centerx < enemyCol.left:
                     
-           player._right_blocked=True
+           self._right_blocked=True
                     
 
 
         if enemyCol.right > playerCol.left and playerCol.centerx > enemyCol.right:
             
-            player._left_blocked=True
+            self._left_blocked=True
 
 
     def on_collision_exit_solid_object(self,other):
-        player=self.gameObject.get_component("Player")
-        player._right_blocked=False
-        player._left_blocked=False
-        player._up_blocked=False
-        player._down_blocked=False
+        
+        self._right_blocked=False
+        self._left_blocked=False
+        self._up_blocked=False
+        self._down_blocked=False
 
     def collision_enter_projectile(self, other):
        self.gameObject.destroy()
