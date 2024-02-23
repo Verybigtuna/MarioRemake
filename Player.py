@@ -37,7 +37,7 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
-        self.gameObject.health = 3
+        self._health = 3
         self.death = False
         self.keyinactive = False
 
@@ -66,12 +66,15 @@ class Player(Component):
         collider.subscribe("pixel_collision_enter",self.on_pixel_collision_enter)
         collider.subscribe("pixel_collision_exit",self.on_pixel_collision_exit)
         collider.subscribe("collision_enter_powerUp",self.on_collision_enter_powerUp)
+
         
         collider.subscribe("collision_enter_gun_powerup",self.on_collision_enter_gun_powerup)
-
+        collider.subscribe("on_collision_MysteryBox", self.on_collision_MysteryBox)
         collider.subscribe("collision_enter_solid_object",self.on_collision_enter_solid_object)
         collider.subscribe("collision_exit_solid_object",self.on_collision_exit_solid_object)
         collider.subscribe("collision_enter_projectile",self.collision_enter_projectile)
+
+    
 
 
     @property
@@ -219,10 +222,10 @@ class Player(Component):
         
     def on_collision_enter(self, other):
 
-        self.gameObject.health -= 1
+        self._health -= 1
         
 
-        if self.gameObject.health == 0:
+        if self._health == 0:
             self._animator.play_animation("Deathanimright")
             self.death = True
             self.sound_player = SoundPlayer("mariodie.wav")
@@ -281,6 +284,47 @@ class Player(Component):
        self._animator=self._gameObject.get_component("Animator")
        self._animator._currentstate ="GunUpgrade"
        self._animator.play_animation(f"{self._animator._currentstate}right")    
+
+
+    def on_collision_MysteryBox(self, other):
+        
+        sr_enemy=other.gameObject.get_component("SpriteRenderer")
+        enemyCol = sr_enemy.sprite.rect
+
+        sr_player=self.gameObject.get_component("SpriteRenderer")
+        playerCol = sr_player.sprite.rect
+
+        player=self.gameObject.get_component("Player")
+
+        player.can_jump = True
+
+
+        print("Solid OBject collision")
+
+
+
+        if enemyCol.bottom > playerCol.top and playerCol.centery>enemyCol.bottom:
+           player._up_blocked=True
+           
+ 
+
+        if enemyCol.top <= playerCol.bottom:
+                    
+         player._down_blocked=True
+        
+       
+                    
+
+
+        if enemyCol.left < playerCol.right and playerCol.centerx < enemyCol.left:
+                    
+           player._right_blocked=True
+                    
+
+
+        if enemyCol.right > playerCol.left and playerCol.centerx > enemyCol.right:
+            
+            player._left_blocked=True
 
     def on_collision_enter_solid_object(self,other):
         sr_enemy=other.gameObject.get_component("SpriteRenderer")

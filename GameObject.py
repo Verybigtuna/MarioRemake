@@ -39,13 +39,7 @@ class GameObject:
     def follows_camera(self,value):
         self._follows_camera=value
     
-    @property
-    def health(self):
-        return self._health
     
-    @health.setter
-    def health(self,value):
-        self._health = value
 
 
     def add_component(self, component):

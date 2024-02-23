@@ -451,10 +451,19 @@ class Collider(Component):
               #  if other in self._other_masks:
                 #    self.pixel_collision_exit(other)
                #     other.pixel_collision_exit(self)
+                   
+
+                case "MysteryBox":
+                    if  not is_already_colliding:
+                        self.on_collision_MysteryBox(other)
+
+                
                 case "PowerUp":
                 
                  if  not is_already_colliding:
                    self.collision_enter_powerUp(other)
+                   other.collision_enter_powerUp(self)
+                   
            
                 case "gun_powerup":
        
@@ -494,6 +503,11 @@ class Collider(Component):
                 if  not is_already_colliding:
                  self.collision_enter_projectile(other)
 
+            if(other._rect.bottom>self._rect.top and self._rect.bottom>other._rect.bottom and not is_already_colliding and self.gameObject.Tag == "Player" and other.gameObject.Tag == "MysteryBox"):
+                if not is_already_colliding:
+                    other.on_collision_enter_bottom(self)
+
+
 
             
             
@@ -527,6 +541,12 @@ class Collider(Component):
         offset_y = collision_box2.y - collision_box1.y
 
         return mask1.overlap(mask2,(offset_x,offset_y)) is not None
+    
+
+    def on_collision_enter_bottom(self, other):
+        self._other_colliders.append(other)
+        if "on_collision_enter_bottom" in self._listeners:
+            self._listeners["on_collision_enter_bottom"](other)
 
 
 
@@ -585,10 +605,21 @@ class Collider(Component):
 
         if "collition_exit_gun_powerUp" in self._listeners:
           self._listeners["collision_exit_gun_powerup"](other)
+
     def collision_enter_solid_object(self, other):
         self._other_colliders.append(other)
         if "collision_enter_solid_object" in self._listeners:
             self._listeners["collision_enter_solid_object"](other)
+
+    def on_collision_MysteryBox(self, other):
+        self._other_colliders.append(other)
+        if "on_collision_MysteryBox" in self._listeners:
+            self._listeners["on_collision_MysteryBox"](other)
+
+    def on_collision_enter_MysteryBox_bottom(self, other):
+        self._other_colliders.append(other)
+        if "on_collision_enter_bottom" in self._listeners:
+            self._listeners["on_collision_enter_bottom"](other)
 
     def collision_exit_solid_object(self, other):
 

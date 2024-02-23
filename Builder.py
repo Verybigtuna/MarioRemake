@@ -17,6 +17,7 @@ from Text import TextBox
 from SolidObject import SolidObject
 from Components import MusicPlayer
 from BossEnemy import BossEnemy
+from MysteryBox import MysteryBox
 
 
 
@@ -232,15 +233,15 @@ class Mushroom_PowerUpBuilder(Builder):
         self._game_world=game_world
 
 
-    def build(self):
+    def build(self, pos_x,pos_y):
 
-        sprite_height=100
-        sprite_width=100
+        sprite_height=35
+        sprite_width=35
         self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
-        sprite = "shield.png"
+        sprite = "power_up_mushroom.png"
 
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Mushroom_PowerUp())
+        self._gameObject.add_component(Mushroom_PowerUp(pos_x,pos_y))
         self._gameObject.add_component(Collider())
 
 
@@ -257,15 +258,15 @@ class Gun_PowerUpBuilder(Builder):
         self._game_world=game_world
 
      
-    def build(self,position):
+    def build(self,pos_x,pos_y):
 
         sprite_height=20
         sprite_width=20
-        self._gameObject = GameObject(position, self._game_world)
-        sprite = "laser.png"
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
+        sprite = "pistol.png"
         
         self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
-        self._gameObject.add_component(Gun_PowerUp())
+        self._gameObject.add_component(Gun_PowerUp(pos_x,pos_y))
         self._gameObject.add_component(Collider())
 
         
@@ -424,6 +425,36 @@ class TextBoxBuilder(Builder):
         self._gameObject.add_component(SpriteRenderer(textType, text_sprite_width, text_sprite_height))
         self._gameObject.add_component(TextBox(pos_x, pos_y, enum))
         self._gameObject.add_component(Collider())
+
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+
+class MysteryBox_Builder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+
+    def build(self,pos_x,pos_y, sprite_name, height, width):
+        self._gameObject = GameObject(pygame.math.Vector2(0,0),self._game_world)
+
+
+        sprite_height = height
+        sprite_width = width
+
+        self._gameObject.add_component(SpriteRenderer(sprite_name,sprite_width,sprite_height))
+        self._gameObject.add_component(MysteryBox(pos_x, pos_y))
+        self._gameObject.add_component(Collider())
+
+
+
+
 
 
 

@@ -4,11 +4,16 @@ import pygame
 
 class Mushroom_PowerUp(Component):
 
+
+    def __init__(self,pos_x,pos_y) -> None:
+        self._pos_x=pos_x
+        self._pos_y=pos_y
+
     def awake(self,game_world):
         self.gameObject.Tag = "PowerUp"
         self.sr = self.gameObject.get_component("SpriteRenderer")
         #sr.sprite_image("shield")
-        self.gameObject.transform.position = pygame.math.Vector2(50,50)
+        self.gameObject.transform.position = pygame.math.Vector2(self._pos_x, self._pos_y)
         
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)
