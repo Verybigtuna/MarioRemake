@@ -14,11 +14,12 @@ from Components import Collider
 from Door import Lvl_Door
 from Button import MarioButton
 from Text import TextBox
+from Text import TextTypes
 from SolidObject import SolidObject
 from Components import MusicPlayer
 from BossEnemy import BossEnemy
 from MysteryBox import MysteryBox
-
+from Coin import Coin
 
 
 from Gun_PowerUp import Gun_PowerUp
@@ -250,6 +251,31 @@ class Mushroom_PowerUpBuilder(Builder):
         return self._gameObject
     
 
+class CoinBuilder(Builder):
+    def __init__(self,game_world) -> None:
+
+        super().__init__()
+
+        self._game_world=game_world
+
+
+    def build(self, pos_x,pos_y):
+
+        sprite_height=35
+        sprite_width=35
+        self._gameObject = GameObject(pygame.math.Vector2(0,0), self._game_world)
+        sprite = "Coin.png"
+
+        self._gameObject.add_component(SpriteRenderer(sprite,sprite_width,sprite_height))
+        self._gameObject.add_component(Coin(pos_x,pos_y))
+        self._gameObject.add_component(Collider())
+
+
+
+    def get_gameObject(self) -> GameObject:
+        return self._gameObject
+    
+
 class Gun_PowerUpBuilder(Builder):
     def __init__(self,game_world) -> None:
 
@@ -418,6 +444,13 @@ class TextBoxBuilder(Builder):
         
         text_sprite_height= 200
         text_sprite_width= 500
+        if enum == TextTypes.GUIDE:
+            text_sprite_height = 200
+            text_sprite_width = 700
+
+        if enum == TextTypes.WALLGUIDE:
+            text_sprite_height = 160
+            text_sprite_width = 400
 
 
 

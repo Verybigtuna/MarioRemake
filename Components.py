@@ -238,7 +238,7 @@ class SpriteRenderer(Component):
         color = (255,0,0)
           
         # Drawing Rectangle
-        pygame.draw.rect(self._game_world.screen, color, self._sprite.rect,2)
+        #pygame.draw.rect(self._game_world.screen, color, self._sprite.rect,2)
        
 
         
@@ -463,6 +463,10 @@ class Collider(Component):
                  if  not is_already_colliding:
                    self.collision_enter_powerUp(other)
                    other.collision_enter_powerUp(self)
+
+                case "Coin":
+                     if  not is_already_colliding:
+                       other.collision_enter(self)
                    
            
                 case "gun_powerup":

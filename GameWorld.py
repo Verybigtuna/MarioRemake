@@ -16,6 +16,7 @@ from LvLMaker import LevelMaker
 from Components import MusicPlayer
 from Builder import Shooter_EnemyBuilder
 from Score import GameScore
+from Builder import CoinBuilder
 
 class GameWorld:
 
@@ -65,13 +66,13 @@ class GameWorld:
         builder.build(350, 360, "button_mute_sound.png", ButtonTypes.MUTESOUND)
         self._options_Objects.append(builder.get_gameObject())
 
-        builder.build(850, 360, "button_mute_sound.png", ButtonTypes.UNMUTESOUND)
+        builder.build(850, 360, "button_unmute_sound.png", ButtonTypes.UNMUTESOUND)
         self._options_Objects.append(builder.get_gameObject())
 
         builder.build(550, 660, "button_go_back.png", ButtonTypes.GOBACK)
         self._options_Objects.append(builder.get_gameObject())
 
-        builder.build(550, 560, "button_go_back.png", ButtonTypes.GOBACK)
+        builder.build(550, 560, "button_go_back.png", ButtonTypes.RESTART)
         self._win_Objects.append(builder.get_gameObject())
 
 
@@ -85,11 +86,9 @@ class GameWorld:
 
         builder.build(380, 150, "you_win.png", TextTypes.YOUWIN)
         self._win_Objects.append(builder.get_gameObject())
-#turtorial
+
         
 
-
-#turtorial
         
         
         
@@ -103,11 +102,23 @@ class GameWorld:
         levelTwo = LevelMaker(self)
         levelTwo.Level_Boss_map()
 
+        
+        builder = CoinBuilder(self)
+        builder.build(380, 400)
+        self._lvl1_Objects.append(builder.get_gameObject())
 
 
        # GameStateManager.currentState = GameStates.MAINMENU
 
+#turtorial
+        builder = TextBoxBuilder(self)
+        builder.build(120, 150, "wall_jump_hint.png", TextTypes.WALLGUIDE)
+        self._lvl2_Objects.append(builder.get_gameObject())
 
+        builder.build(110, 150, "GameGuide.png", TextTypes.GUIDE)
+        self._lvl1_Objects.append(builder.get_gameObject())
+
+#turtorial
 
        
         

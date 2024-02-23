@@ -11,6 +11,8 @@ class TextTypes(Enum):
     WELCOME = 1
     YOURDEAD = 2
     YOUWIN = 3
+    GUIDE = 4
+    WALLGUIDE = 5
     
 
 class TextBox(Component):

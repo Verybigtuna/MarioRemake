@@ -171,20 +171,21 @@ class LevelMaker():
 #ENEMIES
 
 #POWER UPS
-        builder = Mushroom_PowerUpBuilder(self._gameWorld)
-        builder.build(2060,450)
+        
+        builder=MysteryBox_Builder(self._gameWorld)
+        builder.build(500, 400,"MysteryBox.png", 50, 50)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 
-        builder=Gun_PowerUpBuilder(self._gameWorld)
-        builder.build(300,560)
+        builder = MysteryBox_Builder(self._gameWorld)
+        builder.build(2060,250,"MysteryBox.png", 50, 50)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
 
-        builder.build(350,560)
+        
+        
+
+
+        builder.build(3020,-120,"MysteryBox.png", 50, 50)
         self._gameWorld._lvl2_Objects.append(builder.get_gameObject())
-
-
-        builder.build(2160,420)
-        self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
 #POWER UPS
 
@@ -289,12 +290,17 @@ class LevelMaker():
 #ENEMIESBoSS
 
 #POWER UPS
-        builder = Mushroom_PowerUpBuilder(self._gameWorld)
-        builder.build(3600, 460)
+        builder = MysteryBox_Builder(self._gameWorld)
+        builder.build(4400, 400,"MysteryBox.png", 50, 50)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
-        builder=Gun_PowerUpBuilder(self._gameWorld)
-        builder.build(300,560)
+        
+        builder.build(600,400, "MysteryBox.png", 50, 50)
+        self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
+
+
+        builder = Gun_PowerUpBuilder(self._gameWorld)
+        builder.build(900, 520)
         self._gameWorld._bossLvl_Objects.append(builder.get_gameObject())
 
         

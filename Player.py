@@ -57,7 +57,7 @@ class Player(Component):
         self._screen_size = pygame.math.Vector2(game_world.screen.get_width(), game_world.screen.get_height())
         self._sprite_size = pygame.math.Vector2(sr.sprite_image.get_width(),sr.sprite_image.get_height())
         self._gameObject.transform.position.x = 150
-        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y) - 100
+        self._gameObject.transform.position.y = (self._screen_size.y) - (self._sprite_size.y) - 200
         
         collider = self._gameObject.get_component("Collider")
         collider.subscribe("collision_enter",self.on_collision_enter)

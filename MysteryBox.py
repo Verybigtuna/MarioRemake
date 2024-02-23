@@ -32,7 +32,7 @@ class MysteryBox(Component):
         collider.subscribe("on_collision_enter_bottom",self.on_collision_enter_bottom)
         collider.subscribe("collision_exit_bottom",self.on_collision_exit_bottom)
 
-        self._random=random.randint(1,2)
+        self._random=random.randint(1,3)
 
       
 
@@ -64,6 +64,9 @@ class MysteryBox(Component):
          elif self._random==2:
               from Builder import Gun_PowerUpBuilder
               builder=Gun_PowerUpBuilder(self._game_world)
+         elif self._random==3:
+              from Builder import CoinBuilder
+              builder=CoinBuilder(self._game_world)
          
        
 
