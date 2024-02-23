@@ -263,6 +263,7 @@ class Animator(Component):
         self._current_frame_index = 0
         self._currentstate = "Idle"
         self._thisstate = "Gunbrother_"
+        self._gunstate = "Mariogun"
 
     def add_animation(self, name,width,height, *args,):
         frames = []

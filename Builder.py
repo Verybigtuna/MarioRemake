@@ -83,7 +83,21 @@ class PlayerBuilder(Builder):
                                "Mario_death.png",
                                "Mario_death.png",
                                "Mario_death.png",
-                               "Mario_death.png",) 
+                               "Mario_death.png",)
+        animator.add_animation("Mariogunleft",sprite_height,sprite_width,"Mariogun_move_left1.png",
+                               "Mariogun_move_left2.png",
+                               "Mariogun_move_left3.png",
+                               "Mariogun_move_left4.png",
+                               "Mariogun_move_left3.png",
+                               "Mariogun_move_left2.png",)
+
+        animator.add_animation("Mariogunright",sprite_height,sprite_width,"Mariogun_move_right1.png",
+                               "Mariogun_move_right2.png",
+                               "Mariogun_move_right3.png",
+                               "Mariogun_move_right4.png",
+                               "Mariogun_move_right3.png",
+                               "Mariogun_move_right2.png",)
+        
 
         animator.play_animation("Idleright")
 
