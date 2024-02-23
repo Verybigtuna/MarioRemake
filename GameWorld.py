@@ -17,6 +17,7 @@ from Components import MusicPlayer
 from Builder import Shooter_EnemyBuilder
 from Score import GameScore
 from Builder import CoinBuilder
+from Player import Player
 
 class GameWorld:
 
@@ -102,7 +103,7 @@ class GameWorld:
         levelTwo = LevelMaker(self)
         levelTwo.Level_Boss_map()
 
-        
+
         builder = CoinBuilder(self)
         builder.build(380, 400)
         self._lvl1_Objects.append(builder.get_gameObject())
@@ -143,6 +144,12 @@ class GameWorld:
        score_text = self.font.render("Final Score: " + str(score), True, self.WHITE)
        score_rect = score_text.get_rect()
        score_rect.topright = (self._screen.get_width() - 580, 360)  # Adjust the position as needed
+       self._screen.blit(score_text, score_rect)
+
+    def display_health(self):
+       score_text = self.font.render("Health: " + str(Player._health), True, self.WHITE)
+       score_rect = score_text.get_rect()
+       score_rect.topleft = ( + 10, 10)  # Adjust the position as needed
        self._screen.blit(score_text, score_rect)
 
 
@@ -211,8 +218,14 @@ class GameWorld:
 
             if GameStateManager.currentState == GameStates.RESTART or GameStateManager.currentState == GameStates.WIN:
                 self.display_final_score(GameScore.score)
+                
             else:
                 self.display_score(GameScore.score)
+                self.display_health()
+
+            if Player._health <= 0 and Player.deathTimer >= 1:
+                GameStateManager.currentState = GameStates.RESTART
+
 
             # for gameObject in self._gameObjects[:]:
 

@@ -5,7 +5,7 @@ from GameStates import GameStates
 from enum import Enum
 from Score import GameScore
 from Components import MusicPlayer
-
+from Player import Player
 
 
 
@@ -123,6 +123,7 @@ class MarioButton(Component):
                 GameStateManager.currentState = GameStates.MAINMENU
 
                 GameScore.score = 0
+                Player._health = 3
                 
 
             if self._buttonType == ButtonTypes.GOBACK:

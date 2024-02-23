@@ -14,7 +14,8 @@ from Components import SoundPlayer
 class Player(Component):
 
     
-
+    _health = 3
+    deathTimer = 0
 
 
 
@@ -37,11 +38,11 @@ class Player(Component):
         
         self.gameObject.follows_camera=True
         self.gameObject.Tag = "Player"
-        self._health = 3
+        
         self.death = False
         self.keyinactive = False
 
-        
+        self._startDeathTimer = False
 
         sr = self._gameObject.get_component("SpriteRenderer")
         
@@ -106,6 +107,9 @@ class Player(Component):
         Camera.camera_offset=pygame.math.Vector2(0,0)
 
         self._delta_time=delta_time
+        if self.death == True:
+        
+            Player.deathTimer += delta_time
 
         self._time_since_last_shot += delta_time
         self._gravity = 1700
@@ -224,21 +228,23 @@ class Player(Component):
         
     def on_collision_enter(self, other):
 
-        self._health -= 1
+        Player._health -= 1
         
 
-        if self._health == 0:
+        if Player._health == 0:
             self._animator.play_animation("Deathanimright")
-            self.death = True
+            
             self.sound_player = SoundPlayer("mariodie.wav")
             self.sound_player.play_sound()  
             self.sound_player.set_volume(0.05)
 
-            self.keyinactive = True
-            
-        elif self.death == True:
+            self.death = True
 
-            GameStateManager.currentState = GameStates.RESTART
+            self.keyinactive = True
+            self._startDeathTimer = True
+            
+            
+        
 
         
 
