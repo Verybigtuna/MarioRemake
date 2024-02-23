@@ -330,7 +330,7 @@ class GameStateManager():
 
     
         # GameStateManager.currentState = GameStates.MAINMENU
-        self.music_player = MusicPlayer("mariotrap.mp3")  # Replace with your music file path
+        self.music_player = MusicPlayer("mariotrap.mp3")  
         #self.music_player.play_music()
 
 

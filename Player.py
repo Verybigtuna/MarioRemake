@@ -236,7 +236,7 @@ class Player(Component):
         self.gameObject.health -= 1
 
 
-        if self.gameObject.health ==2:
+        if self.gameObject.health >=2 and self.gameObject != "Door" :
             Player.health -= 1
 
 
@@ -259,7 +259,7 @@ class Player(Component):
 
 
         
-        print("collision enter")
+        print("collision enter my hopes")
 
     def on_collision_exit(self, other):
         print("collision exit")
@@ -293,7 +293,11 @@ class Player(Component):
        self._can_shoot=True
        self.sound_player = SoundPlayer("1-up.wav")
        self.sound_player.play_sound()  
-       self.sound_player.set_volume(0.05)       
+       self.sound_player.set_volume(0.05)
+
+       self._animator=self._gameObject.get_component("Animator")
+       self._animator._currentstate ="Mariogun"
+       self._animator.play_animation(f"{self._animator._currentstate}right")   
 
     def on_collision_enter_solid_object(self,other):
         sr_enemy=other.gameObject.get_component("SpriteRenderer")
@@ -343,8 +347,25 @@ class Player(Component):
         player._down_blocked=False
 
     def collision_enter_projectile(self, other):
-       self.gameObject.destroy()
-       other.gameObject.destroy()
+        self.gameObject.health -= 1
+        other.gameObject.destroy()
+
+        if self.gameObject.health >=2 and self.gameObject != "Door":
+            Player.health -= 1
+
+
+        if self.gameObject.health == 0 :
+            self._animator.play_animation("Deathanimright")
+            self.death = True
+            self.sound_player = SoundPlayer("mariodie.wav")
+            self.sound_player.play_sound()  
+            self.sound_player.set_volume(0.05)
+
+            self.keyinactive = True
+            
+        elif self.death == True:
+
+            GameStateManager.currentState = GameStates.RESTART
 
         
                     
